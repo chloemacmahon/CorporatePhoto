@@ -1,7 +1,7 @@
-package dto;
+package za.ac.nwu.ac.dto;
 
-import dto.album.Album;
-import dto.image.Photo;
+import za.ac.nwu.ac.dto.album.Album;
+import za.ac.nwu.ac.dto.image.Photo;
 import exception.AlbumNotFoundException;
 import lombok.Data;
 import org.springframework.stereotype.Component;

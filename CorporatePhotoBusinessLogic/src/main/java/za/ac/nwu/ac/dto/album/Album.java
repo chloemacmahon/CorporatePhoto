@@ -1,7 +1,7 @@
-package dto.album;
+package za.ac.nwu.ac.dto.album;
 
 
-import dto.image.Photo;
+import za.ac.nwu.ac.dto.image.Photo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

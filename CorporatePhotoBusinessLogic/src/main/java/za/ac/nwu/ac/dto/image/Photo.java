@@ -1,4 +1,4 @@
-package dto.image;
+package za.ac.nwu.ac.dto.image;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

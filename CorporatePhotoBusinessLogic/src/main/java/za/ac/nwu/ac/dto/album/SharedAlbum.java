@@ -1,5 +1,5 @@
 /*
-package dto.album;
+package za.ac.nwu.ac.dto.album;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

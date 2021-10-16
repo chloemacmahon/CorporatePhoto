@@ -1,6 +1,6 @@
-package dto.image;
+package za.ac.nwu.ac.dto.image;
 
-import dto.User;
+import za.ac.nwu.ac.dto.User;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -20,4 +20,12 @@ public class PhotoMetaData {
 
     @ManyToOne
     private User owner;
+
+    public PhotoMetaData() {
+    }
+
+    public PhotoMetaData(Date dateCaptured, User owner) {
+        this.dateCaptured = dateCaptured;
+        this.owner = owner;
+    }
 }
