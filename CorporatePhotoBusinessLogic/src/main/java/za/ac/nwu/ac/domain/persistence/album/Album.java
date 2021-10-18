@@ -1,7 +1,9 @@
-package za.ac.nwu.ac.dto.album;
+package za.ac.nwu.ac.domain.persistence.album;
 
 
-import za.ac.nwu.ac.dto.image.Photo;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +23,8 @@ public class Album {
 
     private String albumName;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Photo> photos;
 
     public Album() {

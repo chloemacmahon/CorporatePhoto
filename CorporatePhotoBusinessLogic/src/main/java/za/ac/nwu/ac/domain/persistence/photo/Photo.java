@@ -1,4 +1,4 @@
-package za.ac.nwu.ac.dto.image;
+package za.ac.nwu.ac.domain.persistence.photo;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -12,9 +12,12 @@ public class Photo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long imageId;
+    private Long photoId;
 
-    @OneToOne
+    @Column(unique = true)
+    private String photoLink;
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private PhotoMetaData photoMetaData;
 
     public Photo() {

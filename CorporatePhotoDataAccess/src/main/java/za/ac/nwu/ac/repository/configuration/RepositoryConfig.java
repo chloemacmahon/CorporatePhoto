@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "za.ac.nwu.ac.repository")
-@EntityScan({"za.ac.nwu.ac.dto"})
+@EntityScan({"za.ac.nwu.ac.domain.persistence"})
 public class RepositoryConfig {
 }

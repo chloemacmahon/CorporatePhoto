@@ -1,52 +1,53 @@
-package za.ac.nwu.ac.dto;
+package za.ac.nwu.ac.domain.persistence;
 
-import za.ac.nwu.ac.dto.album.Album;
-import za.ac.nwu.ac.dto.image.Photo;
-import exception.AlbumNotFoundException;
+import za.ac.nwu.ac.domain.exception.AlbumNotFoundException;
+import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @Component
-public class User {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long userId;
+    private Long userAccountId;
 
-    @NotEmpty
+    @Column(unique = true)
     private String email;
 
-    @NotEmpty
-    private String password;
+    private String encodedPassword;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Album> albums;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Album ownedPhotosAlbum;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     private Album sharedPhotosAlbum;
 
-    public User() {
+    public UserAccount() {
     }
 
-    public User(@NotEmpty String email, @NotEmpty String password) {
+    public UserAccount(String email, String encodedPassword) {
         this.email = email;
-        this.password = password;
+        this.encodedPassword = encodedPassword;
+        this.albums  = new ArrayList<>();
         this.ownedPhotosAlbum = new Album();
         this.sharedPhotosAlbum = new Album();
     }
 
-    public User(@NotEmpty String email, @NotEmpty String password, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
+    public UserAccount(String email, String encodedPassword, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
         this.email = email;
-        this.password = password;
+        this.encodedPassword = encodedPassword;
         this.albums = albums;
         this.ownedPhotosAlbum = ownedPhotosAlbum;
         this.sharedPhotosAlbum = sharedPhotosAlbum;
