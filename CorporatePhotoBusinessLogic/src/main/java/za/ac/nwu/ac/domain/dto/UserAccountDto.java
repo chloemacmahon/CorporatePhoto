@@ -8,6 +8,7 @@ import za.ac.nwu.ac.domain.persistence.photo.Photo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,6 +20,10 @@ public class UserAccountDto {
 
     @NotEmpty
     private String password;
+
+    private String name;
+
+    private String surname;
 
     private List<Album> albums;
 
@@ -32,6 +37,17 @@ public class UserAccountDto {
     public UserAccountDto(@NotEmpty String email, @NotEmpty String password) {
         this.email = email;
         this.password = password;
+        this.albums = new ArrayList<>();
+        this.ownedPhotosAlbum = new Album();
+        this.sharedPhotosAlbum = new Album();
+    }
+
+    public UserAccountDto(@NotEmpty String email, @NotEmpty String password, String name, String surname) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.albums = new ArrayList<>();
         this.ownedPhotosAlbum = new Album();
         this.sharedPhotosAlbum = new Album();
     }

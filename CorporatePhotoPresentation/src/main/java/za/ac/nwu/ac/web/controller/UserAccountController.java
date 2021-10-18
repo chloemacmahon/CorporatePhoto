@@ -37,10 +37,11 @@ public class UserAccountController {
             return "log-in";
         }
         try {
-            userAccountService.logInUser(userAccountDto);
-            model.addAttribute("user", new UserAccountDto());
-            return "log-in";
+            model.addAttribute("user", userAccountService.logInUser(userAccountDto));
+            LoggingController.logInfo(userAccountService.logInUser(userAccountDto).getEmail());
+            return "view-albums";
         } catch (RuntimeException e){
+            LoggingController.logError(e.getMessage());
             model.addAttribute("user", new UserAccountDto());
             return "log-in";
         }

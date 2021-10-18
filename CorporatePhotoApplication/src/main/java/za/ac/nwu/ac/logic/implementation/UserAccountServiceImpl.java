@@ -25,6 +25,13 @@ public class UserAccountServiceImpl implements UserAccountService {
         this.userAccountRepository = userAccountRepository;
     }
 
+    public UserAccount findUserById(Long id){
+        if (userAccountRepository.findById(id).isPresent())
+            return userAccountRepository.findById(id).get();
+        else
+            throw new UserDoesNotExistException();
+    }
+
     public UserAccount createUserAccount(UserAccountDto userAccountDto){
         if(userAccountRepository.findByEmail(userAccountDto.getEmail()) != null){
             throw new InvalidEmailException("Email is already in the system");
@@ -36,7 +43,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new InvalidEmailException("Email is not valid ");
         }
         String encodedPassword = passwordEncoder.encode(userAccountDto.getPassword());
-        UserAccount userAccount = new UserAccount(userAccountDto.getEmail(), encodedPassword);
+        UserAccount userAccount = new UserAccount(userAccountDto.getEmail(), userAccountDto.getName(), userAccountDto.getSurname(), encodedPassword);
         return userAccountRepository.save(userAccount);
     }
 
@@ -45,9 +52,15 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(userAccount == null){
             throw new UserDoesNotExistException("User with this email address does not exist");
         }
-        if(passwordEncoder.matches(userAccountDto.getPassword(), userAccount.getEncodedPassword())){
-            throw new InvalidPasswordException("Password is incorrect");
+        if(!passwordEncoder.matches(userAccountDto.getPassword(), userAccount.getEncodedPassword())){
+            throw new InvalidPasswordException("Password is incorrect"+ userAccount.getEncodedPassword());
         }
+        return userAccount;
+    }
+
+    public UserAccount createAlbum(UserAccount userAccount, String albumName) {
+        userAccount.createAlbum(albumName);
+        userAccountRepository.save(userAccount);
         return userAccount;
     }
 }

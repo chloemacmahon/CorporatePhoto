@@ -23,6 +23,10 @@ public class UserAccount {
     @Column(unique = true)
     private String email;
 
+    private String name;
+
+    private String surname;
+
     private String encodedPassword;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
@@ -41,6 +45,16 @@ public class UserAccount {
         this.email = email;
         this.encodedPassword = encodedPassword;
         this.albums  = new ArrayList<>();
+        this.ownedPhotosAlbum = new Album(getName()+" "+getSurname() + " Owned Album" );
+        this.sharedPhotosAlbum = new Album(getName()+" "+getSurname() + " Shared Album" );
+    }
+
+    public UserAccount(String email, String name, String surname, String encodedPassword) {
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+        this.encodedPassword = encodedPassword;
+        this.albums  = new ArrayList<>();
         this.ownedPhotosAlbum = new Album();
         this.sharedPhotosAlbum = new Album();
     }
@@ -51,6 +65,10 @@ public class UserAccount {
         this.albums = albums;
         this.ownedPhotosAlbum = ownedPhotosAlbum;
         this.sharedPhotosAlbum = sharedPhotosAlbum;
+    }
+
+    public void createAlbum(String albumName) {
+        this.albums.add(new Album(albumName));
     }
 
     public void addPhotoToAlbum(String albumName, Photo photo){
