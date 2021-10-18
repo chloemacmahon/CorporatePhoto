@@ -12,7 +12,7 @@
 <div th:replace="fragments/banner.html :: formField(mainHeading='Welcome Admin!')"></div>
 <div class="navigation" th:replace="fragments/navigation :: navigation-bar"></div>
 
-<form th:object="${user}" th:action="@{/user/create-account}" method="post">
+<form th:object="${user}" th:action="@{/create-account}" method="post">
     <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
         <p th:text="#{user.hasErrors}">Error Message</p>
     </div>

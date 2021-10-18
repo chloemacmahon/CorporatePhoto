@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<form th:object="${user}" th:action="@{/admin/log-in}" method="post">
+<form th:object="${user}" th:action="@{/log-in}" method="post">
     <div th:replace="fragments/banner.html :: formField(mainHeading='Welcome Admin!')"></div>
     <div class="navigation" th:replace="fragments/navigation :: navigation-bar"></div>
     <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">

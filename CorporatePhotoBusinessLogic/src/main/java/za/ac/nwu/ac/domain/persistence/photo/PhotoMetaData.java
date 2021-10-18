@@ -1,8 +1,8 @@
-package za.ac.nwu.ac.dto.image;
+package za.ac.nwu.ac.domain.persistence.photo;
 
-import za.ac.nwu.ac.dto.User;
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import za.ac.nwu.ac.domain.persistence.UserAccount;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,13 +18,13 @@ public class PhotoMetaData {
 
     private Date dateCaptured;
 
-    @ManyToOne
-    private User owner;
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private UserAccount owner;
 
     public PhotoMetaData() {
     }
 
-    public PhotoMetaData(Date dateCaptured, User owner) {
+    public PhotoMetaData(Date dateCaptured, UserAccount owner) {
         this.dateCaptured = dateCaptured;
         this.owner = owner;
     }
