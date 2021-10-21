@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/general_style.css}">
+    <script src="//code.jquery.com/jquery.min.js"></script>
+</head>
+
+<body>
+    <div th:replace="fragments/banner.html
+      :: formField(mainHeading='Corporate Photo')">
+    </div>
+    <div class="navigation" th:replace="fragments/navigation :: home-navigation-bar"></div>
+</body>
+</html>
