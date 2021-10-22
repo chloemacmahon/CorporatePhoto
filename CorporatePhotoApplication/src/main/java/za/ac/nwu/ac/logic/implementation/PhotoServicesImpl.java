@@ -1,51 +1,44 @@
 package za.ac.nwu.ac.logic.implementation;
 
 import com.azure.storage.blob.*;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import za.ac.nwu.ac.domain.dto.PhotoDto;
-import za.ac.nwu.ac.domain.persistence.photo.Photo;
+import za.ac.nwu.ac.logic.configuration.PhotoProperties;
 import za.ac.nwu.ac.logic.service.PhotoServices;
 import za.ac.nwu.ac.repository.PhotoRepository;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 @Service
-@Slf4j
 public class PhotoServicesImpl implements PhotoServices {
 
     private final PhotoRepository photoRepository;
+    @Autowired
     private PhotoProperties photoProperties;
 
     @Autowired
     public PhotoServicesImpl(PhotoRepository photoRepository){
         this.photoRepository = photoRepository;
-        this.photoProperties = photoProperties;
     }
 
 
     // --> Creating Clients for Azure Operations <--
     //Blob Service Client
     BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(photoProperties.getblobEndPoint())
+            .endpoint(photoProperties.getBlobEndPoint())
             .sasToken(photoProperties.getConnectionString())
             .buildClient();
 
     // Creating blob container client
     BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-            .endpoint(photoProperties.getblobEndPoint())
+            .endpoint(photoProperties.getBlobEndPoint())
             .sasToken(photoProperties.getConnectionString())
             .containerName(photoProperties.getContainerName())
             .buildClient();
 
 
     // Creating BlobClient
-    public BlobClient CreateBlobClient(String blobName)
+    public BlobClient createBlobClient(String blobName)
     {
         BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
         return blobClient;
@@ -59,7 +52,7 @@ public class PhotoServicesImpl implements PhotoServices {
 
     // Uploading a blob
 
-    public void UploadImage(String userID, String path)
+    public void uploadImage(String userID, String path)
     {
         //TODO: check file to to make sure it one of the image data types
         //TODO: check if file already exists...
@@ -71,11 +64,16 @@ public class PhotoServicesImpl implements PhotoServices {
     }
 
     //Downloading Blob
-    public void DownloadImage(Long blobName)
+    public void downloadImage(Long blobName)
     {
         //creates blob client so we can get the blob name and download it.
-        CreateBlobClient(blobName.toString())
+        createBlobClient(blobName.toString())
                 .downloadToFile(blobName.toString()); //TODO: set the dowload location
         //blobClient.downloadToFile("downloaded-file.jpg");
     }
+
+
+//    public String getPhotoLinkFromDb(){
+//        photoRepository.findById().get().getPhotoLink()
+//    }
 }

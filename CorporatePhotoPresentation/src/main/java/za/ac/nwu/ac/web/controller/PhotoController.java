@@ -2,12 +2,15 @@ package za.ac.nwu.ac.web.controller;
 
 import com.azure.core.annotation.Get;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import za.ac.nwu.ac.logic.service.PhotoServices;
 
-@Controller
+@RestController
+@Component
 public class PhotoController {
     private final PhotoServices photoServices;
 
@@ -15,7 +18,6 @@ public class PhotoController {
     public PhotoController(PhotoServices photoServices) {
         this.photoServices = photoServices;
     }
-
 
 
 }

@@ -6,6 +6,6 @@ import za.ac.nwu.ac.domain.persistence.photo.Photo;
 public interface PhotoServices {
     //PhotoServiceImple -> PhotoReporsitory
 
-    void UploadImage(String userID, String path);
-    void DownloadImage(Long blobName);
+    void uploadImage(String userID, String path);
+    void downloadImage(Long blobName);
 }

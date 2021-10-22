@@ -39,21 +39,15 @@ public class PhotoDto {
     }
 
     //Functions/Methods
-    public String FindPhotoLinkByPhotoId(Long photoId){
-
-        Photo photo = new Photo();
-        if(photo.getPhotoId().equals(photoId))
-            return photo.getPhotoLink();
-        else
-            return "Photo ont found";//TODO: do proper exception handinling here XD
-
-    }
-
-
-    public void UploadPhoto(String photoLink)
-    {
-
-    }
+//    public String FindPhotoLinkByPhotoId(Long photoId){
+//
+//        Photo photo = new Photo();
+//        if(photo.getPhotoId().equals(photoId))
+//            return photo.getPhotoLink();
+//        else
+//            return "Photo ont found";//TODO: do proper exception handinling here XD
+//
+//    }
 
     @Override
     public boolean equals(Object o) {
