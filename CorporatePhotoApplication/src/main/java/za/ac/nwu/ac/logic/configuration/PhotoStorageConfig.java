@@ -7,23 +7,40 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-@Data
-@Component
+
+//@PropertySource("classpath:application-blob.properties")
+@Configuration
 @PropertySource("classpath:application-blob.properties")
-public class PhotoProperties {
-    @Value("${azure.meblob.connectionString}")
+@ConfigurationProperties(prefix = "azure.meblob")
+public class PhotoStorageConfig {
+
     private String connectionString;
-    @Value("${azure.meblob.container}")
+
     private String containerName;
-    @Value("${azure.meblob.blobEndPoint}")
+
     private String blobEndPoint;
 
-    public PhotoProperties() {
+    public String getConnectionString() {
+        return connectionString;
     }
 
-    public PhotoProperties(String connectionString, String containerName, String blobEndPoint) {
+    public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
+    }
+
+    public String getContainerName() {
+        return containerName;
+    }
+
+    public void setContainerName(String containerName) {
         this.containerName = containerName;
+    }
+
+    public String getBlobEndPoint() {
+        return blobEndPoint;
+    }
+
+    public void setBlobEndPoint(String blobEndPoint) {
         this.blobEndPoint = blobEndPoint;
     }
 }
