@@ -25,6 +25,9 @@
     <input type="email" id="email" th:field="*{email}"><br><br>
     <label for="password">Password: </label>
     <input type="password" id="password" th:field="*{password}"><br><br>
+    <div th:if="${passwordError != null}" class="alert alert-danger">
+        <p th:text="#{password.hasErrors}">Error Message</p>
+    </div>
     <button type="submit" class="button">Create Account</button>
 </form>
 </body>

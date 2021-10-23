@@ -1,6 +1,5 @@
 package za.ac.nwu.ac.web.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
+import za.ac.nwu.ac.domain.exception.InvalidPasswordException;
 import za.ac.nwu.ac.logic.service.UserAccountService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 
@@ -18,10 +19,12 @@ import javax.validation.Valid;
 public class UserAccountController {
 
     private UserAccountService userAccountService;
+    private HttpSession session;
 
     @Autowired
-    public UserAccountController(UserAccountService userAccountService) {
+    public UserAccountController(UserAccountService userAccountService, HttpSession session) {
         this.userAccountService = userAccountService;
+        this.session = session;
     }
 
     @GetMapping(value = "log-in")
@@ -39,9 +42,11 @@ public class UserAccountController {
         try {
             model.addAttribute("user", userAccountService.logInUser(userAccountDto));
             LoggingController.logInfo(userAccountService.logInUser(userAccountDto).getEmail());
+            session.setAttribute("user",  userAccountService.logInUser(userAccountDto));
             return "view-albums";
         } catch (RuntimeException e){
             LoggingController.logError(e.getMessage());
+            model.addAttribute("logInError", true);
             model.addAttribute("user", new UserAccountDto());
             return "log-in";
         }
@@ -55,13 +60,31 @@ public class UserAccountController {
 
     @RequestMapping(value = "create-account", method = RequestMethod.POST)
     public String createUserAccount(@Valid UserAccountDto userAccountDto, BindingResult bindingResult, Model model){
-        if(bindingResult.hasErrors())
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("user", userAccountDto);
             return "log-in";
+        }
         try {
-            userAccountService.createUserAccount(userAccountDto);
-            model.addAttribute("user",new UserAccountDto());
-            return "log-in";
+            model.addAttribute("user", userAccountService.createUserAccount(userAccountDto));
+            session.setAttribute("user",  userAccountService.logInUser(userAccountDto));
+            return "view-albums";
         } catch (RuntimeException e){
+            if(e instanceof InvalidPasswordException) {
+                model.addAttribute("passwordError", true);
+            }
+            model.addAttribute("user", userAccountDto);
+            return "create-account";
+        }
+    }
+
+    @GetMapping(value = "view-albums")
+    public String viewAlbums(Model model){
+        if (session.getAttribute("user")!= null){
+            model.addAttribute("user", session.getAttribute("user"));
+            LoggingController.logInfo("used session");
+            return "view-albums";
+        } else {
+            model.addAttribute("user", new UserAccountDto());
             return "log-in";
         }
     }
