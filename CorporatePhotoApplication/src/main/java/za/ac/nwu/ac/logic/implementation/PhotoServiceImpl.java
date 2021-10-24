@@ -59,19 +59,6 @@ public class PhotoServiceImpl implements PhotoService {
 
     }
 
-    /*BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint("https://corporatephoto.blob.core.windows.net/testcontainer")
-            .sasToken("https://corporatephoto.blob.core.windows.net/;SharedAccessSignature=sv=2020-08-04&ss=b&srt=sco&sp=rwdlacx&se=2021-12-23T16:37:57Z&st=2021-10-22T08:37:57Z&spr=https&sig=%2FnLtr4RPmp8fQS1qVwALNxeN0K92ykn%2FQhH%2Fzna7o8k%3D")//photoProperties.getConnectionString())
-            .buildClient();*/
-
-    // Creating blob container client
-    /*BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-            .endpoint("https://corporatephoto.blob.core.windows.net/testcontainer")//photoProperties.getBlobEndPoint())
-            .sasToken("https://corporatephoto.blob.core.windows.net/;SharedAccessSignature=sv=2020-08-04&ss=b&srt=sco&sp=rwdlacx&se=2021-12-23T16:37:57Z&st=2021-10-22T08:37:57Z&spr=https&sig=%2FnLtr4RPmp8fQS1qVwALNxeN0K92ykn%2FQhH%2Fzna7o8k%3D")//photoProperties.getConnectionString())
-            .containerName("corporatephoto")//photoProperties.getContainerName())
-            .buildClient();
-
-*/
     // Creating BlobClient
     public BlobClient createBlobClient(String blobName)
     {
