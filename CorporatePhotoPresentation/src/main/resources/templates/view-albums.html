@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Vitality activities</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/general_style.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+<table>
+    <tr>
+        <h3>Your owned photos</h3>
+    </tr>
+    <tr th:each="photo : ${user.ownedPhotosAlbum.photos}">
+        <td>
+            <img th:src="${photo.photoLink}}">
+            <label></label>
+        </td>
+    </tr>
+</table>
+<table>
+    <tr>
+        <h3>Photos shared with you</h3>
+    </tr>
+    <tr th:each="photo : ${user.sharedPhotosAlbum.photos}">
+        <td>
+            <img th:src="${photo.photoLink}}">
+            <label th:text="${'Shared by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
+        </td>
+    </tr>
+</table>
+<table th:each="album : ${user.albums}">
+    <tr>
+        <h3 th:text="${album.albumName}"></h3>
+    </tr>
+    <tr th:each="photo : ${album.photos}">
+        <td>
+            <img th:src="${photo.photoLink}}">
+            <label th:text="${'Owned by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
+        </td>
+    </tr>
+</table>
+<a class="button" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
+</body>
+</html>
