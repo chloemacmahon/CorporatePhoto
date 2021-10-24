@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
+import za.ac.nwu.ac.domain.exception.InvalidEmailException;
+import za.ac.nwu.ac.domain.exception.InvalidNameException;
 import za.ac.nwu.ac.domain.exception.InvalidPasswordException;
+import za.ac.nwu.ac.domain.exception.InvalidSurnameException;
+import za.ac.nwu.ac.logic.implementation.ValidationServiceImpl;
 import za.ac.nwu.ac.logic.service.UserAccountService;
 
 import javax.servlet.http.HttpSession;
@@ -61,8 +65,9 @@ public class UserAccountController {
     @RequestMapping(value = "create-account", method = RequestMethod.POST)
     public String createUserAccount(@Valid UserAccountDto userAccountDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()) {
+            model.addAttribute("emptyFieldError", true);
             model.addAttribute("user", userAccountDto);
-            return "log-in";
+            return "create-account";
         }
         try {
             model.addAttribute("user", userAccountService.createUserAccount(userAccountDto));
@@ -71,6 +76,15 @@ public class UserAccountController {
         } catch (RuntimeException e){
             if(e instanceof InvalidPasswordException) {
                 model.addAttribute("passwordError", true);
+            }
+            if(e instanceof InvalidEmailException) {
+                model.addAttribute("emailError", true);
+            }
+            if(e instanceof InvalidNameException) {
+                model.addAttribute("nameError", true);
+            }
+            if(e instanceof InvalidSurnameException) {
+                model.addAttribute("surnameError", true);
             }
             model.addAttribute("user", userAccountDto);
             return "create-account";
