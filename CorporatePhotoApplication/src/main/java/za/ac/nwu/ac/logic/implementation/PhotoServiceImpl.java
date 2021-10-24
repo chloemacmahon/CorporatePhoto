@@ -2,8 +2,10 @@ package za.ac.nwu.ac.logic.implementation;
 
 import com.azure.storage.blob.*;
 import lombok.Data;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.exception.PhotoDoesNotExistException;
 import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
@@ -11,6 +13,8 @@ import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.logic.configuration.PhotoStorageConfig;
 import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.repository.PhotoRepository;
+
+import java.io.IOException;
 
 @Data
 @Service
@@ -74,14 +78,14 @@ public class PhotoServiceImpl implements PhotoService {
 
     // Uploading a blob
 
-    public void uploadBlob(String blobPath)
-    {
+    public String uploadBlob(MultipartFile multiPartFile) throws IOException{
         //TODO: check file to to make sure it one of the image data types
         //TODO: check if file already exists...
         BlobClient blobClient = blobContainerClient.getBlobClient(containerName);
         //specify the file that needs to be uploaded i.e. the path of the file.
-        blobClient.uploadFromFile(blobPath.toString());
+        blobClient.upload(multiPartFile.getInputStream(), multiPartFile.getSize(), true);
         //blobClient.getBlobName();
+        return blobClient.getBlobUrl();
     }
 
     /**
@@ -105,6 +109,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     // This method retrieves the blob name, by using the link stored in the database.
     // This needs to be done as the image/file/blob name is not stored in the database.
+    //TODO: change this to take the photo link and check for photo name in Table, photoName attribute still needs to be added
     public String findBlobNameByPhotoLink(String photoLink){
         if(photoLink == null){
             throw new PhotoLinkNotFoundException("The photo link could not be found");
@@ -115,8 +120,11 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     //Create, adding image to database
-    public Photo createPhoto(PhotoDto photoDto){
-        Photo photo = new Photo(photoDto.getPhotoLink(), photoDto.getPhotoMetaData());
+    public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile) throws IOException {
+
+        String photoLink = uploadBlob(multiPartFile);
+
+        Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
         return photoRepository.save(photo);
     }
 
