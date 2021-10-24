@@ -29,5 +29,6 @@
             <artifactId>CorporatePhotoDataAccess</artifactId>
             <version>${project.version}</version>
         </dependency>
+
     </dependencies>
 </project>

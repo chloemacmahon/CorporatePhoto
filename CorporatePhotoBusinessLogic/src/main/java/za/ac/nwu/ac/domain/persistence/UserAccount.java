@@ -1,9 +1,10 @@
 package za.ac.nwu.ac.domain.persistence;
 
+import lombok.Data;
 import za.ac.nwu.ac.domain.exception.AlbumNotFoundException;
 import za.ac.nwu.ac.domain.persistence.album.Album;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
-import lombok.Data;
+//import lombok;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
