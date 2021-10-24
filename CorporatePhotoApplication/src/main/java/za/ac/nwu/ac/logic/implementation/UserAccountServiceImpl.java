@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
-import za.ac.nwu.ac.domain.exception.InvalidEmailException;
-import za.ac.nwu.ac.domain.exception.InvalidPasswordException;
-import za.ac.nwu.ac.domain.exception.UserDoesNotExistException;
+import za.ac.nwu.ac.domain.exception.*;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.logic.service.UserAccountService;
 import za.ac.nwu.ac.logic.service.ValidationService;
@@ -35,6 +33,12 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccount createUserAccount(UserAccountDto userAccountDto){
         if(userAccountRepository.findByEmail(userAccountDto.getEmail()) != null){
             throw new InvalidEmailException("Email is already in the system");
+        }
+        if(!ValidationServiceImpl.isValidName(userAccountDto.getName())){
+            throw new InvalidNameException("Name does not start with a capital or does not just contain letters");
+        }
+        if(!ValidationServiceImpl.isValidName(userAccountDto.getSurname())){
+            throw new InvalidSurnameException("Surname does not start with a capital or does not just contain letters");
         }
         if(!ValidationServiceImpl.isValidPassword(userAccountDto.getPassword())){
             throw new InvalidPasswordException("Password is not valid according to password standards");

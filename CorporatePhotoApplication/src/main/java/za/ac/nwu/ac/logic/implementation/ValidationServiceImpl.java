@@ -6,6 +6,23 @@ import org.springframework.stereotype.Service;
 @Component
 public class ValidationServiceImpl {
 
+    /**
+     * Validates that a name / surname only contains letters
+     * @param name The name that needs to be verified
+     * @return True if the name only contains letters and starts with a capital letter
+     */
+
+    public static boolean isValidName(String name){
+        if (!name.substring(0,1).toUpperCase().equals(name.substring(0,1)))
+            return false;
+        for (Character letter: name.toCharArray()) {
+            if (!Character.isLetter(letter))
+                return false;
+        }
+        return true;
+    }
+
+
     public static boolean isValidPassword(String password) {
         if (password.length() < 8)
             return false;

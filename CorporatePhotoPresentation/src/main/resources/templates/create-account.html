@@ -16,15 +16,30 @@
     <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
         <p th:text="#{user.hasErrors}">Error Message</p>
     </div>
+    <div th:if="${emptyFieldError != null}" class="alert alert-danger">
+        <p th:text="#{emptyField.hasErrors}">Error Message</p>
+    </div>
     <br>
     <label for="name">Name: </label>
     <input type="text" id="name" th:field="*{name}"><br><br>
+    <div th:if="${nameError != null}" class="alert alert-danger">
+        <p th:text="#{name.hasErrors}">Error Message</p>
+    </div>
     <label for="surname">Surname: </label>
     <input type="text" id="surname" th:field="*{surname}"><br><br>
+    <div th:if="${surnameError != null}" class="alert alert-danger">
+        <p th:text="#{surname.hasErrors}">Error Message</p>
+    </div>
     <label for="email">Email: </label>
     <input type="email" id="email" th:field="*{email}"><br><br>
+    <div th:if="${emailError != null}" class="alert alert-danger">
+        <p th:text="#{email.hasErrors}">Error Message</p>
+    </div>
     <label for="password">Password: </label>
     <input type="password" id="password" th:field="*{password}"><br><br>
+    <div th:if="${passwordError != null}" class="alert alert-danger">
+        <p th:text="#{password.hasErrors}">Error Message</p>
+    </div>
     <button type="submit" class="button">Create Account</button>
 </form>
 </body>

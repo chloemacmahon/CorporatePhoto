@@ -37,7 +37,7 @@
     <tr>
         <h3 th:text="${album.albumName}"></h3>
     </tr>
-    <tr th:each="photo : ${album.photos}">
+    <tr th:each="photo, it : ${album.photos}"> <!--iterate so that 3 images are next to each other, video 42-->
         <td>
             <img th:src="${photo.photoLink}}">
             <label th:text="${'Owned by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
