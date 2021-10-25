@@ -3,24 +3,32 @@ package za.ac.nwu.ac.logic.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
 import za.ac.nwu.ac.domain.exception.*;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
+import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
+import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.logic.service.UserAccountService;
-import za.ac.nwu.ac.logic.service.ValidationService;
 import za.ac.nwu.ac.repository.UserAccountRepository;
+
+import java.time.LocalDate;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 
     private UserAccountRepository userAccountRepository;
 
+    private PhotoService photoService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository) {
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoService photoService) {
         this.userAccountRepository = userAccountRepository;
+        this.photoService = photoService;
     }
 
     public UserAccount findUserById(Long id){
@@ -66,5 +74,15 @@ public class UserAccountServiceImpl implements UserAccountService {
         userAccount.createAlbum(albumName);
         userAccountRepository.save(userAccount);
         return userAccount;
+    }
+
+    public void addPhotoToOwnedAlbum(UserAccount userAccount, MultipartFile photo){
+        PhotoMetaData photoMetaData = new PhotoMetaData(LocalDate.now(), userAccount);
+        PhotoDto photoDto = new PhotoDto(photoMetaData);
+        try {
+            userAccount.addOwnedImage(photoService.createPhoto(photoDto, photo));
+        } catch (Exception e){
+            throw new FailedToCreatePhoto();
+        }
     }
 }

@@ -17,6 +17,10 @@ public class PhotoDto {
     public PhotoDto() {
     }
 
+    public PhotoDto(PhotoMetaData photoMetaData) {
+        this.photoMetaData = photoMetaData;
+    }
+
     public PhotoDto(String photoLink, PhotoMetaData photoMetaData) {
         this.photoLink = photoLink;
         this.photoMetaData = photoMetaData;

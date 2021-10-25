@@ -84,11 +84,11 @@ public class UserAccount {
         throw new AlbumNotFoundException();
     }
 
-    public void AddSharedImage(Photo photo) {
+    public void addSharedImage(Photo photo) {
         this.sharedPhotosAlbum.addPhotoToAlbum(photo);
     }
 
-    public void AddOwnedImage(Photo photo) {
+    public void addOwnedImage(Photo photo) {
         this.ownedPhotosAlbum.addPhotoToAlbum(photo);
     }
 }
