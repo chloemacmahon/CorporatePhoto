@@ -2,11 +2,11 @@ package za.ac.nwu.ac.logic.implementation;
 
 import com.azure.storage.blob.*;
 import lombok.Data;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.PhotoDto;
+import za.ac.nwu.ac.domain.exception.FailedToCreatePhoto;
 import za.ac.nwu.ac.domain.exception.PhotoDoesNotExistException;
 import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
@@ -33,7 +33,7 @@ public class PhotoServiceImpl implements PhotoService {
     private BlobContainerClient blobContainerClient;
 
     @Autowired
-    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoStorageConfig photoStorageConfig){
+    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoStorageConfig photoStorageConfig) {
         this.photoRepository = photoRepository;
         connectionString = photoStorageConfig.getConnectionString();
         blobEndPoint = photoStorageConfig.getBlobEndPoint();
@@ -64,37 +64,34 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     // Creating BlobClient
-    public BlobClient createBlobClient(String blobName)
-    {
-        BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
-        return blobClient;
+    public BlobClient createBlobClient(String blobName) {
+        return blobContainerClient.getBlobClient(blobName);
     }
 
     // Creating Container
-    public void CreateNewContainer(String containerName)
-    {
+    public void CreateNewContainer(String containerName) {
         blobServiceClient.createBlobContainer(containerName);
     }
 
     // Uploading a blob
 
-    public String uploadBlob(MultipartFile multiPartFile) throws IOException{
+    public String uploadBlob(MultipartFile multiPartFile) throws IOException {
         //TODO: check file to to make sure it one of the image data types
         //TODO: check if file already exists...
-        BlobClient blobClient = blobContainerClient.getBlobClient(containerName);
-        //specify the file that needs to be uploaded i.e. the path of the file.
-        blobClient.upload(multiPartFile.getInputStream(), multiPartFile.getSize(), true);
-        //blobClient.getBlobName();
-        return blobClient.getBlobUrl();
+            BlobClient blobClient = blobContainerClient.getBlobClient(containerName);
+            //specify the file that needs to be uploaded i.e. the path of the file.
+            blobClient.upload(multiPartFile.getInputStream(), multiPartFile.getSize(), true);
+            //blobClient.getBlobName();
+            return blobClient.getBlobUrl();
     }
 
     /**
      * Downloads image
+     *
      * @param blobName - blob name
      */
 
-    public void downloadBlob(String blobName, String downloadLocation)
-    {
+    public void downloadBlob(String blobName, String downloadLocation) {
         //creates blob client so we can get the blob name and download it.
         createBlobClient(blobName)
                 .downloadToFile(downloadLocation); //TODO: set the download location
@@ -103,29 +100,27 @@ public class PhotoServiceImpl implements PhotoService {
 
     // This method retrieves the blob Link from Storage Container (cloud Storage) via the name of the blob
     // as it is stored in the Storage Container
-    public String findBlobLinkByBlobName(String blobName){
+    public String findBlobLinkByBlobName(String blobName) {
         return createBlobClient(blobName).getBlobUrl();
     }
 
     // This method retrieves the blob name, by using the link stored in the database.
     // This needs to be done as the image/file/blob name is not stored in the database.
     //TODO: change this to take the photo link and check for photo name in Table, photoName attribute still needs to be added
-    public String findBlobNameByPhotoLink(String photoLink){
-        if(photoLink == null){
+    public String findBlobNameByPhotoLink(String photoLink) {
+        if (photoLink == null) {
             throw new PhotoLinkNotFoundException("The photo link could not be found");
         }
-        String blobName = photoLink.substring(photoLink.lastIndexOf('/')+1);
+        String blobName = photoLink.substring(photoLink.lastIndexOf('/') + 1);
 
         return blobName;
     }
 
     //Create, adding image to database
     public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile) throws IOException {
-
-        String photoLink = uploadBlob(multiPartFile);
-
-        Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
-        return photoRepository.save(photo);
+            String photoLink = uploadBlob(multiPartFile);
+            Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
+            return photoRepository.save(photo);
     }
 
     //TODO: The update still needs work, the approach forces you to copy the photo/file and could take long.
@@ -140,14 +135,15 @@ public class PhotoServiceImpl implements PhotoService {
 //        createBlobClient(getBlobNameByPhotoLink(photoLink)).delete();
 //    }
     //Read, getting the photo link
-    public String findPhotoLinkByPhotoId(Long photoId){
-        if(photoRepository.findById(photoId).isPresent())
+    public String findPhotoLinkByPhotoId(Long photoId) {
+        if (photoRepository.findById(photoId).isPresent())
             return photoRepository.findById(photoId).get().toString();
         else
             throw new PhotoDoesNotExistException();
     }
+
     //Delete, deleting a photo from db and blob from Storage
-    public void deletePhotoFromDatabase(Long photoId, String photoLink){
+    public void deletePhotoFromDatabase(Long photoId, String photoLink) {
         photoRepository.deleteById(photoId);
         createBlobClient(findBlobNameByPhotoLink(photoLink)).delete();
     }

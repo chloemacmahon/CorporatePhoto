@@ -11,7 +11,7 @@
 <body>
 <div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
 <div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
-<form enctype="multipart/form-data" th:action="@{/upload-photo/{id}(id=${user.userAccountId})}" method="post">
+<form enctype="multipart/form-data" th:action="@{/photo-upload/{id}(id=${user.userAccountId})}" method="post">
     <!--<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
         <p th:text="#{photo.hasErrors}">Error Message</p>
     </div>-->
