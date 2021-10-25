@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -16,7 +17,7 @@ public class PhotoMetaData {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long metaDataId;
 
-    private Date dateCaptured;
+    private LocalDate dateCaptured;
 
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private UserAccount owner;
@@ -24,7 +25,7 @@ public class PhotoMetaData {
     public PhotoMetaData() {
     }
 
-    public PhotoMetaData(Date dateCaptured, UserAccount owner) {
+    public PhotoMetaData(LocalDate dateCaptured, UserAccount owner) {
         this.dateCaptured = dateCaptured;
         this.owner = owner;
     }
