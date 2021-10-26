@@ -56,6 +56,12 @@ table {
     margin-left: auto;
     margin-right: auto;
 }
+img {
+    text-align: left;
+    width:  250px;
+    height: auto;
+    object-fit: cover;
+}
 .error {
      height: 200px;
      background: Red;
@@ -126,6 +132,10 @@ table {
 
 .center {
     text-align:center;
+}
+
+.left {
+    float: left;
 }
 
 /*.top-navigation a.active {

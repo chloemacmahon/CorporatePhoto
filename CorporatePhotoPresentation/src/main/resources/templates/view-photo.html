@@ -15,9 +15,27 @@
     <img th:src="${photo.photoLink}">
 </div>
 <div th:if="${ownedPhoto != null}">
-    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>
+    <h3>Please enter the email address of the person that you want to share this file to</h3>
+    <form th:action="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email"><br><br>
+        <button type="submit" class="button">Share Image</button>
+<!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
+    </form>
 </div>
-<a class="button" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
-<a class="button" type="button" th:href="@{/photo-upload/{id}(id=${user.userAccountId})}">Create Photo</a>
+<div th:if="${user.albums.size() >= 0}">
+    <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+        <h3>Choose album that you want to move the image to</h3>
+        <select id="albumName" name="albumName">
+            <option th:each="album : ${user.albums}"
+                    th:text="${album.albumName}"
+                    th:value="${album.albumName}"
+                    th:selected="${albumName == album.albumName}">
+            </option>
+        </select>
+        <button type="submit" class="button">Add image</button>
+        <!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
+    </form>
+</div>
 </body>
 </html>

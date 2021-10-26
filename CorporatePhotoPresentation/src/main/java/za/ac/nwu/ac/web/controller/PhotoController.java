@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,6 +70,22 @@ public class PhotoController {
             model.addAttribute("couldNotLoad", true);
             return "view-photo";
         }
+    }
+
+    @RequestMapping(value = "/share-photo/{id}/{photoId}", method = RequestMethod.POST)
+    public String sharePhoto(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("email") String email, Model model){
+        userAccountService.sharePhotoToUser(userAccountService.findUserById(id),photoId, userAccountService.findUserByEmail(email));
+        model.addAttribute("user",userAccountService.findUserById(id));
+        model.addAttribute("photo",photoService.findPhotoById(photoId));
+        return "view-photo";
+    }
+
+    @RequestMapping(value = "/move-to-album/{id}/{photoId}", method = RequestMethod.POST)
+    public String movePhotoToAlbum(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("albumName") String albumName, Model model){
+        userAccountService.addPhotoToAlbum(userAccountService.findUserById(id), photoService.findPhotoById(photoId), albumName);
+        model.addAttribute("user",userAccountService.findUserById(id));
+        model.addAttribute("photo",photoService.findPhotoById(photoId));
+        return "view-photo";
     }
 
 

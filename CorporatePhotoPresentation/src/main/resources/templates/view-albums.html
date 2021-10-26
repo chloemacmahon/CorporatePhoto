@@ -15,10 +15,13 @@
     <tr>
         <h3>Your owned photos</h3>
     </tr>
+    <tr><br></tr>
     <tr th:each="photo : ${user.ownedPhotosAlbum.photos}">
         <td>
-            <a type="button" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-            <img th:src="${photo.photoLink}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            <a type="button"
+               th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                <img th:src="${photo.photoLink}"
+                     th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
             </a>
             <label></label>
         </td>
@@ -28,25 +31,45 @@
     <tr>
         <h3>Photos shared with you</h3>
     </tr>
+    <tr><br></tr>
     <tr th:each="photo : ${user.sharedPhotosAlbum.photos}">
+        <td class="left">
+            <a type="button"
+               th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                <img th:src="${photo.photoLink}"
+                     th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+
+            </a>
+        </td>
         <td>
-            <img th:src="${photo.photoLink}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-            <label th:text="${'Shared by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
+            <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label>
         </td>
     </tr>
 </table>
 <table th:each="album : ${user.albums}">
+    <tr><br></tr>
     <tr>
         <h3 th:text="${album.albumName}"></h3>
     </tr>
     <tr th:each="photo, it : ${album.photos}"> <!--iterate so that 3 images are next to each other, video 42-->
         <td>
-            <img th:src="${photo.photoLink}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-            <label th:text="${'Owned by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
+            <a type="button"
+               th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                <img th:src="${photo.photoLink}"
+                     th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            </a>
         </td>
+
+        <td th:if="${user.userAccountId != photo.photoMetaData.owner.userAccountId}">
+            <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label>
+        </td>
+
     </tr>
 </table>
-<a class="button" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
-<a class="button" type="button" th:href="@{/photo-upload/{id}(id=${user.userAccountId})}">Create Photo</a>
+<br>
+<div class="center">
+    <a class="button" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
+    <a class="button" type="button" th:href="@{/photo-upload/{id}(id=${user.userAccountId})}">Upload Photo</a>
+</div>
 </body>
 </html>
