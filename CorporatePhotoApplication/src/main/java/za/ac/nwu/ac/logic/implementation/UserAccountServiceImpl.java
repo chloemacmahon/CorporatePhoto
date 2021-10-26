@@ -44,6 +44,13 @@ public class UserAccountServiceImpl implements UserAccountService {
             throw new UserDoesNotExistException();
     }
 
+    public UserAccount findUserByEmail(String email){
+        if (userAccountRepository.findByEmail(email) != null)
+            return userAccountRepository.findByEmail(email);
+        else
+            throw new UserDoesNotExistException();
+    }
+
     public UserAccount createUserAccount(UserAccountDto userAccountDto){
         if(userAccountRepository.findByEmail(userAccountDto.getEmail()) != null){
             throw new InvalidEmailException("Email is already in the system");
@@ -86,7 +93,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         PhotoMetaData photoMetaData = new PhotoMetaData(LocalDate.now(), userAccount);
         PhotoDto photoDto = new PhotoDto(photoMetaData);
         try {
-            userAccount.addOwnedPhoto(photoService.createPhoto(photoDto, photo));
+            userAccount.addOwnedPhoto(photoService.createPhoto(photoDto, photo, userAccount.generatePhotoName()));
             userAccountRepository.save(userAccount);
         } catch (Exception e){
             throw new FailedToCreatePhotoException(e.getMessage());
@@ -113,11 +120,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     public void addPhotoToAlbum(UserAccount owner, Photo photo, String albumName){
         try{
-            if(photo.getPhotoMetaData().getOwner().getUserAccountId().equals(owner.getUserAccountId())){
                 Album albumToAdd = owner.findAlbumByName(albumName);
                 albumToAdd.addPhotoToAlbum(photo);
                 userAccountRepository.save(owner);
-            }
+
         } catch (Exception e){
             throw new FailedToCreatePhotoException();
         }

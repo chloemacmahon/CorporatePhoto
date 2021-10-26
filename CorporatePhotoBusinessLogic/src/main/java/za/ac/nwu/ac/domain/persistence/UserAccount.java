@@ -93,6 +93,18 @@ public class UserAccount {
     }
 
     public Photo findMostRecentlyAddedOwnedPhoto(){
-        return this.ownedPhotosAlbum.getPhotos().get(-1);
+        try {
+            return this.ownedPhotosAlbum.getPhotos().get(ownedPhotosAlbum.getPhotos().size()-1);
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    public String generatePhotoName(){
+        try {
+            return getUserAccountId() + getSurname() + getName() + findMostRecentlyAddedOwnedPhoto().getPhotoId();
+        } catch (Exception e){
+            return getUserAccountId() + getSurname() + getName() + 0;
+        }
     }
 }
