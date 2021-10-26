@@ -17,7 +17,9 @@
     </tr>
     <tr th:each="photo : ${user.ownedPhotosAlbum.photos}">
         <td>
-            <img th:src="${photo.photoLink}}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            <a type="button" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            <img th:src="${photo.photoLink}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            </a>
             <label></label>
         </td>
     </tr>
@@ -28,7 +30,7 @@
     </tr>
     <tr th:each="photo : ${user.sharedPhotosAlbum.photos}">
         <td>
-            <img th:src="${photo.photoLink}}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            <img th:src="${photo.photoLink}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
             <label th:text="${'Shared by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
         </td>
     </tr>
@@ -39,7 +41,7 @@
     </tr>
     <tr th:each="photo, it : ${album.photos}"> <!--iterate so that 3 images are next to each other, video 42-->
         <td>
-            <img th:src="${photo.photoLink}}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+            <img th:src="${photo.photoLink}" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
             <label th:text="${'Owned by' + photo.photoMetaData.owner.name + ' ' + photo.photoMetaData.owner.surname}}"></label>
         </td>
     </tr>

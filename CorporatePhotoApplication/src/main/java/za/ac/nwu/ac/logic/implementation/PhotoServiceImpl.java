@@ -11,6 +11,7 @@ import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.logic.configuration.PhotoStorageConfig;
 import za.ac.nwu.ac.logic.service.PhotoService;
+import za.ac.nwu.ac.repository.PhotoMetaDataRepository;
 import za.ac.nwu.ac.repository.PhotoRepository;
 
 import java.io.IOException;
@@ -20,6 +21,8 @@ import java.io.IOException;
 public class PhotoServiceImpl implements PhotoService {
 
     private final PhotoRepository photoRepository;
+
+    private final PhotoMetaDataRepository photoMetaDataRepository;
 
     private String connectionString;
 
@@ -34,8 +37,9 @@ public class PhotoServiceImpl implements PhotoService {
     private BlobContainerClient blobContainerClient;
 
     @Autowired
-    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoStorageConfig photoStorageConfig) {
+    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMetaDataRepository photoMetaDataRepository, PhotoStorageConfig photoStorageConfig) {
         this.photoRepository = photoRepository;
+        this.photoMetaDataRepository = photoMetaDataRepository;
         connectionString = photoStorageConfig.getConnectionString();
         blobEndPoint = photoStorageConfig.getBlobEndPoint();
         containerName = photoStorageConfig.getContainerName();
@@ -171,7 +175,4 @@ public class PhotoServiceImpl implements PhotoService {
                 '}';
     }
 
-    //    public String getPhotoLinkFromDb(){
-//        photoRepository.findById().get().getPhotoLink()
-//    }
 }
