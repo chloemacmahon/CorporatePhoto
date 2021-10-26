@@ -11,6 +11,8 @@ public interface UserAccountService {
 
     UserAccount findUserById(Long id);
 
+    UserAccount findUserByEmail(String email);
+
     UserAccount createUserAccount(UserAccountDto userAccountDto);
 
     UserAccount logInUser(UserAccountDto userAccountDto);
