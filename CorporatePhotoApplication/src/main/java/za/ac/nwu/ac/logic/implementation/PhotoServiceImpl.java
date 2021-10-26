@@ -28,6 +28,8 @@ public class PhotoServiceImpl implements PhotoService {
 
     private String containerName;
 
+    private String blobSasToken;
+
     private BlobServiceClient blobServiceClient;
 
     private BlobContainerClient blobContainerClient;
@@ -38,6 +40,7 @@ public class PhotoServiceImpl implements PhotoService {
         connectionString = photoStorageConfig.getConnectionString();
         blobEndPoint = photoStorageConfig.getBlobEndPoint();
         containerName = photoStorageConfig.getContainerName();
+        blobSasToken = photoStorageConfig.getBlobSasToken();
         setBlobServiceClient();
         setBlobContainerClient();
     }
@@ -50,14 +53,14 @@ public class PhotoServiceImpl implements PhotoService {
     public void setBlobServiceClient() {
         this.blobServiceClient = new BlobServiceClientBuilder()
                 .endpoint(getBlobEndPoint())
-                .sasToken(getConnectionString())
+                .sasToken(getBlobSasToken())
                 .buildClient();
     }
 
     public void setBlobContainerClient() {
         this.blobContainerClient = new BlobContainerClientBuilder()
                 .endpoint(getBlobEndPoint())
-                .sasToken(getConnectionString())
+                .sasToken(getBlobSasToken())
                 .containerName(getContainerName())
                 .buildClient();
 
@@ -156,6 +159,7 @@ public class PhotoServiceImpl implements PhotoService {
                 "connectionString='" + connectionString + '\'' +
                 ", blobEndPoint='" + blobEndPoint + '\'' +
                 ", containerName='" + containerName + '\'' +
+                ", blobSasToken='" + blobSasToken + '\'' +
                 '}';
     }
 

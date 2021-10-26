@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 //@PropertySource("classpath:application-blob.properties")
 @Configuration
 @PropertySource("classpath:application-blob.properties")
-@ConfigurationProperties(prefix = "azure.meblob")
+@ConfigurationProperties(prefix = "azure.myblob")
 public class PhotoStorageConfig {
 
     private String connectionString;
@@ -19,6 +19,8 @@ public class PhotoStorageConfig {
     private String containerName;
 
     private String blobEndPoint;
+
+    private String blobSasToken;
 
     public String getConnectionString() {
         return connectionString;
@@ -42,5 +44,13 @@ public class PhotoStorageConfig {
 
     public void setBlobEndPoint(String blobEndPoint) {
         this.blobEndPoint = blobEndPoint;
+    }
+
+    public String getBlobSasToken(){
+        return blobSasToken;
+    }
+
+    public void setBlobSasToken(String sasToken) {
+        this.blobSasToken = sasToken;
     }
 }
