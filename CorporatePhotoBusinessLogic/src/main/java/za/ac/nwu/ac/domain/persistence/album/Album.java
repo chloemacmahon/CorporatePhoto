@@ -6,6 +6,7 @@ import org.hibernate.annotations.FetchMode;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import za.ac.nwu.ac.domain.persistence.photo.Tag;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,4 +44,6 @@ public class Album {
     public void addPhotoToAlbum(Photo photo){
         this.getPhotos().add(photo);
     }
+
+
 }
