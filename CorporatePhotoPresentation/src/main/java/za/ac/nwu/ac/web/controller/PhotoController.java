@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
+import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.logic.service.UserAccountService;
@@ -45,7 +46,30 @@ public class PhotoController {
             return "view-albums";
         } catch (Exception e){
             model.addAttribute("user",userAccountService.findUserById(id));
+            LoggingController.logError(e.getMessage());
             return "view-albums";
         }
     }
+
+    @RequestMapping(value = "/view-photo/{id}/{photoId}", method = RequestMethod.GET)
+    public String showViewPhoto(@PathVariable Long id, @PathVariable Long photoId, Model model){
+        try{
+            UserAccount user = userAccountService.findUserById(id);
+            model.addAttribute("user", user);
+            Photo photo = photoService.findPhotoById(photoId);
+            model.addAttribute("photo", photo);
+            if (photo.getPhotoMetaData().getOwner().getUserAccountId().equals(id)){
+                model.addAttribute("ownedPhoto", true);
+            }
+            else {
+                model.addAttribute("sharedPhoto", true);
+            }
+            return "view-photo";
+        } catch (Exception e){
+            model.addAttribute("couldNotLoad", true);
+            return "view-photo";
+        }
+    }
+
+
 }

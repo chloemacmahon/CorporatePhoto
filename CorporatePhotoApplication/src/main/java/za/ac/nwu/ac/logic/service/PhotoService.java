@@ -20,4 +20,6 @@ public interface PhotoService {
 
     void deletePhotoFromDatabase(Long photoId, String photoLink);
 
+    Photo findPhotoById(Long id);
+
 }

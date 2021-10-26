@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.PhotoDto;
-import za.ac.nwu.ac.domain.exception.FailedToCreatePhoto;
 import za.ac.nwu.ac.domain.exception.PhotoDoesNotExistException;
 import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
@@ -150,6 +149,15 @@ public class PhotoServiceImpl implements PhotoService {
         photoRepository.deleteById(photoId);
         createBlobClient(findBlobNameByPhotoLink(photoLink)).delete();
     }
+
+    public Photo findPhotoById(Long id) {
+        try {
+            return photoRepository.findById(id).get();
+        } catch (Exception e){
+            throw new PhotoDoesNotExistException();
+        }
+    }
+
 
     //Search Metadata
 
