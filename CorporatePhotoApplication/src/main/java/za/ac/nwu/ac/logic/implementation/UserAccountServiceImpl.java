@@ -8,9 +8,12 @@ import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
 import za.ac.nwu.ac.domain.exception.*;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
+import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.logic.service.UserAccountService;
+import za.ac.nwu.ac.repository.PhotoRepository;
 import za.ac.nwu.ac.repository.UserAccountRepository;
 
 import java.time.LocalDate;
@@ -20,14 +23,17 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     private UserAccountRepository userAccountRepository;
 
+    private PhotoRepository photoRepository;
+
     private PhotoService photoService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoService photoService) {
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoRepository photoRepository, PhotoService photoService) {
         this.userAccountRepository = userAccountRepository;
+        this.photoRepository = photoRepository;
         this.photoService = photoService;
     }
 
@@ -80,9 +86,49 @@ public class UserAccountServiceImpl implements UserAccountService {
         PhotoMetaData photoMetaData = new PhotoMetaData(LocalDate.now(), userAccount);
         PhotoDto photoDto = new PhotoDto(photoMetaData);
         try {
-            userAccount.addOwnedImage(photoService.createPhoto(photoDto, photo));
+            userAccount.addOwnedPhoto(photoService.createPhoto(photoDto, photo));
+            userAccountRepository.save(userAccount);
         } catch (Exception e){
-            throw new FailedToCreatePhoto();
+            throw new FailedToCreatePhotoException(e.getMessage());
+        }
+    }
+
+    public void sharePhotoToUser(UserAccount ownerAccount, Long photoId, UserAccount sharedAccount){
+        try {
+            if(photoRepository.findById(photoId).isPresent()){
+                Photo photoToShare = photoRepository.findById(photoId).get();
+                if(photoToShare.getPhotoMetaData().getOwner().getUserAccountId().equals(ownerAccount.getUserAccountId())){
+                    sharedAccount.addSharedPhoto(photoToShare);
+                    userAccountRepository.save(sharedAccount);
+                } else{
+                    throw new AccessNotSufficientException("Only the owner can share a photo");
+                }
+            } else{
+                throw new FailedToSharePhotoException("Photo could not be found");
+            }
+        } catch(Exception e){
+            throw new FailedToSharePhotoException();
+        }
+    }
+
+    public void addPhotoToAlbum(UserAccount owner, Photo photo, String albumName){
+        try{
+            if(photo.getPhotoMetaData().getOwner().getUserAccountId().equals(owner.getUserAccountId())){
+                Album albumToAdd = owner.findAlbumByName(albumName);
+                albumToAdd.addPhotoToAlbum(photo);
+                userAccountRepository.save(owner);
+            }
+        } catch (Exception e){
+            throw new FailedToCreatePhotoException();
+        }
+    }
+
+    public void addPhotoToAlbum(UserAccount owner, MultipartFile photo, String albumName){
+        try{
+            addPhotoToOwnedAlbum(owner,photo);
+            addPhotoToAlbum(owner, owner.findMostRecentlyAddedOwnedPhoto(), albumName);
+        } catch (Exception e){
+            throw new FailedToCreatePhotoException();
         }
     }
 }
