@@ -29,8 +29,9 @@ public class Photo {
     }
 
     public Photo(String photoLink, PhotoMetaData photoMetaData) {
+        this.photoLink = photoLink;
+        this.photoMetaData = photoMetaData;
     }
-
 
     public Long getPhotoId() {
         return photoId;
