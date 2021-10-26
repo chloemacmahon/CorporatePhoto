@@ -81,10 +81,10 @@ public class PhotoServiceImpl implements PhotoService {
 
     // Uploading a blob
 
-    public String uploadBlob(MultipartFile multiPartFile) throws IOException {
+    public String uploadBlob(MultipartFile multiPartFile, String blobName) throws IOException {
         //TODO: check file to to make sure it one of the image data types
         //TODO: check if file already exists...
-            BlobClient blobClient = blobContainerClient.getBlobClient(containerName);
+            BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
             //specify the file that needs to be uploaded i.e. the path of the file.
             blobClient.upload(multiPartFile.getInputStream(), multiPartFile.getSize(), true);
             //blobClient.getBlobName();
@@ -123,9 +123,8 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     //Create, adding image to database
-    public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile) throws IOException {
-            String photoLink = uploadBlob(multiPartFile);
-            photoMetaDataRepository.save(photoDto.getPhotoMetaData());
+    public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile, String blobName) throws IOException {
+            String photoLink = uploadBlob(multiPartFile, blobName);
             Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
             return photoRepository.save(photo);
     }

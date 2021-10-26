@@ -14,7 +14,7 @@ public interface PhotoService {
 
     //String findBlobNameByPhotoLink(String photoLink);
 
-    Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile) throws IOException;
+    Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile, String blobName) throws IOException;
 
     String findPhotoLinkByPhotoId(Long photoId);
 
