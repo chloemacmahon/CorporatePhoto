@@ -1,7 +1,10 @@
 package za.ac.nwu.ac.logic.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import za.ac.nwu.ac.domain.dto.PhotoMetaDataDto;
 import za.ac.nwu.ac.domain.exception.FailedToCreateTagException;
+import za.ac.nwu.ac.domain.exception.PhotoMetaDataDoesNotExistException;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
@@ -14,6 +17,7 @@ import za.ac.nwu.ac.repository.TagRepository;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
 
     private PhotoMetaDataRepository photoMetaDataRepository;
@@ -33,8 +37,18 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
 
     }
 
+    public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner) {
+        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner);
+        return photoMetaDataRepository.save(photoMetaData);
+    }
+
     public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags) {
         PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags);
+        return photoMetaDataRepository.save(photoMetaData);
+    }
+
+    public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation){
+        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags, geolocation);
         return photoMetaDataRepository.save(photoMetaData);
     }
 
@@ -51,4 +65,27 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
             throw new FailedToCreateTagException();
         }
     }
+
+    public PhotoMetaData viewPhotoMetaData(Long metaDataId){
+        if(photoMetaDataRepository.findById(metaDataId).isPresent())
+            return photoMetaDataRepository.findById(metaDataId).get();
+        else
+            throw new PhotoMetaDataDoesNotExistException();
+    }
+
+    public void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId){
+        if(photoMetaDataRepository.findById(metaDataId).isPresent()) {
+            photoMetaDataRepository.deleteById(metaDataId);
+            photoRepository.deleteById(photoId);
+        }
+        else
+            throw new PhotoMetaDataDoesNotExistException();
+    }
+
+//    public void updatePhotoMetaDataGeolocation(PhotoMetaDataDto photoMetaDataDto, Long metaDataID, String tag, String geolocation){
+//        if (photoMetaDataRepository.findById(metaDataID).isPresent())
+//
+//        else
+//            throw new PhotoMetaDataDoesNotExistException();
+//    }
 }
