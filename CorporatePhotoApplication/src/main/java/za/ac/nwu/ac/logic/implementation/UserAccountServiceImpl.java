@@ -91,6 +91,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     public void addPhotoToOwnedAlbum(UserAccount userAccount, MultipartFile photo){
         PhotoMetaData photoMetaData = new PhotoMetaData(LocalDate.now(), userAccount);
+        addPhotoToOwnedAlbum(userAccount,photoMetaData,photo);
+    }
+
+    public void addPhotoToOwnedAlbum(UserAccount userAccount, PhotoMetaData photoMetaData, MultipartFile photo){
         PhotoDto photoDto = new PhotoDto(photoMetaData);
         try {
             userAccount.addOwnedPhoto(photoService.createPhoto(photoDto, photo, userAccount.generatePhotoName()));

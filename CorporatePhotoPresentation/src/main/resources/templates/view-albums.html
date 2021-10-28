@@ -25,6 +25,15 @@
             </a>
             <label></label>
         </td>
+        <td>
+            <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+            <div th:if="${photo.photoMetaData.tags.size() > 0}">
+                <h3 style="text-align:left">Tags</h3><br>
+                <div th:each="tag : ${photo.photoMetaData.tags}">
+                    <label th:text="${tag.tagName}"></label><br>
+                </div>
+            </div>
+        </td>
     </tr>
 </table>
 <table>
@@ -42,7 +51,14 @@
             </a>
         </td>
         <td>
-            <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label>
+            <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
+            <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+            <div th:if="${photo.photoMetaData.tags.size() > 0}">
+                <h3 style="text-align:left">Tags</h3><br>
+                <div th:each="tag : ${photo.photoMetaData.tags}">
+                    <label th:text="${tag.tagName}"></label><br>
+                </div>
+            </div>
         </td>
     </tr>
 </table>
@@ -60,8 +76,17 @@
             </a>
         </td>
 
-        <td th:if="${user.userAccountId != photo.photoMetaData.owner.userAccountId}">
-            <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label>
+        <td>
+            <div th:if="${user.userAccountId != photo.photoMetaData.owner.userAccountId}">
+                <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
+            </div>
+            <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+            <div th:if="${photo.photoMetaData.tags.size() > 0}">
+                <h3 style="text-align:left">Tags</h3><br>
+                <div th:each="tag : ${photo.photoMetaData.tags}">
+                    <label th:text="${tag.tagName}"></label><br>
+                </div>
+            </div>
         </td>
 
     </tr>

@@ -14,4 +14,6 @@ public interface PhotoMetaDataService {
     PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags);
 
     Tag createTag(String tagName, String tagDescription);
+
+    List<Tag> viewAllTags();
 }
