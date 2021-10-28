@@ -4,6 +4,14 @@ body {
 
 }
 
+.container{
+   height: 100px;
+   bottom: 0px;
+   position: fixed;
+   background-color: DarkOliveGreen;
+   color: white;
+}
+
 .banner {
     height: 100px;
     background-color: Gainsboro;

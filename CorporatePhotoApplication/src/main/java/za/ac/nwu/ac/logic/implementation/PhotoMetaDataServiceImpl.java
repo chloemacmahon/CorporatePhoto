@@ -1,6 +1,7 @@
 package za.ac.nwu.ac.logic.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import za.ac.nwu.ac.domain.exception.FailedToCreateTagException;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
@@ -14,6 +15,7 @@ import za.ac.nwu.ac.repository.TagRepository;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
 
     private PhotoMetaDataRepository photoMetaDataRepository;
@@ -50,5 +52,9 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         } catch (Exception e){
             throw new FailedToCreateTagException();
         }
+    }
+
+    public List<Tag> viewAllTags(){
+        return tagRepository.findAll();
     }
 }

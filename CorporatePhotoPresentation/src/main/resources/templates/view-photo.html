@@ -23,7 +23,7 @@
 <!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
     </form>
 </div>
-<div th:if="${user.albums.size() >= 0}">
+<div th:if="${user.albums.size() > 0}">
     <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
         <h3>Choose album that you want to move the image to</h3>
         <select id="albumName" name="albumName">
