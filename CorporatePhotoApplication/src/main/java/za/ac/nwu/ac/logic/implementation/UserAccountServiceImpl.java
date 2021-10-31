@@ -118,7 +118,7 @@ public class UserAccountServiceImpl implements UserAccountService {
                 throw new FailedToSharePhotoException("Photo could not be found");
             }
         } catch(Exception e){
-            throw new FailedToSharePhotoException();
+            throw new FailedToSharePhotoException(e.getMessage());
         }
     }
 

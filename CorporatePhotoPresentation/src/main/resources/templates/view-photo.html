@@ -11,20 +11,25 @@
 <body>
 <div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
 <div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
-<div>
+<div th:if="${couldNotCreateTag != null}" class="alert alert-danger">
+    <p th:text="#{couldNotCreateTag.hasErrors}">Error Message</p>
+</div>
+
+<div class="center">
     <img th:src="${photo.photoLink}">
 </div>
-<div th:if="${ownedPhoto != null}">
+<div th:if="${ownedPhoto != null}" class="center">
     <h3>Please enter the email address of the person that you want to share this file to</h3>
     <form th:action="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
         <label for="email">Email: </label>
         <input type="email" id="email" name="email"><br><br>
         <button type="submit" class="button">Share Image</button>
-<!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
+        <!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
     </form>
 </div>
-<div th:if="${user.albums.size() > 0}">
-    <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+<div th:if="${user.albums.size() > 0}" class="center">
+    <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+          method="post">
         <h3>Choose album that you want to move the image to</h3>
         <select id="albumName" name="albumName">
             <option th:each="album : ${user.albums}"
@@ -33,9 +38,20 @@
                     th:selected="${albumName == album.albumName}">
             </option>
         </select>
-        <button type="submit" class="button">Add image</button>
-        <!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
+        <br>
+        <br>
+        <button type="submit" class="button">Add Image To Album</button>
+        <br>
     </form>
+</div>
+<div class="center">
+    <br>
+    <a class="button" type="button"
+       th:href="@{/delete-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Delete Photo</a>
+    <br>
+</div>
+<div class="container" th:replace="fragments/footer :: footer">
+    <p>footer</p>
 </div>
 </body>
 </html>
