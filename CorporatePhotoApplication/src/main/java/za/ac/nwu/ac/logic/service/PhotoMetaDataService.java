@@ -22,8 +22,5 @@ public interface PhotoMetaDataService {
     List<Tag> viewAllTags();
 
     void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId);
-
-    //PhotoMetaData viewPhotoMetaData(Long metaDataId);
-
-    //void updatePhotoMetaDataGeolocation(Long metaDataID, String geolocation);
+    
 }
