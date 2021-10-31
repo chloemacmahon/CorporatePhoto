@@ -22,5 +22,4 @@ public interface PhotoMetaDataService {
     List<Tag> viewAllTags();
 
     void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId);
-    
 }

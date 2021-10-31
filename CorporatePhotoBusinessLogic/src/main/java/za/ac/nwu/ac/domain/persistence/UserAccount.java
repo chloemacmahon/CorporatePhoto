@@ -30,7 +30,7 @@ public class UserAccount {
 
     private String encodedPassword;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Album> albums;
 
     @OneToOne(cascade = {CascadeType.ALL})
@@ -56,8 +56,8 @@ public class UserAccount {
         this.surname = surname;
         this.encodedPassword = encodedPassword;
         this.albums  = new ArrayList<>();
-        this.ownedPhotosAlbum = new Album();
-        this.sharedPhotosAlbum = new Album();
+        this.ownedPhotosAlbum = new Album(getName()+" "+getSurname() + " Owned Album" );
+        this.sharedPhotosAlbum = new Album(getName()+" "+getSurname() + " Shared Album" );
     }
 
     public UserAccount(String email, String encodedPassword, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {

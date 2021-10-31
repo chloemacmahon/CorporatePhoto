@@ -21,5 +21,9 @@
     <input type="text" id="album-name" th:field="*{albumName}"><br><br>
     <button type="submit" class="button">Create Album</button>
 </form>
+
+<div class="container" th:replace="fragments/footer :: footer">
+    <p>footer</p>
+</div>
 </body>
 </html>

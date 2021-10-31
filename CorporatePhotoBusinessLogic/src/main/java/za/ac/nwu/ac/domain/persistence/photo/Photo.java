@@ -72,12 +72,12 @@ public class Photo {
         return Objects.hash(photoId, photoLink, photoMetaData);
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Photo{" +
                 "photoId=" + photoId +
                 ", photoLink='" + photoLink + '\'' +
                 ", photoMetaData=" + photoMetaData +
                 '}';
-    }
+    }*/
 }

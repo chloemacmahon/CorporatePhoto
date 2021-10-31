@@ -11,14 +11,36 @@
 <body>
 <div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
 <div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
-<form enctype="multipart/form-data" th:action="@{/photo-upload/{id}(id=${user.userAccountId})}" method="post">
-    <!--<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-        <p th:text="#{photo.hasErrors}">Error Message</p>
-    </div>-->
+<form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/photo-upload/{id}(id=${user.userAccountId})}"
+      method="post">
     <br>
-    <label for="file-upload">Album name: </label>
+    <label for="file-upload">Photo upload: </label>
     <input type="file" id="file-upload" name="file"><br><br>
+    <div th:if="${tags.size() > 0}">
+        <table>
+            <tr><h3>Please select tags you would like to use</h3></tr>
+            <tr th:each="tag, it : ${tags}">
+                <input type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
+                <label for="${{tag}}" th:text="${tag.tagName}"></label><br><br>
+            </tr>
+        </table>
+    </div>
     <button type="submit" class="button">Upload Photo</button>
 </form>
+<div>
+    <form th:action="@{/create-tag/{id}(id=${user.userAccountId})}" method="post">
+        <h3>Enter details for a new tag</h3>
+        <label for="tagName">Tag name: </label>
+        <input type="text" id="tagName" name="tagName"><br><br>
+        <label for="tagDescription">Tag Description (optional): </label>
+        <input type="text" id="tagDescription" name="tagDescription"><br><br>
+        <button type="submit" class="button">Create Tag</button>
+    </form>
+</div>
+
+
+<div class="container" th:replace="fragments/footer :: footer">
+    <p>footer</p>
+</div>
 </body>
 </html>

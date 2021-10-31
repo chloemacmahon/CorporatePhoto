@@ -54,12 +54,13 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
-    public List<Tag> viewAllTags() {
+
+    public List<Tag> viewAllTags(){
         return tagRepository.findAll();
     }
 
-    public void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId) {
+    public void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId){
 
     }
-
 }
+
