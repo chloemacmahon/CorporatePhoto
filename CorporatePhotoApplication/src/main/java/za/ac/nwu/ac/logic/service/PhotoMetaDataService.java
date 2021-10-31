@@ -11,7 +11,11 @@ public interface PhotoMetaDataService {
 
     void readPhotoMetaData(String photoPath);
 
+    //PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner);
+
     PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags);
+
+   // PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation);
 
     Tag createTag(String tagName, String tagDescription);
 

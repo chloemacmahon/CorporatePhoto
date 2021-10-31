@@ -30,6 +30,8 @@ public class PhotoMetaData {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Tag> tags;
 
+    private String geolocation;
+
     public PhotoMetaData() {
     }
 
@@ -42,6 +44,13 @@ public class PhotoMetaData {
         this.dateCaptured = dateCaptured;
         this.owner = owner;
         this.tags = tags;
+    }
+
+    public PhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation) {
+        this.dateCaptured = dateCaptured;
+        this.owner = owner;
+        this.tags = tags;
+        this.geolocation = geolocation;
     }
 
     public void addTagToPhotoMetaData(Tag tag){

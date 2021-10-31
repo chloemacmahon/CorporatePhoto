@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhotoMetaDataRepository extends JpaRepository<PhotoMetaData, Long> {
+
+    //PhotoMetaData findTagsByMetaDataId (Long metaDataId);
 }

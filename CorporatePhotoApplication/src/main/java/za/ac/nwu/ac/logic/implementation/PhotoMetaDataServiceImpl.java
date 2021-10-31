@@ -31,7 +31,7 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         this.tagRepository = tagRepository;
     }
 
-    public void readPhotoMetaData(String photoPath){
+    public void readPhotoMetaData(String photoPath) {
 
     }
 
@@ -40,19 +40,20 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         return photoMetaDataRepository.save(photoMetaData);
     }
 
-    public Photo addTagToPhoto(Photo photo, Tag tag){
+    public Photo addTagToPhoto(Photo photo, Tag tag) {
         photo.getPhotoMetaData().addTagToPhotoMetaData(tag);
         return photoRepository.save(photo);
     }
 
-    public Tag createTag(String tagName, String tagDescription){
+    public Tag createTag(String tagName, String tagDescription) {
         try {
             Tag tag = new Tag(tagName, tagDescription);
             return tagRepository.save(tag);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new FailedToCreateTagException();
         }
     }
+
 
     public List<Tag> viewAllTags(){
         return tagRepository.findAll();
@@ -62,3 +63,4 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
 
     }
 }
+
