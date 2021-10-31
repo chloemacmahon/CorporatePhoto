@@ -3,6 +3,7 @@ package za.ac.nwu.ac.domain.persistence.album;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import za.ac.nwu.ac.domain.exception.PhotoNotInAlbumException;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -45,5 +46,11 @@ public class Album {
         this.getPhotos().add(photo);
     }
 
-
+    public void removePhotoFromAlbum(Photo photo){
+        try {
+            this.photos.remove(photo);
+        } catch (Exception e){
+            throw new PhotoNotInAlbumException();
+        }
+    }
 }

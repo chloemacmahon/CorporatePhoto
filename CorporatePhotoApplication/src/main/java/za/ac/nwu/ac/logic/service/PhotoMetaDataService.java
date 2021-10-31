@@ -16,4 +16,6 @@ public interface PhotoMetaDataService {
     Tag createTag(String tagName, String tagDescription);
 
     List<Tag> viewAllTags();
+
+    void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId);
 }

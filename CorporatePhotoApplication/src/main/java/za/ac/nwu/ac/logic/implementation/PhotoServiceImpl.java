@@ -6,15 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.PhotoDto;
+import za.ac.nwu.ac.domain.exception.CouldNotDeletePhotoException;
 import za.ac.nwu.ac.domain.exception.PhotoDoesNotExistException;
 import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
+import za.ac.nwu.ac.domain.persistence.UserAccount;
+import za.ac.nwu.ac.domain.persistence.album.Album;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.logic.configuration.PhotoStorageConfig;
+import za.ac.nwu.ac.logic.service.AlbumService;
+import za.ac.nwu.ac.logic.service.PhotoMetaDataService;
 import za.ac.nwu.ac.logic.service.PhotoService;
+import za.ac.nwu.ac.repository.AlbumRepository;
 import za.ac.nwu.ac.repository.PhotoMetaDataRepository;
 import za.ac.nwu.ac.repository.PhotoRepository;
+import za.ac.nwu.ac.repository.UserAccountRepository;
 
 import java.io.IOException;
+import java.util.List;
 
 @Data
 @Service
@@ -23,6 +31,12 @@ public class PhotoServiceImpl implements PhotoService {
     private final PhotoRepository photoRepository;
 
     private final PhotoMetaDataRepository photoMetaDataRepository;
+
+    private final PhotoMetaDataService photoMetaDataService;
+
+    private final UserAccountRepository userAccountRepository;
+
+    private final AlbumService albumService;
 
     private String connectionString;
 
@@ -37,9 +51,12 @@ public class PhotoServiceImpl implements PhotoService {
     private BlobContainerClient blobContainerClient;
 
     @Autowired
-    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMetaDataRepository photoMetaDataRepository, PhotoStorageConfig photoStorageConfig) {
+    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMetaDataRepository photoMetaDataRepository, PhotoMetaDataService photoMetaDataService, UserAccountRepository userAccountRepository, AlbumRepository albumRepository, AlbumService albumService, PhotoStorageConfig photoStorageConfig) {
         this.photoRepository = photoRepository;
         this.photoMetaDataRepository = photoMetaDataRepository;
+        this.photoMetaDataService = photoMetaDataService;
+        this.userAccountRepository = userAccountRepository;
+        this.albumService = albumService;
         connectionString = photoStorageConfig.getConnectionString();
         blobEndPoint = photoStorageConfig.getBlobEndPoint();
         containerName = photoStorageConfig.getContainerName();
@@ -84,11 +101,11 @@ public class PhotoServiceImpl implements PhotoService {
     public String uploadBlob(MultipartFile multiPartFile, String blobName) throws IOException {
         //TODO: check file to to make sure it one of the image data types
         //TODO: check if file already exists...
-            BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
-            //specify the file that needs to be uploaded i.e. the path of the file.
-            blobClient.upload(multiPartFile.getInputStream(), multiPartFile.getSize(), true);
-            //blobClient.getBlobName();
-            return blobClient.getBlobUrl();
+        BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
+        //specify the file that needs to be uploaded i.e. the path of the file.
+        blobClient.upload(multiPartFile.getInputStream(), multiPartFile.getSize(), true);
+        //blobClient.getBlobName();
+        return blobClient.getBlobUrl();
     }
 
     /**
@@ -117,16 +134,14 @@ public class PhotoServiceImpl implements PhotoService {
         if (photoLink == null) {
             throw new PhotoLinkNotFoundException("The photo link could not be found");
         }
-        String blobName = photoLink.substring(photoLink.lastIndexOf('/') + 1);
-
-        return blobName;
+        return photoLink.substring(photoLink.lastIndexOf('/') + 1);
     }
 
     //Create, adding image to database
     public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile, String blobName) throws IOException {
-            String photoLink = uploadBlob(multiPartFile, blobName);
-            Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
-            return photoRepository.save(photo);
+        String photoLink = uploadBlob(multiPartFile, blobName);
+        Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
+        return photoRepository.save(photo);
     }
 
     //TODO: The update still needs work, the approach forces you to copy the photo/file and could take long.
@@ -143,36 +158,47 @@ public class PhotoServiceImpl implements PhotoService {
     //Read, getting the photo link
     public String findPhotoLinkByPhotoId(Long photoId) {
         if (photoRepository.findById(photoId).isPresent())
-            return photoRepository.findById(photoId).get().toString();
+            return photoRepository.findById(photoId).get().getPhotoLink();
         else
             throw new PhotoDoesNotExistException();
     }
 
     //Delete, deleting a photo from db and blob from Storage
     public void deletePhotoFromDatabase(Long photoId, String photoLink) {
-        photoRepository.deleteById(photoId);
-        createBlobClient(findBlobNameByPhotoLink(photoLink)).delete();
+        try {
+            Photo photo = photoRepository.findById(photoId).get();
+            List<Album> albums = albumService.findAlbumsThatContainsPhoto(photoId);
+            for (Album album : albums) {
+                albumService.deletePhotoFromAlbum(photoId, album.getAlbumId());
+            }
+            UserAccount userAccount = findPhotoById(photoId).getPhotoMetaData().getOwner();
+            photoMetaDataRepository.deleteById(findPhotoById(photoId).getPhotoMetaData().getMetaDataId());
+            photoRepository.deleteById(photoId);
+            userAccountRepository.save(userAccount);
+            createBlobClient(findBlobNameByPhotoLink(photoLink)).delete();
+        } catch (Exception e) {
+            throw new CouldNotDeletePhotoException("Photo could not be removed, nested exception is (" + e.getLocalizedMessage() + ")");
+        }
+    }
+
+    public void deletePhotoFromDatabase(Long photoId) {
+        try {
+            String photoLink = findPhotoLinkByPhotoId(photoId);
+            deletePhotoFromDatabase(photoId, photoLink);
+        } catch (Exception e) {
+            throw new CouldNotDeletePhotoException(e.getLocalizedMessage());
+        }
     }
 
     public Photo findPhotoById(Long id) {
         try {
             return photoRepository.findById(id).get();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new PhotoDoesNotExistException();
         }
     }
 
 
     //Search Metadata
-
-    @Override
-    public String toString() {
-        return "PhotoServicesImpl{" +
-                "connectionString='" + connectionString + '\'' +
-                ", blobEndPoint='" + blobEndPoint + '\'' +
-                ", containerName='" + containerName + '\'' +
-                ", blobSasToken='" + blobSasToken + '\'' +
-                '}';
-    }
 
 }
