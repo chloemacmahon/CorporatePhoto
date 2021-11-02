@@ -11,15 +11,15 @@ public interface PhotoMetaDataService {
 
     void readPhotoMetaData(String photoPath);
 
-    //PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner);
+    public String readPhotoMetaDataGeolocation(Long photoId, Long metaDataId);
 
     PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags);
-
-   // PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation);
 
     Tag createTag(String tagName, String tagDescription);
 
     List<Tag> viewAllTags();
 
     void deletePhotoMetaDataFromDatabase(Long photoId, Long metaDataId);
+
+    void updatePhotoMetaDataGeolocation(Long photoMetaDataId, String geolocation);
 }
