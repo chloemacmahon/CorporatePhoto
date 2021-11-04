@@ -1,5 +1,6 @@
 package za.ac.nwu.ac.logic.implementation;
 
+import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.nwu.ac.domain.exception.*;
@@ -100,5 +101,108 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
 
         }
     }
+
+    public void removePhotoMetaDataGeolocation(Long photoMetaDataId){
+        try{
+            if(photoMetaDataRepository.findById(photoMetaDataId).isPresent()){
+                PhotoMetaData photoMetaData = photoMetaDataRepository.findById(photoMetaDataId).get();
+                photoMetaData.setGeolocation(null);
+                photoMetaDataRepository.save(photoMetaData);
+
+            }
+            else {
+                throw new CouldNotRemovePhotoMetaDataException("Could not remove photo geolocation");
+            }
+
+        }catch (Exception e) {
+
+            throw new CouldNotRemovePhotoMetaDataException("Geolocation could not be remove from photo, nested exception is (" + e.getLocalizedMessage() +")");
+
+        }
+    }
+
+    public void updatePhotoTag (Long photoMetaDataId, Long tagId, String newTagName){
+        try{
+            if(photoMetaDataRepository.findById(photoMetaDataId).isPresent()){
+                if(tagRepository.findById(tagId).isPresent())
+                {
+                    Tag tag = tagRepository.findById(tagId).get();
+                    tag.setTagName(newTagName);
+                    tagRepository.save(tag);
+                }
+                else{
+                    throw new CouldNotFindTagException();
+                }
+            }
+            else{
+                throw new CouldNotFindPhotoMetaDataException();
+            }
+        }catch (Exception e)
+        {
+            throw new CouldNotUpdatePhotoTagException();
+        }
+    }
+
+    public void removePhotoTagFromPhotoMetaData (Long photoMetaDataId, Long tagId){
+        try{
+            if(photoMetaDataRepository.findById(photoMetaDataId).isPresent()){
+                if(tagRepository.findById(tagId).isPresent())
+                {
+                   //Tag tag = tagRepository.findById(tagId).get();
+                   PhotoMetaData photoMetaData = photoMetaDataRepository.findById(photoMetaDataId).get();
+                   photoMetaData.getTags().remove(tagId);
+                   photoMetaDataRepository.save(photoMetaData);
+
+                }
+                else{
+                    throw new CouldNotFindTagException();
+                }
+            }
+            else{
+                throw new CouldNotFindPhotoMetaDataException();
+            }
+        }catch (Exception e) {
+            throw new CouldNotDeletePhotoTagException("Could not remove tag from photo");
+        }
+    }
+
+    public void deletePhotoTagFromDatabase (Long photoMetaDataId, Long tagId){
+        try{
+            if(photoMetaDataRepository.findById(photoMetaDataId).isPresent()){
+                if(tagRepository.findById(tagId).isPresent())
+                {
+                    //Tag tag = tagRepository.findById(tagId).get();
+                    PhotoMetaData photoMetaData = photoMetaDataRepository.findById(photoMetaDataId).get();
+                    photoMetaData.getTags().remove(tagId);
+                    photoMetaDataRepository.save(photoMetaData);
+
+                    tagRepository.deleteById(tagId);
+                }
+                else{
+                    throw new CouldNotFindTagException();
+                }
+            }
+            else{
+                throw new CouldNotFindPhotoMetaDataException();
+            }
+        }catch (Exception e) {
+            throw new CouldNotDeletePhotoTagException();
+        }
+    }
+
+    public List<Photo> searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner){
+        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByDateCaptured(dateCaptured, owner);
+        return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+    }
+
+    public List<Photo> searchPhotoByGeolocation(String geolocation, Long owner){
+        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByGeolocation(geolocation, owner);
+        return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+    }
+
+//    public List<Photo> searchPhotoByTag(Long tagId, Long owner){
+//
+//        return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+//    }
 }
 
