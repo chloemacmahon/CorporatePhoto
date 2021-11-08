@@ -28,11 +28,15 @@ public interface PhotoMetaDataService {
 
     void updatePhotoTag (Long photoMetaDataId, Long tagId, String newTagName);
 
+    Long findPhotoMetaDataTag(String tagName);
+
     void removePhotoTagFromPhotoMetaData (Long photoMetaDataId, Long tagId);
 
     void deletePhotoTagFromDatabase (Long photoMetaDataId, Long tagId);
 
     List<Photo> searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner);
 
-    public List<Photo> searchPhotoByGeolocation(String geolocation, Long owner);
+    List<Photo> searchPhotoByGeolocation(String geolocation, Long owner);
+
+    PhotoMetaData findPhotoMetaDataIdByPhotoId(Long photoId);
 }

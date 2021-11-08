@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Photo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/general_style.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+
+<div class="center">
+    <img th:src="${photo.photoLink}">
+</div>
+
+<div>
+    <form th:action="@{/edit-photo-data/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+        <h3>Edit Photo Metadata</h3>
+        <label for="geolocation"> Geolocation: </label>
+        <input type="text" id="geolocation" name="geolocation"><br><br>
+        <button type="submit" class="button">Edit Geolocation</button>
+    </form>
+</div>
+<div>
+    <form th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+        <h3>Edit Tag Name</h3>
+        <label for="oldTagName">Old Tag name: </label>
+        <input type="text" id="oldTagName" name="oldTagName"><br><br>
+        <label for="newTagName">New Tag name: </label>
+        <input type="text" id="newTagName" name="newTagName"><br><br>
+        <button type="submit" class="button">Edit Tag</button>
+    </form>
+</div>
+
+
+<div class="container" th:replace="fragments/footer :: footer">
+    <p>footer</p>
+</div>
+</body>
+</html>

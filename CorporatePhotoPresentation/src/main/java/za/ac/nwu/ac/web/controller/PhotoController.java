@@ -167,4 +167,39 @@ public class PhotoController {
         }
     }
 
+    @RequestMapping(value = "/edit-photo-data/{id}/{photoId}", method = RequestMethod.GET)
+    public String editShowPhotoMetaDataGeolocation(@PathVariable Long id, @PathVariable Long photoId,Model model){
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("geolocation", "Enter geolocation");
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "edit-photo-data";
+    }
+
+
+    @RequestMapping(value = "/edit-photo-data/{id}/{photoId}", method = RequestMethod.POST)
+    public String editPhotoMetaDataGeolocation(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("geolocation") String geolocation, Model model){
+
+        PhotoMetaData photoMetaData = photoMetaDataService.findPhotoMetaDataIdByPhotoId(photoId);
+        photoMetaDataService.updatePhotoMetaDataGeolocation(photoMetaData.getMetaDataId(), geolocation);
+
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("geolocation", "Enter geolocation");
+
+        return "edit-photo-data";
+    }
+
+    @RequestMapping(value="/edit-photo-tag/{id}/{photoId}", method = RequestMethod.POST)
+    public String editPhotoMetaDataTags(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("oldTagName") String oldTagName ,@RequestParam("newTagName") String newTagName, Model model){
+        PhotoMetaData photoMetaData = photoMetaDataService.findPhotoMetaDataIdByPhotoId(photoId);
+        photoMetaDataService.updatePhotoTag(photoMetaData.getMetaDataId(), photoMetaDataService.findPhotoMetaDataTag(oldTagName), newTagName);
+
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+
+        return "edit-photo-data";
+    }
+
 }

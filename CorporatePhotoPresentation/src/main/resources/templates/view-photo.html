@@ -50,6 +50,12 @@
        th:href="@{/delete-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Delete Photo</a>
     <br>
 </div>
+<div class="center">
+    <br>
+    <a class="button" type="button"
+       th:href="@{/edit-photo-data/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Edit Photo Data</a>
+    <br>
+</div>
 <div class="container" th:replace="fragments/footer :: footer">
     <p>footer</p>
 </div>
