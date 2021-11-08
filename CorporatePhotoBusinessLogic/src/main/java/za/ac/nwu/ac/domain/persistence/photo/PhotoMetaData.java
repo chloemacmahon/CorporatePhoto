@@ -6,7 +6,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.stereotype.Component;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
-
+import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
