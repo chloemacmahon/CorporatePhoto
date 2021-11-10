@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import za.ac.nwu.ac.domain.persistence.photo.Tag;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface PhotoMetaDataRepository extends JpaRepository<PhotoMetaData, Lo
 
     @Query(value = "SELECT photoId FROM Photo WHERE photoMetaData = :photoMetaData", nativeQuery = true)
     List<Photo> findPhotoIdByPhotoMetaDataId(@Param("photoMetaData") List<Photo> photoMetaData);
+
+    @Query(value = "SELECT metaDataId FROM PhotoMetaData WHERE tagId = :tagId AND owner = :owner", nativeQuery = true)
+    List<Photo> findPhotoMetaDataIdByTagId(@Param("tagId") Long tagI, @Param("owner") Long owner);
 }

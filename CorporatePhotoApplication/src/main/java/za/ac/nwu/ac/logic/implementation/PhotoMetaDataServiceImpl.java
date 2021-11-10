@@ -143,9 +143,9 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
-    public Long findPhotoMetaDataTag(String tagName){
+    public Long findPhotoMetaDataTagByTagName(String tagName){
         try{
-            return tagRepository.findTagIdByTagName(tagName);
+            return tagRepository.findTagIdByTagNameLong(tagName);
         } catch (Exception e) {
             throw new CouldNotFindTagException("Could not find tag: " +tagName+ " in Database");
         }
@@ -205,6 +205,10 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
 
     public List<Photo> searchPhotoByGeolocation(String geolocation, Long owner){
         List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByGeolocation(geolocation, owner);
+        return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+    }
+    public List<Photo> searchPhotoByTagName(String tagName, Long owner){
+        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByTagId(tagRepository.findTagIdByTagNameLong(tagName), owner);
         return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
     }
 
