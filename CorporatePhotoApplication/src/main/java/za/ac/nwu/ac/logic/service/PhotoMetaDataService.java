@@ -34,11 +34,13 @@ public interface PhotoMetaDataService {
 
     void deletePhotoTagFromDatabase (Long photoMetaDataId, Long tagId);
 
-    List<Photo> searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner);
+    Long searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner);
 
-    List<Photo> searchPhotoByGeolocation(String geolocation, Long owner);
+    Long searchPhotoByGeolocation(String geolocation, Long owner);
 
-    List<Photo> searchPhotoByTagName(String tagName, Long owner);
+    Long searchPhotoByTagName(String tagName);
+
+    public Long searchPhotoByTag(Long tagId, Long owner);
 
     PhotoMetaData findPhotoMetaDataIdByPhotoId(Long photoId);
 }

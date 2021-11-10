@@ -104,7 +104,7 @@
 <div class="center">
     <a class="button" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
     <a class="button" type="button" th:href="@{/photo-upload/{id}(id=${user.userAccountId})}">Upload Photo</a>
-    <br>
+    <br><br>
     <div th:if="${user.albums.size() > 0}">
         <a class="button" type="button" th:href="@{/edit-albums/{id}(id=${user.userAccountId})}">Edit Albums</a>
     </div>

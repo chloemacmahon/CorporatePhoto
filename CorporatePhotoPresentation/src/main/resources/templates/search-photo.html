@@ -21,9 +21,10 @@
         <input type="text" id="geolocation" name="geolocation"><br><br>
         <button type="submit" class="button">Find Photo by Geolocation</button>
     </form>
+<!--    <img th:if="${photo.photoLink != null }" th:src="${photo.photoLink}"/>-->
 </div>
 
-<form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/search-photo-geolocation/{id}(id=${user.userAccountId})}"
+<form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/search-photo-tag/{id}(id=${user.userAccountId})}"
       method="post">
     <br>
     <div th:if="${tags.size() > 0}">
@@ -37,6 +38,10 @@
     </div>
     <button type="submit" class="button">Find Photo</button>
 </form>
+
+<div th:if= ${photo}!=null class="center">
+    <img th:src="${photo.photoLink}">
+</div>
 
 </body>
 </html>

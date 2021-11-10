@@ -221,11 +221,23 @@ public class PhotoController {
         }
     }
 
-    @RequestMapping(value="/search-photo-tag/{id}", method = RequestMethod.POST)
-    public String searchPhotoByTagName(@PathVariable Long id, @RequestParam("tagName") String tagName, Model model){
+    @RequestMapping(value="/search-photo-geolocation/{id}", method = RequestMethod.POST)
+    public String searchPhotoByGeolocation(@PathVariable Long id, @RequestParam("geolocation") String geolocation, Model model){
 
-        photoMetaDataService.searchPhotoByTagName(tagName, id);
-        model.addAttribute("photo");
+        Long photoId = photoMetaDataService.searchPhotoByGeolocation(geolocation, id);
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("geolocation", geolocation);
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "search-photo";
+    }
+
+    @RequestMapping(value="/search-photo-tag/{id}", method = RequestMethod.POST)
+    public String searchPhotoByTag(@PathVariable Long id, @RequestParam("tags") Long tag, Model model){
+
+        Long photoId = photoMetaDataService.searchPhotoByTag(tag, id);
+        model.addAttribute("photo", photoService.findPhotoById(photoId) );
         model.addAttribute("user", userAccountService.findUserById(id));
         model.addAttribute("geolocation");
         model.addAttribute("tags", photoMetaDataService.viewAllTags());
@@ -233,18 +245,7 @@ public class PhotoController {
         return "search-photo";
     }
 
-    @RequestMapping(value="/search-photo-geolocation/{id}", method = RequestMethod.POST)
-    public String searchPhotoByGeolocation(@PathVariable Long id, @RequestParam("geolocation") String geolocation, Model model){
 
-
-//        model.addAttribute("photo", photoService.findPhotoById());
-        model.addAttribute("photo", photoMetaDataService.searchPhotoByGeolocation(geolocation, id));
-        model.addAttribute("user", userAccountService.findUserById(id));
-        model.addAttribute("geolocation", geolocation);
-        model.addAttribute("tags", photoMetaDataService.viewAllTags());
-        model.addAttribute("tagsUsed", new TagsUsedDto());
-        return "search-photo";
-    }
 
 //    @RequestMapping(value="/download-photo/{id}/{photoId}", method = RequestMethod.GET)
 //    public String showDownloadPhoto(@PathVariable Long id, @PathVariable Long photoId, Model model){

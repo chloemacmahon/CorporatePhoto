@@ -3,6 +3,7 @@ package za.ac.nwu.ac.logic.implementation;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.nwu.ac.domain.exception.*;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
@@ -198,18 +199,24 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
-    public List<Photo> searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner){
-        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByDateCaptured(dateCaptured, owner);
+    public Long searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner){
+        Long photoList = photoMetaDataRepository.findPhotoMetaDataIdByDateCaptured(dateCaptured, owner);
         return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
     }
 
-    public List<Photo> searchPhotoByGeolocation(String geolocation, Long owner){
-        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByGeolocation(geolocation, owner);
+    //@Transactional
+    public Long searchPhotoByGeolocation(String geolocation, Long owner){
+        Long photoList = photoMetaDataRepository.findPhotoMetaDataIdByGeolocation(geolocation, owner);
         return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
     }
-    public List<Photo> searchPhotoByTagName(String tagName, Long owner){
-        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByTagId(tagRepository.findTagIdByTagNameLong(tagName), owner);
+    public Long searchPhotoByTagName(String tagName){
+        Long photoList = photoMetaDataRepository.findPhotoMetaDataIdByTagId(tagRepository.findTagIdByTagNameLong(tagName));
         return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+    }
+    public Long searchPhotoByTag(Long tagId, Long owner){
+        Long photoMetaDataId = photoMetaDataRepository.findPhotoMetaDataIdByTagId(tagId);
+        Long photoId = photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoMetaDataId);
+        return photoId;
     }
 
     public PhotoMetaData findPhotoMetaDataIdByPhotoId(Long photoId)
