@@ -37,10 +37,14 @@
         <td>
             <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
             <div th:if="${photo.photoMetaData.tags.size() > 0}">
-                <h3 style="text-align:left">Tags</h3><br>
+                <h3 style="text-align:left">Tags</h3>
                 <div th:each="tag : ${photo.photoMetaData.tags}">
                     <label th:text="${tag.tagName}"></label><br>
                 </div>
+            </div>
+            <div>
+                <h3 style="text-align:left">Location</h3>
+                <label th:text="${photo.photoMetaData.geolocation}"></label>
             </div>
         </td>
     </tr>

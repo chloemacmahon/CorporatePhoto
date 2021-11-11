@@ -50,8 +50,8 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
-    public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags) {
-        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags);
+    public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation) {
+        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags, geolocation);
         return photoMetaDataRepository.save(photoMetaData);
     }
 
@@ -137,6 +137,23 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
             }
             else{
                 throw new CouldNotFindPhotoMetaDataException();
+            }
+        }catch (Exception e)
+        {
+            throw new CouldNotUpdatePhotoTagException();
+        }
+    }
+
+    public void updatePhotoTag (Long tagId, String newTagName){
+        try{
+            if(tagRepository.findById(tagId).isPresent())
+            {
+                Tag tag = tagRepository.findById(tagId).get();
+                tag.setTagName(newTagName);
+                tagRepository.save(tag);
+            }
+            else{
+                throw new CouldNotFindTagException();
             }
         }catch (Exception e)
         {

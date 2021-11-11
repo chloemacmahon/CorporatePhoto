@@ -18,6 +18,16 @@
     <input type="file" id="file-upload" name="file"><br><br>
     <div th:if="${tags.size() > 0}">
         <table>
+            <tr><h3>Please enter photo Location</h3></tr>
+            <tr>
+                <label for="geolocation">Geolocation: </label>
+                <input type="text" id="geolocation" name="geolocation"><br><br>
+            </tr>
+        </table>
+    </div>
+
+    <div th:if="${tags.size() > 0}">
+        <table>
             <tr><h3>Please select tags you would like to use</h3></tr>
             <tr th:each="tag, it : ${tags}">
                 <input type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">

@@ -17,23 +17,32 @@
 </div>
 
 <div>
-    <form th:action="@{/edit-photo-data/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+    <form th:action="@{/edit-photo-geolocation/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
         <h3>Edit Photo Metadata</h3>
+        <h3 style="text-align:left">Location</h3>
+        <label th:text="'Current Location: ' + ${photo.photoMetaData.geolocation}"></label><br>
         <label for="geolocation"> Geolocation: </label>
         <input type="text" id="geolocation" name="geolocation"><br><br>
         <button type="submit" class="button">Edit Geolocation</button>
     </form>
 </div>
-<div>
-    <form th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
-        <h3>Edit Tag Name</h3>
-        <label for="oldTagName">Old Tag name: </label>
-        <input type="text" id="oldTagName" name="oldTagName"><br><br>
-        <label for="newTagName">New Tag name: </label>
+<form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+      method="post">
+    <br>
+    <h3 style="text-align:left">Location</h3>
+    <h3 style="text-align:left">Please select tags you would like edit</h3>
+    <div th:if="${tags.size() > 0}">
+        <table>
+            <tr th:each="tag, it : ${tags}">
+                <input type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
+                <label for="${{tag}}" th:text="${tag.tagName}"></label><br><br>
+            </tr>
+        </table>
+        <label for="newTagName">New Tag Name: </label>
         <input type="text" id="newTagName" name="newTagName"><br><br>
-        <button type="submit" class="button">Edit Tag</button>
-    </form>
-</div>
+    </div>
+    <button type="submit" class="button">Edit Tag</button>
+</form>
 
 
 <div class="container" th:replace="fragments/footer :: footer">

@@ -40,7 +40,11 @@
 </form>
 
 <div th:if= ${photo}!=null class="center">
-    <img th:src="${photo.photoLink}">
+    <a type="button"
+       th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+        <img th:src="${photo.photoLink}"
+             th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+    </a>
 </div>
 
 </body>

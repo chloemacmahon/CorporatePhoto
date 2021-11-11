@@ -47,7 +47,7 @@
 <div class="center">
     <br>
     <a class="button" type="button"
-       th:href="${photo.photoLink}" download="Pic.jpg">Download Photo</a>
+       th:href="${photo.photoLink}" download="${photo.photoLink} + '.jpg'">Download Photo</a>
     <br>
 </div>
 <div class="center">
