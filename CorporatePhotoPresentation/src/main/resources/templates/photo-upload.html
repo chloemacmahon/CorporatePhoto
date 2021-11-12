@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.og">
 <head>
     <meta charset="UTF-8">
-    <title>Vitality activities</title>
+    <title>Photo Upload</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet"
@@ -16,6 +16,16 @@
     <br>
     <label for="file-upload">Photo upload: </label>
     <input type="file" id="file-upload" name="file"><br><br>
+    <div th:if="${tags.size() > 0}">
+        <table>
+            <tr><h3>Please enter photo Location</h3></tr>
+            <tr>
+                <label for="geolocation">Geolocation: </label>
+                <input type="text" id="geolocation" name="geolocation"><br><br>
+            </tr>
+        </table>
+    </div>
+
     <div th:if="${tags.size() > 0}">
         <table>
             <tr><h3>Please select tags you would like to use</h3></tr>

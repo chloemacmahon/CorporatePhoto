@@ -1,5 +1,6 @@
 package za.ac.nwu.ac.web.controller;
 
+import org.simpleframework.xml.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import za.ac.nwu.ac.logic.service.PhotoMetaDataService;
 import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.logic.service.UserAccountService;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 @Controller
@@ -32,17 +34,21 @@ public class PhotoController {
 
     private final AlbumService albumService;
 
+    private HttpSession session;
+
     @Autowired
-    public PhotoController(PhotoService photoService, PhotoMetaDataService photoMetaDataService, UserAccountService userAccountService, AlbumService albumService) {
+    public PhotoController(PhotoService photoService, PhotoMetaDataService photoMetaDataService, UserAccountService userAccountService, AlbumService albumService, HttpSession session) {
         this.photoService = photoService;
         this.photoMetaDataService = photoMetaDataService;
         this.userAccountService = userAccountService;
         this.albumService = albumService;
+        this.session = session;
     }
 
     @RequestMapping(value = "/photo-upload/{id}", method = RequestMethod.GET)
     public String showUploadPhoto(@PathVariable Long id, Model model) {
         model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("geolocation");
         model.addAttribute("tags", photoMetaDataService.viewAllTags());
         model.addAttribute("tagsUsed", new TagsUsedDto());
         return "photo-upload";
@@ -51,15 +57,16 @@ public class PhotoController {
     @RequestMapping(value = "/photo-upload", method = RequestMethod.GET)
     public String showUploadPhoto(Model model) {
         model.addAttribute("user", (UserAccount) model.asMap().get("user"));
+        model.addAttribute("geolocation");
         model.addAttribute("tags", photoMetaDataService.viewAllTags());
         model.addAttribute("tagsUsed", new TagsUsedDto());
         return "photo-upload";
     }
 
     @RequestMapping(value = "/photo-upload/{id}", method = RequestMethod.POST)
-    public String uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file, TagsUsedDto tagsUsedDto, Model model) {
+    public String uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file, TagsUsedDto tagsUsedDto, @RequestParam("geolocation") String geolocation, Model model) {
         try {
-            PhotoMetaData photoMetaData = photoMetaDataService.createPhotoMetaData(LocalDate.now(), userAccountService.findUserById(id), tagsUsedDto.getTags());
+            PhotoMetaData photoMetaData = photoMetaDataService.createPhotoMetaData(LocalDate.now(), userAccountService.findUserById(id), tagsUsedDto.getTags(), geolocation);
             LoggingController.logInfo(tagsUsedDto.getTags().toString());
             userAccountService.addPhotoToOwnedAlbum(userAccountService.findUserById(id), photoMetaData, file);
             model.addAttribute("user", userAccountService.findUserById(id));
@@ -166,5 +173,101 @@ public class PhotoController {
             return "view-albums";
         }
     }
+
+    @RequestMapping(value = "/edit-photo-data/{id}/{photoId}", method = RequestMethod.GET)
+    public String editShowPhotoMetaDataGeolocation(@PathVariable Long id, @PathVariable Long photoId, Model model){
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("geolocation");
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "edit-photo-data";
+    }
+
+
+    @RequestMapping(value = "/edit-photo-geolocation/{id}/{photoId}", method = RequestMethod.POST)
+    public String editPhotoMetaDataGeolocation(@PathVariable Long id, @PathVariable Long photoId,
+                                               @RequestParam("geolocation") String geolocation, Model model){
+
+        PhotoMetaData photoMetaData = photoMetaDataService.findPhotoMetaDataIdByPhotoId(photoId);
+        photoMetaDataService.updatePhotoMetaDataGeolocation(photoMetaData.getMetaDataId(), geolocation);
+
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("geolocation");
+
+        return "edit-photo-data";
+    }
+
+    @RequestMapping(value="/edit-photo-tag/{id}/{photoId}", method = RequestMethod.POST)
+    public String editPhotoMetaDataTags(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("tags") Long tags,
+                                        @RequestParam("newTagName") String newTagName, Model model){
+
+        photoMetaDataService.updatePhotoTag(tags, newTagName);
+        //photoMetaDataService.updatePhotoTag(photoMetaData.getMetaDataId(), photoMetaDataService.findPhotoMetaDataTagByTagName(oldTagName),
+        // newTagName);
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        model.addAttribute("geolocation");
+
+        return "edit-photo-data";
+    }
+
+    @RequestMapping(value = "/search-photo", method = RequestMethod.GET)
+    public String showSearchPhotoByTagName(Model model){
+        if (session.getAttribute("user")!= null){
+            model.addAttribute("user", session.getAttribute("user"));
+            model.addAttribute("photo");
+            model.addAttribute("geolocation");
+            model.addAttribute("tags", photoMetaDataService.viewAllTags());
+            model.addAttribute("tagsUsed", new TagsUsedDto());
+            return "search-photo";
+        } else {
+            return "log-in";
+        }
+    }
+
+    @RequestMapping(value="/search-photo-geolocation/{id}", method = RequestMethod.POST)
+    public String searchPhotoByGeolocation(@PathVariable Long id, @RequestParam("geolocation") String geolocation, Model model){
+
+        Long photoId = photoMetaDataService.searchPhotoByGeolocation(geolocation, id);
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("geolocation", geolocation);
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "search-photo";
+    }
+
+    @RequestMapping(value="/search-photo-tag/{id}", method = RequestMethod.POST)
+    public String searchPhotoByTag(@PathVariable Long id, @RequestParam("tags") Long tag, Model model){
+
+        Long photoId = photoMetaDataService.searchPhotoByTag(tag, id);
+        model.addAttribute("photo", photoService.findPhotoById(photoId) );
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("geolocation");
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "search-photo";
+    }
+
+
+
+//    @RequestMapping(value="/download-photo/{id}/{photoId}", method = RequestMethod.GET)
+//    public String showDownloadPhoto(@PathVariable Long id, @PathVariable Long photoId, Model model){
+//        model.addAttribute("user", userAccountService.findUserById(id));
+//        model.addAttribute("photo", photoService.findPhotoById(photoId));
+//        return "view-photo";
+//    }
+//
+//    @RequestMapping(value="/download-photo/{id}/{photoId}", method = RequestMethod.POST)
+//    public String downloadPhoto(@PathVariable Long id, @PathVariable Long photoId, Model model){
+//
+//        model.addAttribute("user", userAccountService.findUserById(id));
+//        model.addAttribute("photo", photoService.findPhotoById(photoId));
+//        return "view-photo";
+//    }
 
 }

@@ -49,7 +49,7 @@ public class PhotoDto {
 //        if(photo.getPhotoId().equals(photoId))
 //            return photo.getPhotoLink();
 //        else
-//            return "Photo ont found";//TODO: do proper exception handinling here XD
+//            return "Photo ont found";//
 //
 //    }
 

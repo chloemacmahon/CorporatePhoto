@@ -9,9 +9,11 @@ import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.exception.CouldNotDeletePhotoException;
 import za.ac.nwu.ac.domain.exception.PhotoDoesNotExistException;
 import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
+import za.ac.nwu.ac.domain.exception.PhotoMetaDataDoesNotExistException;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.album.Album;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
+import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 import za.ac.nwu.ac.logic.configuration.PhotoStorageConfig;
 import za.ac.nwu.ac.logic.service.AlbumService;
 import za.ac.nwu.ac.logic.service.PhotoMetaDataService;
@@ -195,6 +197,15 @@ public class PhotoServiceImpl implements PhotoService {
             return photoRepository.findById(id).get();
         } catch (Exception e) {
             throw new PhotoDoesNotExistException();
+        }
+    }
+
+    public PhotoMetaData findPhotoMetaDataId(Long id){
+        try{
+            Photo photo = photoRepository.findById(id).get();
+            return photo.getPhotoMetaData();
+        } catch (Exception e){
+            throw new PhotoMetaDataDoesNotExistException();
         }
     }
 

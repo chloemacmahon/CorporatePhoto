@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Photo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/general_style.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+
+<div class="center">
+    <img th:src="${photo.photoLink}">
+</div>
+
+<div>
+    <form th:action="@{/edit-photo-geolocation/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+        <h3>Edit Photo Metadata</h3>
+        <h3 style="text-align:left">Location</h3>
+        <label th:text="'Current Location: ' + ${photo.photoMetaData.geolocation}"></label><br>
+        <label for="geolocation"> Geolocation: </label>
+        <input type="text" id="geolocation" name="geolocation"><br><br>
+        <button type="submit" class="button">Edit Geolocation</button>
+    </form>
+</div>
+<form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+      method="post">
+    <br>
+    <h3 style="text-align:left">Location</h3>
+    <h3 style="text-align:left">Please select tags you would like edit</h3>
+    <div th:if="${tags.size() > 0}">
+        <table>
+            <tr th:each="tag, it : ${tags}">
+                <input type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
+                <label for="${{tag}}" th:text="${tag.tagName}"></label><br><br>
+            </tr>
+        </table>
+        <label for="newTagName">New Tag Name: </label>
+        <input type="text" id="newTagName" name="newTagName"><br><br>
+    </div>
+    <button type="submit" class="button">Edit Tag</button>
+</form>
+
+
+<div class="container" th:replace="fragments/footer :: footer">
+    <p>footer</p>
+</div>
+</body>
+</html>
