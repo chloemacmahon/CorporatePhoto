@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet"
-          th:href="@{/css/general_style.css}">
+          th:href="@{/css/view-photo.css}">
 </head>
 <body>
 <div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
@@ -15,41 +15,64 @@
     <p th:text="#{couldNotCreateTag.hasErrors}">Error Message</p>
 </div>
 
-<div class="center">
-    <img th:src="${photo.photoLink}">
-</div>
-<div th:if="${ownedPhoto != null}" class="center">
-    <h3>Please enter the email address of the person that you want to share this file to</h3>
-    <form th:action="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
-        <label for="email">Email: </label>
-        <input type="email" id="email" name="email"><br><br>
-        <button type="submit" class="button">Share Image</button>
-        <!--    <a class="button" type="button" th:href="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Create Album</a>-->
-    </form>
-</div>
-<div th:if="${user.albums.size() > 0}" class="center">
-    <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
-          method="post">
-        <h3>Choose album that you want to move the image to</h3>
-        <select id="albumName" name="albumName">
-            <option th:each="album : ${user.albums}"
-                    th:text="${album.albumName}"
-                    th:value="${album.albumName}"
-                    th:selected="${albumName == album.albumName}">
-            </option>
-        </select>
-        <br>
-        <br>
-        <button type="submit" class="button">Add Image To Album</button>
-        <br>
-    </form>
-</div>
-<div class="center">
+<div class="box">
+    <div class="center">
+        <img th:src="${photo.photoLink}">
+    </div>
     <br>
-    <a class="button" type="button"
-       th:href="@{/delete-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Delete Photo</a>
-    <br>
+    <table class="table">
+        <tr>
+            <td>
+                <div th:if="${ownedPhoto != null}" class="center">
+                    <h3>Please enter the email address of the person that you want to share this file to</h3>
+                    <form th:action="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+                        <label class="lbl" for="email">Email: </label>
+                        <input class="txt" type="email" id="email" name="email"><br>
+                        <button class="button" type="submit" >Share Image</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div th:if="${user.albums.size() > 0}" class="center">
+                    <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+                          method="post">
+                        <h3>Choose album that you want to move the image to</h3>
+                        <select id="albumName" name="albumName">
+                            <option th:each="album : ${user.albums}"
+                                    th:text="${album.albumName}"
+                                    th:value="${album.albumName}"
+                                    th:selected="${albumName == album.albumName}">
+                            </option>
+                        </select>
+                        <br>
+                        <br>
+                        <button type="submit" class="button">Add Image To Album</button>
+                        <br>
+                    </form>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div class="center">
+                    <a class="button" type="button"
+                       th:href="${photo.photoLink}" download="${photo.photoLink} + '.jpg'">Download Photo</a>
+
+                    <a class="button" type="button"
+                       th:href="@{/edit-photo-data/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Edit Photo Data</a>
+
+                    <a class="button" type="button"
+                       th:href="@{/delete-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Delete Photo</a>
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
+
 <div class="container" th:replace="fragments/footer :: footer">
     <p>footer</p>
 </div>

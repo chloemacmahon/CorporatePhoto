@@ -1,17 +1,20 @@
 
-
-body {
-
+body{
+    margin: 0;
+    padding: 0;
+    background-size: cover;
 }
 
 .container{
    padding:0;
    margin:0;
-   height: 100px;
+   height: 40px;
    bottom: 0px;
    position: fixed;
    background-color: DarkOliveGreen;
    color: white;
+   padding-top: 10px;
+
 }
 
 .banner {
@@ -84,7 +87,7 @@ img {
      padding: 0px 0px 0px 0px;
      text-shadow: #444 0 1px 1px;
  }
-.button {
+.buttonOrg {
   background-color: Olive;
   border: none;
   color: white;
@@ -94,6 +97,30 @@ img {
   display: inline-block;
   font-size: 16px;
 }
+.button{
+   width: 135px;
+   height: 50px;
+   border: none;
+   border-radius: 10px;
+   outline: none;
+   font-size: 16px;
+   text-align:center;
+   color: #fff;
+   background-color: Olive; /**/
+   cursor: pointer;
+   transition: .3s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .hidden-game-tile {
   min-width: 90px;
@@ -148,15 +175,6 @@ img {
     float: left;
 }
 
-/*.top-navigation a.active {
-  background-color: #04AA6D;
-  color: white;
-}*/
-
-.health-progress-bar {
-    color: yellow;
-}
-
 :root {
   --color-white: #fff;
   --color-black: #333;
@@ -173,11 +191,7 @@ img {
   box-sizing: border-box;
 }
 
-body {
-  margin: 2rem;
-  font-family: 'Open Sans', sans-serif;
-  color: var(--color-black);
-}
+
 section {
   margin-bottom: 2rem;
 }

@@ -14,7 +14,7 @@ public interface PhotoMetaDataService {
 
     public String readPhotoMetaDataGeolocation(Long photoId, Long metaDataId);
 
-    PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags);
+    PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation);
 
     Tag createTag(String tagName, String tagDescription);
 
@@ -28,11 +28,21 @@ public interface PhotoMetaDataService {
 
     void updatePhotoTag (Long photoMetaDataId, Long tagId, String newTagName);
 
+    void updatePhotoTag (Long tagId, String newTagName);
+
+    Long findPhotoMetaDataTagByTagName(String tagName);
+
     void removePhotoTagFromPhotoMetaData (Long photoMetaDataId, Long tagId);
 
     void deletePhotoTagFromDatabase (Long photoMetaDataId, Long tagId);
 
-    List<Photo> searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner);
+    Long searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner);
 
-    public List<Photo> searchPhotoByGeolocation(String geolocation, Long owner);
+    Long searchPhotoByGeolocation(String geolocation, Long owner);
+
+    Long searchPhotoByTagName(String tagName);
+
+    public Long searchPhotoByTag(Long tagId, Long owner);
+
+    PhotoMetaData findPhotoMetaDataIdByPhotoId(Long photoId);
 }

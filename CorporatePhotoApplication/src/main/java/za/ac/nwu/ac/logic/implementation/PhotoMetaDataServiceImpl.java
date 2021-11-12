@@ -3,6 +3,7 @@ package za.ac.nwu.ac.logic.implementation;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.nwu.ac.domain.exception.*;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
@@ -49,8 +50,8 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
-    public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags) {
-        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags);
+    public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation) {
+        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags, geolocation);
         return photoMetaDataRepository.save(photoMetaData);
     }
 
@@ -143,6 +144,31 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
+    public void updatePhotoTag (Long tagId, String newTagName){
+        try{
+            if(tagRepository.findById(tagId).isPresent())
+            {
+                Tag tag = tagRepository.findById(tagId).get();
+                tag.setTagName(newTagName);
+                tagRepository.save(tag);
+            }
+            else{
+                throw new CouldNotFindTagException();
+            }
+        }catch (Exception e)
+        {
+            throw new CouldNotUpdatePhotoTagException();
+        }
+    }
+
+    public Long findPhotoMetaDataTagByTagName(String tagName){
+        try{
+            return tagRepository.findTagIdByTagNameLong(tagName);
+        } catch (Exception e) {
+            throw new CouldNotFindTagException("Could not find tag: " +tagName+ " in Database");
+        }
+    }
+
     public void removePhotoTagFromPhotoMetaData (Long photoMetaDataId, Long tagId){
         try{
             if(photoMetaDataRepository.findById(photoMetaDataId).isPresent()){
@@ -190,14 +216,40 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
-    public List<Photo> searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner){
-        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByDateCaptured(dateCaptured, owner);
+    public Long searchPhotoByDateCaptured(LocalDate dateCaptured, Long owner){
+        Long photoList = photoMetaDataRepository.findPhotoMetaDataIdByDateCaptured(dateCaptured, owner);
         return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
     }
 
-    public List<Photo> searchPhotoByGeolocation(String geolocation, Long owner){
-        List<Photo> photoList = photoMetaDataRepository.findPhotoMetaDataIdByGeolocation(geolocation, owner);
+    //@Transactional
+    public Long searchPhotoByGeolocation(String geolocation, Long owner){
+        Long photoList = photoMetaDataRepository.findPhotoMetaDataIdByGeolocation(geolocation, owner);
         return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+    }
+    public Long searchPhotoByTagName(String tagName){
+        Long photoList = photoMetaDataRepository.findPhotoMetaDataIdByTagId(tagRepository.findTagIdByTagNameLong(tagName));
+        return photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoList);
+    }
+    public Long searchPhotoByTag(Long tagId, Long owner){
+        Long photoMetaDataId = photoMetaDataRepository.findPhotoMetaDataIdByTagId(tagId);
+        Long photoId = photoMetaDataRepository.findPhotoIdByPhotoMetaDataId(photoMetaDataId);
+        return photoId;
+    }
+
+    public PhotoMetaData findPhotoMetaDataIdByPhotoId(Long photoId)
+    {
+        try{
+            if(photoRepository.findById(photoId).isPresent()){
+                Photo photo = photoRepository.findById(photoId).get();
+                return photo.getPhotoMetaData();
+            }
+            else{
+                throw new CouldNotFindPhotoMetaDataException();
+            }
+
+        } catch (Exception e){
+            throw new CouldNotFindPhotoMetaDataException();
+        }
     }
 
 //    public List<Photo> searchPhotoByTag(Long tagId, Long owner){
