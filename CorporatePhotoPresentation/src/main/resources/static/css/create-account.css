@@ -3,6 +3,78 @@ body{
     padding: 0;
     background-size: cover;
 }
+.container{
+   padding:0;
+   margin:0;
+   height: 40px;
+   bottom: 0px;
+   position: fixed;
+   background-color: DarkOliveGreen;
+   color: white;
+   padding-top: 10px;
+   width: 100%;
+}
+
+.banner {
+    height: 100px;
+    background-color: Gainsboro;
+    color: white;
+    text-align: center;
+    font-size: 65px;
+    font-weight: normal;
+    letter-spacing: 3px;
+    margin: 0;
+    padding: 0px 0px 0px 0px;
+    text-shadow: #444 1px 1px 1px;
+}
+
+.top-navigation {
+    background-color: DarkOliveGreen;
+    overflow: hidden;
+}
+
+.top-navigation a {
+  float: left;
+  color: #f2f2f2;/*
+  background-color: MediumAquaMarine;*/
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.top-navigation a:hover {
+  background-color: Olive;
+  color: black;
+}
+
+.center {
+    text-align:center;
+}
+
+.left {
+    float: left;
+}
+:root {
+  --color-white: #fff;
+  --color-black: #333;
+  --color-gray: #75787b;
+  --color-gray-light: #bbb;
+  --color-gray-disabled: #e8e8e8;
+  --color-green: #53a318;
+  --color-green-dark: #383;
+  --font-size-small: .75rem;
+  --font-size-default: .875rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+section {
+  margin-bottom: 2rem;
+}
 
 h1 {
     height: 200px;

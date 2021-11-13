@@ -2,7 +2,8 @@
 body{
     margin: 0;
     padding: 0;
-    background-size: cover;
+    box-sizing: border-box;
+    /*background-size: cover;*/
 }
 
 .container{
@@ -129,6 +130,7 @@ h3l {
 table {
     margin-left: auto;
     margin-right: auto;
+    width: 90%;
 }
 img {
     text-align: left;
@@ -159,7 +161,7 @@ img {
   font-size: 16px;
 }
 .box{
-    position: absolute;
+    position: fixed;
     top: 56%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -193,31 +195,9 @@ img {
 .button:hover {
     background-color: DarkOliveGreen;
 }
-.btnBottom{
-   width: 20%;
-   height: 50px;
-   border: none;
-   border-radius: 10px;
-   outline: none;
-
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-
-   font-size: 16px;
-   font-color: white;
-   text-align: center;
-   color: #fff;
-   background-color: Olive; /**/
-   cursor: pointer;
-   transition: .3s ease-in-out;
-}.btnBottom:hover {
-     background-color: DarkOliveGreen;
- }
 
 .lbl {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     color: #fff;
 }
@@ -234,3 +214,76 @@ img {
     background-color: transparent;
     cursor: pointer;
 }
+
+.mainContainer{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /*justify-content: space-between;*/;
+    align-items: stretch; /*flex-start, flex-end, stretch, base-line*/
+}
+.mainContainerItem{
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    width: 33%;
+    /*flex-basis: 100%*/
+}
+.mainContainerItemBody{
+    margin: 10px;
+    padding: 0;
+    /*align-self: center;*/
+
+    background: rgba(0,0,0,0.5);
+    border-radius:10px;
+}
+
+.buttonContainerRow{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /*justify-content: space-between;*/
+    align-items: stretch;
+}
+.buttonContainerCol{
+     padding: 5px;
+     margin: 0;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     /*justify-content: space-between;*/;
+     align-items: stretch;
+     font: #fff;
+ }
+
+.btnBottom{
+   width: 15%;
+   height: 50px;
+   border: none;
+   border-radius: 10px;
+   outline: none;
+
+   margin: 5px;
+   padding: 10px;
+
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-self: center;
+
+   font-size: 16px;
+   font-color: white;
+   text-align: center;
+   color: #fff;
+   background-color: Olive; /**/
+   cursor: pointer;
+   transition: .3s ease-in-out;
+}
+.btnBottom:hover {
+     background-color: DarkOliveGreen;
+ }
+
