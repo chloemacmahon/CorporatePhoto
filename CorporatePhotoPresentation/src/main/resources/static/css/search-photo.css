@@ -1,25 +1,22 @@
-
 body{
     margin: 0;
     padding: 0;
     background-size: cover;
+    background-color: #181A1B;
 }
-
-.container{
-   padding:0;
-   margin:0;
-   height: 40px;
-   bottom: 0px;
+.footer{
    position: fixed;
-   background-color: DarkOliveGreen;
+   bottom: 0px;
+   width: 100%;
+   height: 40px;
+
+   background-color: #34485F;
    color: white;
    padding-top: 10px;
-
 }
-
 .banner {
     height: 100px;
-    background-color: Gainsboro;
+    background-color: #2A2E2F;
     color: white;
     text-align: center;
     font-size: 65px;
@@ -31,7 +28,7 @@ body{
 }
 
 .top-navigation {
-    background-color: DarkOliveGreen;
+    background-color: #34485F;
     overflow: hidden;
 }
 
@@ -46,7 +43,7 @@ body{
 }
 
 .top-navigation a:hover {
-  background-color: Olive;
+  background-color: #778DA9;
   color: black;
 }
 
@@ -136,7 +133,7 @@ img {
      text-shadow: #444 0 1px 1px;
  }
 .buttonOrg {
-  background-color: Olive;
+  background-color:  #475A71;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -153,7 +150,7 @@ img {
     width: 60%;
     padding: 40px 40px;
     box-sizing: border-box;
-    background: rgba(0,0,0,0.5);
+    background: #2A2E2F;
     border-radius:10px;
 }
 .boxHeading{
@@ -162,7 +159,7 @@ img {
     font-size: 25px;
     text-align: center;
     width: 100%;
-    color: rgb(255, 255, 255);
+    color: #fff;
 }
 .button{
    width: 100%;
@@ -173,12 +170,12 @@ img {
    font-size: 16px;
    text-align:center;
    color: #fff;
-   background-color: Olive; /**/
+   background-color: #475A71;
    cursor: pointer;
    transition: .3s ease-in-out;
 }
 .button:hover {
-    background-color: DarkOliveGreen;
+    background-color: #0D1B2A;
 }
 .lbl {
     font-weight: bold;

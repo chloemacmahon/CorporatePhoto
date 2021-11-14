@@ -3,7 +3,7 @@ body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /*background-size: cover;*/
+    background-color: #181A1B;
 }
 
 .container{
@@ -12,7 +12,7 @@ body{
    height: 40px;
    bottom: 0px;
    position: fixed;
-   background-color: DarkOliveGreen;
+   background-color: #34485F;
    color: white;
    padding-top: 10px;
    width: 100%;
@@ -20,7 +20,7 @@ body{
 
 .banner {
     height: 100px;
-    background-color: Gainsboro;
+    background-color: #2A2E2F;
     color: white;
     text-align: center;
     font-size: 65px;
@@ -32,7 +32,7 @@ body{
 }
 
 .top-navigation {
-    background-color: DarkOliveGreen;
+    background-color: #34485F;
     overflow: hidden;
 }
 
@@ -47,7 +47,7 @@ body{
 }
 
 .top-navigation a:hover {
-  background-color: Olive;
+  background-color: #778DA9;
   color: black;
 }
 
@@ -161,13 +161,13 @@ img {
    font-size: 16px;
    text-align:center;
    color: #fff;
-   background-color: Olive; /**/
+   background-color: #475A71;
    cursor: pointer;
    transition: .3s ease-in-out;
    align-self: center;
 }
 .btnRight:hover {
-    background-color: DarkOliveGreen;
+    background-color: #0D1B2A;
 }
 .button{
    width: 25%;
@@ -178,12 +178,12 @@ img {
    font-size: 16px;
    text-align:center;
    color: #fff;
-   background-color: Olive; /**/
+   background-color: #475A71;
    cursor: pointer;
    transition: .3s ease-in-out;
 }
 .button:hover {
-    background-color: DarkOliveGreen;
+    background-color: #0D1B2A;
 }
 .btnBottom{
    width: 25%;
@@ -204,12 +204,12 @@ img {
    font-color: white;
    text-align: center;
    color: #fff;
-   background-color: Olive; /**/
+   background-color: #475A71;
    cursor: pointer;
    transition: .3s ease-in-out;
 }
 .btnBottom:hover {
-     background-color: DarkOliveGreen;
+     background-color: #0D1B2A;
  }
 
 
@@ -254,7 +254,7 @@ img {
     padding: 0;
     /*align-self: center;*/
 
-    background: rgba(0,0,0,0.5);
+    background-color: #2A2E2F;
     border-radius:10px;
 }
 
