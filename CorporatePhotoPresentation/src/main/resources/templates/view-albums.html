@@ -21,6 +21,9 @@
     <div th:if="${updateAlbumError != null}" class="alert alert-danger">
         <p th:text="#{updateAlbum.hasErrors}">Error Message</p>
     </div>
+    <div th:if="${shareFileError != null}" class="alert alert-danger">
+        <p th:text="#{fileShare.hasErrors}">Error Message</p>
+    </div>
 </div>
 <div class="mainContainer">
     <div class="mainContainerItemBody mainContainerItem">
@@ -49,6 +52,11 @@
                     <div>
                         <h3 style="text-align:left">Location</h3>
                         <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                    </div>
+                    <div>
+                        <h3 style="text-align:left">Sharable Link</h3>
+                        <label class ="lbl"></label>
+                        <label class ="lbl" th:text="${photo.sharablePhotoLink}"></label>
                     </div>
                 </td>
             </tr>
@@ -82,13 +90,20 @@
                         <h3 style="text-align:left">Location</h3>
                         <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
                     </div>
+
                 </td>
             </tr>
+                <form th:action="@{/add-shared-photo-with-link/{id}(id=${user.userAccountId})}" method="post">
+                    <h3>Enter a sharable link to add a photo</h3>
+                    <label class="lbl" for="sharableLink">Link:  </label><br>
+                    <input class="txt" type="text" id="sharableLink" name="sharableLink"><br><br>
+                    <button class="button" type="submit">Add photo</button>
+                </form>
         </table>
     </div>
 
-    <div class="mainContainerItemBody mainContainerItem">
-        <table th:each="album : ${user.albums}">
+    <div>
+        <table class="mainContainerItemBody mainContainerItem" th:each="album : ${user.albums}">
             <tr>
                 <h3>Your Albums</h3>
             </tr>
@@ -119,6 +134,12 @@
                         <h3 style="text-align:left">Location</h3>
                         <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
                     </div>
+
+                    <div th:if="${user.userAccountId == photo.photoMetaData.owner.userAccountId}">
+                        <h3 style="text-align:left">Sharable Link</h3>
+                        <label class ="lbl"></label>
+                        <label class ="lbl" th:text="${photo.sharablePhotoLink}"></label>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -136,7 +157,7 @@
         <a type="button" th:href="@{/edit-albums/{id}(id=${user.userAccountId})}">Edit Albums</a>
     </div>
 </div>
-
+<br><br><br>
 <div class="footer" th:replace="fragments/footer :: footer">
     <label>footer</label>
 </div>

@@ -15,6 +15,7 @@ import za.ac.nwu.ac.domain.exception.CouldNotDeletePhotoException;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
+import za.ac.nwu.ac.domain.persistence.photo.Tag;
 import za.ac.nwu.ac.logic.service.AlbumService;
 import za.ac.nwu.ac.logic.service.PhotoMetaDataService;
 import za.ac.nwu.ac.logic.service.PhotoService;
@@ -22,6 +23,7 @@ import za.ac.nwu.ac.logic.service.UserAccountService;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Controller
 @Component
@@ -106,8 +108,23 @@ public class PhotoController {
             model.addAttribute("photo", photoService.findPhotoById(photoId));
             return "view-albums";
         } catch (Exception e){
+            model.addAttribute("shareFileError",true);
+            model.addAttribute("user", userAccountService.findUserById(id));
+            return "view-albums";
+        }
+    }
+
+    @RequestMapping(value = "/add-shared-photo-with-link/{id}", method = RequestMethod.POST)
+    public String sharePhoto(@PathVariable Long id, @RequestParam("sharableLink") String sharableLink, Model model) {
+        try {
+            userAccountService.sharePhotoWithLink(id, sharableLink);
+            model.addAttribute("user", userAccountService.findUserById(id));
+            return "view-albums";
+        } catch (Exception e){
             LoggingController.logError(e.getMessage());
-            return showViewPhoto(id, photoId, model);
+            model.addAttribute("shareFileError",true);
+            model.addAttribute("user", userAccountService.findUserById(id));
+            return "view-albums";
         }
     }
 
@@ -175,13 +192,29 @@ public class PhotoController {
     }
 
     @RequestMapping(value = "/edit-photo-data/{id}/{photoId}", method = RequestMethod.GET)
-    public String editShowPhotoMetaDataGeolocation(@PathVariable Long id, @PathVariable Long photoId, Model model){
+    public String showEditPhotoMetaData(@PathVariable Long id, @PathVariable Long photoId, Model model){
         model.addAttribute("user", userAccountService.findUserById(id));
         model.addAttribute("photo", photoService.findPhotoById(photoId));
         model.addAttribute("geolocation");
+        LoggingController.logInfo(photoService.findPhotoById(photoId).getPhotoMetaData().getTags().toString());
         model.addAttribute("tags", photoMetaDataService.viewAllTags());
         model.addAttribute("tagsUsed", new TagsUsedDto());
         return "edit-photo-data";
+    }
+
+    @RequestMapping(value = "/create-tag-edit-page/{id}/{photoId}", method = RequestMethod.POST)
+    public String createTagEditPage(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("tagName") String tagName, @RequestParam("tagDescription") String tagDescription, Model model) {
+        try {
+            photoMetaDataService.createTag(tagName, tagDescription);
+            UserAccount user = userAccountService.findUserById(id);
+            model.addAttribute("user", user);
+            LoggingController.logInfo("");
+            return showEditPhotoMetaData(id,photoId,model);
+        } catch (Exception e) {
+            model.addAttribute("couldNotCreateTag", true);
+            LoggingController.logError(e.getMessage());
+            return showEditPhotoMetaData(id,photoId,model);
+        }
     }
 
 
@@ -195,17 +228,17 @@ public class PhotoController {
         model.addAttribute("user", userAccountService.findUserById(id));
         model.addAttribute("photo", photoService.findPhotoById(photoId));
         model.addAttribute("geolocation");
-
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new ArrayList<Tag>());
         return "edit-photo-data";
     }
 
     @RequestMapping(value="/edit-photo-tag/{id}/{photoId}", method = RequestMethod.POST)
-    public String editPhotoMetaDataTags(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("tags") Long tags,
-                                        @RequestParam("newTagName") String newTagName, Model model){
-
-        photoMetaDataService.updatePhotoTag(tags, newTagName);
-        //photoMetaDataService.updatePhotoTag(photoMetaData.getMetaDataId(), photoMetaDataService.findPhotoMetaDataTagByTagName(oldTagName),
-        // newTagName);
+    public String editPhotoMetaDataTags(@PathVariable Long id, @PathVariable Long photoId,  TagsUsedDto tagsUsedDto, Model model){
+        Photo photo = photoService.findPhotoById(photoId);
+        LoggingController.logInfo(tagsUsedDto.getTags().toString());
+        photo.getPhotoMetaData().setTags(tagsUsedDto.getTags());
+        photoMetaDataService.updatePhotoMetaData(photo);
         model.addAttribute("user", userAccountService.findUserById(id));
         model.addAttribute("photo", photoService.findPhotoById(photoId));
         model.addAttribute("tags", photoMetaDataService.viewAllTags());

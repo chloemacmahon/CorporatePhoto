@@ -43,6 +43,7 @@ public class UserAccount {
     }
 
     public UserAccount(String email, String encodedPassword) {
+        generateAllPhotoSharableLinks();
         this.email = email;
         this.encodedPassword = encodedPassword;
         this.albums  = new ArrayList<>();
@@ -51,6 +52,7 @@ public class UserAccount {
     }
 
     public UserAccount(String email, String name, String surname, String encodedPassword) {
+        generateAllPhotoSharableLinks();
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -61,6 +63,7 @@ public class UserAccount {
     }
 
     public UserAccount(String email, String encodedPassword, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
+        generateAllPhotoSharableLinks();
         this.email = email;
         this.encodedPassword = encodedPassword;
         this.albums = albums;
@@ -106,5 +109,12 @@ public class UserAccount {
         } catch (Exception e){
             return getUserAccountId() + getSurname() + getName() + 0;
         }
+    }
+
+    public Album generateAllPhotoSharableLinks(){
+        for (Photo photo: getOwnedPhotosAlbum().getPhotos()) {
+            photo.setSharablePhotoLink(photo.generateSharablePhotoLink());
+        }
+        return getOwnedPhotosAlbum();
     }
 }

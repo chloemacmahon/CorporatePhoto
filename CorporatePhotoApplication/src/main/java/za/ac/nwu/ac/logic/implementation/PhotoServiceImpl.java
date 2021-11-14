@@ -143,7 +143,9 @@ public class PhotoServiceImpl implements PhotoService {
     public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile, String blobName) throws IOException {
         String photoLink = uploadBlob(multiPartFile, blobName);
         Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
-        return photoRepository.save(photo);
+        Photo newPhoto = photoRepository.save(photo);
+        newPhoto.setSharablePhotoLink(newPhoto.generateSharablePhotoLink());
+        return photoRepository.save(newPhoto);
     }
 
     //TODO: The update still needs work, the approach forces you to copy the photo/file and could take long.
@@ -198,6 +200,13 @@ public class PhotoServiceImpl implements PhotoService {
         } catch (Exception e) {
             throw new PhotoDoesNotExistException();
         }
+    }
+
+    public Photo findPhotoBySharableLink(String sharableLink){
+        if (photoRepository.findPhotoBySharablePhotoLink(sharableLink) != null)
+            return photoRepository.findPhotoBySharablePhotoLink(sharableLink);
+        else
+            throw new PhotoDoesNotExistException("Sharable link invalid");
     }
 
     public PhotoMetaData findPhotoMetaDataId(Long id){

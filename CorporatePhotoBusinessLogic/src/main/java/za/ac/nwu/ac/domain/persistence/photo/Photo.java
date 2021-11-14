@@ -18,43 +18,46 @@ public class Photo {
     @Column(unique = true)
     private String photoLink;
 
+    //@Column(unique = true)
+    private String sharablePhotoLink;
+
     @OneToOne(cascade = {CascadeType.ALL})
     private PhotoMetaData photoMetaData;
 
     public Photo() {
+
     }
 
     public Photo(PhotoMetaData photoMetaData) {
         this.photoMetaData = photoMetaData;
+        setSharablePhotoLink(generateSharablePhotoLink());
     }
 
     public Photo(String photoLink, PhotoMetaData photoMetaData) {
         this.photoLink = photoLink;
         this.photoMetaData = photoMetaData;
+        setSharablePhotoLink(generateSharablePhotoLink());
     }
 
-    public Long getPhotoId() {
-        return photoId;
-    }
-
-    public void setPhotoId(Long photoId) {
-        this.photoId = photoId;
-    }
-
-    public String getPhotoLink() {
-        return photoLink;
-    }
-
-    public void setPhotoLink(String photoLink) {
+    public Photo(String photoLink, String sharablePhotoLink, PhotoMetaData photoMetaData) {
         this.photoLink = photoLink;
-    }
-
-    public PhotoMetaData getPhotoMetaData() {
-        return photoMetaData;
-    }
-
-    public void setPhotoMetaData(PhotoMetaData photoMetaData) {
+        this.sharablePhotoLink = sharablePhotoLink;
         this.photoMetaData = photoMetaData;
+    }
+
+    public void setSharablePhotoLink(String sharablePhotoLink) {
+        this.sharablePhotoLink = generateSharablePhotoLink();
+    }
+
+    public void setSharablePhotoLink() {
+        this.sharablePhotoLink = generateSharablePhotoLink();
+    }
+
+    public String generateSharablePhotoLink(){
+        if (sharablePhotoLink == null) {
+            return "sharable/" + getPhotoMetaData().getOwner().getSurname() + getPhotoMetaData().getOwner().getName() + Math.random();
+        }else
+            return "sharable/" + getPhotoMetaData().getOwner().getSurname() + getPhotoMetaData().getOwner().getName() +photoId;
     }
 
     @Override

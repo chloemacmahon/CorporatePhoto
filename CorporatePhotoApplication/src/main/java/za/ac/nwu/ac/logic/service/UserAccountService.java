@@ -26,6 +26,8 @@ public interface UserAccountService {
 
     void sharePhotoToUser(UserAccount ownerAccount, Long photoId, UserAccount sharedAccount);
 
+    void sharePhotoWithLink(Long id, String sharableLink);
+
     void addPhotoToAlbum(UserAccount owner, Photo photo, String albumName);
 
     void addPhotoToAlbum(UserAccount owner, MultipartFile photo, String albumName);

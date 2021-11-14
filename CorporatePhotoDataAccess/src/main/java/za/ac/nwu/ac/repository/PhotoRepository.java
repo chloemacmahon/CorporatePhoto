@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
+    Photo findPhotoBySharablePhotoLink(String sharablePhotoLink);
 }
