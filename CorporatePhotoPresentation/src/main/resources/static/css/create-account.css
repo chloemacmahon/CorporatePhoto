@@ -2,6 +2,78 @@ body{
     margin: 0;
     padding: 0;
     background-size: cover;
+    background-color: #181A1B;
+}
+.footer{
+   position: fixed;
+   bottom: 0px;
+   width: 100%;
+   height: 40px;
+
+   background-color: #34485F;
+   color: white;
+   padding-top: 10px;
+}
+
+.banner {
+    height: 100px;
+    background-color: #2A2E2F;
+    color: white;
+    text-align: center;
+    font-size: 65px;
+    font-weight: normal;
+    letter-spacing: 3px;
+    margin: 0;
+    padding: 0px 0px 0px 0px;
+    text-shadow: #444 1px 1px 1px;
+}
+
+.top-navigation {
+    background-color: #34485F;
+    overflow: hidden;
+}
+
+.top-navigation a {
+  float: left;
+  color: #f2f2f2;/*
+  background-color: MediumAquaMarine;*/
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.top-navigation a:hover {
+  background-color: #778DA9;
+  color: black;
+}
+
+.center {
+    text-align:center;
+}
+
+.left {
+    float: left;
+}
+:root {
+  --color-white: #fff;
+  --color-black: #333;
+  --color-gray: #75787b;
+  --color-gray-light: #bbb;
+  --color-gray-disabled: #e8e8e8;
+  --color-green: #53a318;
+  --color-green-dark: #383;
+  --font-size-small: .75rem;
+  --font-size-default: .875rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+section {
+  margin-bottom: 2rem;
 }
 
 h1 {
@@ -103,7 +175,7 @@ img {
     width: 350px;
     padding: 40px 40px;
     box-sizing: border-box;
-    background: rgba(0,0,0,0.5);
+    background-color: #2A2E2F;
     border-radius:10px;
 }
 .boxHeading{
@@ -112,10 +184,10 @@ img {
     font-size: 25px;
     text-align: center;
     width: 100%;
-    color: rgb(255, 255, 255);
+    color: #fff;
 }
 .button {
-  background-color: Olive;
+  background-color: #475A71;
   border: none;
   color: white;
   padding: 5px 5px 5px 5px;
@@ -133,12 +205,12 @@ img {
     outline: none;
     font-size: 16px;
     color: #fff;
-    background-color: Olive; /**/
+    background-color: #475A71;
     cursor: pointer;
     transition: .3s ease-in-out;
 }
 .btn:hover {
-    background-color: DarkOliveGreen;
+    background-color: #0D1B2A;
 }
 .lbl {
     font-weight: bold;

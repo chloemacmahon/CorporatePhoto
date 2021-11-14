@@ -2,6 +2,7 @@ body{
     margin: 0;
     padding: 0;
     background-size: cover;
+    background-color: #E3F2FD;
 }
 
 .container{
@@ -16,7 +17,7 @@ body{
 
 .banner {
     height: 100px;
-    background-color: Gainsboro;
+    background-color: #E0E1DD;
     color: white;
     text-align: center;
     font-size: 65px;
@@ -26,7 +27,34 @@ body{
     padding: 0px 0px 0px 0px;
     text-shadow: #444 1px 1px 1px;
 }
+.top-navigation {
+    background-color: #415A77;
+    overflow: hidden;
+}
 
+.top-navigation a {
+  float: left;
+  color: #f2f2f2;/*
+  background-color: MediumAquaMarine;*/
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  margin: auto;
+}
+
+.top-navigation a:hover {
+  background-color: #778DA9;
+  color: black;
+}
+
+.center {
+    text-align:center;
+}
+
+.left {
+    float: left;
+}
 h1 {
     height: 200px;
     background: DarkSeaGreen;
@@ -78,34 +106,7 @@ table {
      padding: 0px 0px 0px 0px;
      text-shadow: #444 0 1px 1px;
  }
-.top-navigation {
-    background-color: DarkOliveGreen;
-    overflow: hidden;
-}
 
-.top-navigation a {
-  float: left;
-  color: #f2f2f2;/*
-  background-color: MediumAquaMarine;*/
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-  margin: auto;
-}
-
-.top-navigation a:hover {
-  background-color: Olive;
-  color: black;
-}
-
-.center {
-    text-align:center;
-}
-
-.left {
-    float: left;
-}
 
 .health-progress-bar {
     color: yellow;

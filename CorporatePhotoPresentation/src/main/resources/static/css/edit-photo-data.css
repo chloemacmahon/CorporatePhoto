@@ -1,8 +1,21 @@
+
 body{
     margin: 0;
     padding: 0;
-    background-size: cover;
+    box-sizing: border-box;
     background-color: #181A1B;
+}
+
+.container{
+   padding:0;
+   margin:0;
+   height: 40px;
+   bottom: 0px;
+   position: fixed;
+   background-color: #34485F;
+   color: white;
+   padding-top: 10px;
+   width: 100%;
 }
 .footer{
    position: fixed;
@@ -14,6 +27,7 @@ body{
    color: white;
    padding-top: 10px;
 }
+
 .banner {
     height: 100px;
     background-color: #2A2E2F;
@@ -110,9 +124,23 @@ h3 {
   margin: 10px 5px 5px 5px;
   padding: 0px 0px 0px 0px;
 }
+
+h3l {
+  color: var(--color-gray);
+  text-align: left;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin: 10px 5px 5px 5px;
+  padding: 0px 0px 0px 0px;
+}
+
 table {
     margin-left: auto;
     margin-right: auto;
+    width: 90%;
 }
 img {
     text-align: left;
@@ -132,37 +160,8 @@ img {
      padding: 0px 0px 0px 0px;
      text-shadow: #444 0 1px 1px;
  }
-.buttonOrg {
-  background-color:  #475A71;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-.box{
-    position: absolute;
-    top: 53%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    padding: 40px 40px;
-    box-sizing: border-box;
-    background: #2A2E2F;
-    border-radius:10px;
-}
-.boxHeading{
-    padding:0;
-    margin:0;
-    font-size: 25px;
-    text-align: center;
-    width: 100%;
-    color: #fff;
-}
 .button{
-   width: 100%;
+   width: 20%;
    height: 50px;
    border: none;
    border-radius: 10px;
@@ -177,13 +176,15 @@ img {
 .button:hover {
     background-color: #0D1B2A;
 }
+
 .lbl {
+    font-size: 18px;
     font-weight: bold;
     color: #fff;
 }
 
 .txt {
-    width: 100%;
+    width: 25%;
     margin-bottom: 20px;
     border: none;
     border-bottom: 2px solid #fff;
@@ -194,4 +195,30 @@ img {
     background-color: transparent;
     cursor: pointer;
 }
+
+.mainContainer{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*justify-content: space-between;*/;
+    align-items: center; /*flex-start, flex-end, stretch, base-line*/
+}
+.mainContainerItem{
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+    width: 60%;
+    /*flex-basis: 100%*/
+}
+.mainContainerItemBody{
+    margin: 10px;
+    padding: 0;
+    /*align-self: center;*/
+
+    background-color: #2A2E2F;
+    border-radius:10px;
+}
+
 
