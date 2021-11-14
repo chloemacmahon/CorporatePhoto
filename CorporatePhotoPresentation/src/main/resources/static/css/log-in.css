@@ -33,7 +33,8 @@ body{
 
 .top-navigation a {
   float: left;
-  color: #f2f2f2;
+  color: #f2f2f2;/*
+  background-color: MediumAquaMarine;*/
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -44,6 +45,15 @@ body{
   background-color: #778DA9;
   color: black;
 }
+
+.center {
+    text-align:center;
+}
+
+.left {
+    float: left;
+}
+
 h1 {
     height: 200px;
     background: DarkSeaGreen;
@@ -83,12 +93,6 @@ table {
     margin-left: auto;
     margin-right: auto;
 }
-img {
-    text-align: left;
-    width:  250px;
-    height: auto;
-    object-fit: cover;
-}
 .error {
      height: 200px;
      background: Red;
@@ -101,37 +105,9 @@ img {
      padding: 0px 0px 0px 0px;
      text-shadow: #444 0 1px 1px;
  }
-.buttonOrg {
-  background-color: #475A71;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-.button{
-   width: 135px;
-   height: 50px;
-   border: none;
-   border-radius: 10px;
-   outline: none;
-   font-size: 16px;
-   text-align:center;
-   color: #fff;
-   background-color: #475A71;
-   cursor: pointer;
-   transition: .3s ease-in-out;
-}
 
-
-.center {
-    text-align:center;
-}
-
-.left {
-    float: left;
+.health-progress-bar {
+    color: yellow;
 }
 
 :root {
@@ -152,5 +128,76 @@ img {
 
 section {
   margin-bottom: 2rem;
+}
+
+img {
+    text-align: left;
+    width:  250px;
+    height: auto;
+    object-fit: cover;
+}
+
+.logInBox{
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    padding: 40px 40px;
+    box-sizing: border-box;
+    background-color: #2A2E2F;
+    border-radius:10px;
+}
+.boxHeading{
+    padding:0;
+    margin:0;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    color: #fff;
+}
+.button {
+  background-color: #475A71;
+  border: none;
+  color: white;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius:5px;
+}
+.btnLogin{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    color: #fff;
+    background-color: #475A71;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+.btnLogin:hover {
+    background-color: #0D1B2A;
+}
+.lbl {
+    font-weight: bold;
+    color: #fff;
+}
+
+.txt {
+    width: 100%;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 2px solid #fff;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+    background-color: transparent;
+    cursor: pointer;
 }
 

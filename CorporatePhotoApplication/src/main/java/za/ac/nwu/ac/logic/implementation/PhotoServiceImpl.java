@@ -9,9 +9,11 @@ import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.exception.CouldNotDeletePhotoException;
 import za.ac.nwu.ac.domain.exception.PhotoDoesNotExistException;
 import za.ac.nwu.ac.domain.exception.PhotoLinkNotFoundException;
+import za.ac.nwu.ac.domain.exception.PhotoMetaDataDoesNotExistException;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.album.Album;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
+import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 import za.ac.nwu.ac.logic.configuration.PhotoStorageConfig;
 import za.ac.nwu.ac.logic.service.AlbumService;
 import za.ac.nwu.ac.logic.service.PhotoMetaDataService;
@@ -141,7 +143,9 @@ public class PhotoServiceImpl implements PhotoService {
     public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile, String blobName) throws IOException {
         String photoLink = uploadBlob(multiPartFile, blobName);
         Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
-        return photoRepository.save(photo);
+        Photo newPhoto = photoRepository.save(photo);
+        newPhoto.setSharablePhotoLink(newPhoto.generateSharablePhotoLink());
+        return photoRepository.save(newPhoto);
     }
 
     //TODO: The update still needs work, the approach forces you to copy the photo/file and could take long.
@@ -195,6 +199,22 @@ public class PhotoServiceImpl implements PhotoService {
             return photoRepository.findById(id).get();
         } catch (Exception e) {
             throw new PhotoDoesNotExistException();
+        }
+    }
+
+    public Photo findPhotoBySharableLink(String sharableLink){
+        if (photoRepository.findPhotoBySharablePhotoLink(sharableLink) != null)
+            return photoRepository.findPhotoBySharablePhotoLink(sharableLink);
+        else
+            throw new PhotoDoesNotExistException("Sharable link invalid");
+    }
+
+    public PhotoMetaData findPhotoMetaDataId(Long id){
+        try{
+            Photo photo = photoRepository.findById(id).get();
+            return photo.getPhotoMetaData();
+        } catch (Exception e){
+            throw new PhotoMetaDataDoesNotExistException();
         }
     }
 

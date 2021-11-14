@@ -2,21 +2,22 @@ body{
     margin: 0;
     padding: 0;
     background-size: cover;
-    background-color: #181A1B;
+    background-color: #E3F2FD;
 }
-.footer{
-   position: fixed;
-   bottom: 0px;
-   width: 100%;
-   height: 40px;
 
-   background-color: #34485F;
+.container{
+   padding: 0px 0px 0px 0px;
+   margin:0;
+   height: 50px;
+   bottom: 0px;
+   position: fixed;
+   background-color: DarkOliveGreen;
    color: white;
-   padding-top: 10px;
 }
+
 .banner {
     height: 100px;
-    background-color: #2A2E2F;
+    background-color: #E0E1DD;
     color: white;
     text-align: center;
     font-size: 65px;
@@ -27,22 +28,32 @@ body{
     text-shadow: #444 1px 1px 1px;
 }
 .top-navigation {
-    background-color: #34485F;
+    background-color: #415A77;
     overflow: hidden;
 }
 
 .top-navigation a {
   float: left;
-  color: #f2f2f2;
+  color: #f2f2f2;/*
+  background-color: MediumAquaMarine;*/
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  margin: auto;
 }
 
 .top-navigation a:hover {
   background-color: #778DA9;
   color: black;
+}
+
+.center {
+    text-align:center;
+}
+
+.left {
+    float: left;
 }
 h1 {
     height: 200px;
@@ -83,12 +94,6 @@ table {
     margin-left: auto;
     margin-right: auto;
 }
-img {
-    text-align: left;
-    width:  250px;
-    height: auto;
-    object-fit: cover;
-}
 .error {
      height: 200px;
      background: Red;
@@ -101,37 +106,10 @@ img {
      padding: 0px 0px 0px 0px;
      text-shadow: #444 0 1px 1px;
  }
-.buttonOrg {
-  background-color: #475A71;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-.button{
-   width: 135px;
-   height: 50px;
-   border: none;
-   border-radius: 10px;
-   outline: none;
-   font-size: 16px;
-   text-align:center;
-   color: #fff;
-   background-color: #475A71;
-   cursor: pointer;
-   transition: .3s ease-in-out;
-}
 
 
-.center {
-    text-align:center;
-}
-
-.left {
-    float: left;
+.health-progress-bar {
+    color: yellow;
 }
 
 :root {
@@ -154,3 +132,9 @@ section {
   margin-bottom: 2rem;
 }
 
+img {
+    text-align: left;
+    width:  250px;
+    height: auto;
+    object-fit: cover;
+}

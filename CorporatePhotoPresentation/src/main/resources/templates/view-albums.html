@@ -2,120 +2,164 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.og">
 <head>
     <meta charset="UTF-8">
-    <title>Vitality activities</title>
+    <title>View Album</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet"
-          th:href="@{/css/general_style.css}">
+          th:href="@{/css/view-albums.css}">
 </head>
 <body>
-<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
-<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
-<div th:if="${photoUploadError != null}" class="alert alert-danger">
-    <p th:text="#{photoUpload.hasErrors}">Error Message</p>
-</div>
-<div th:if="${deleteAlbumError != null}" class="alert alert-danger">
-    <p th:text="#{deleteAlbum.hasErrors}">Error Message</p>
-</div>
-<div th:if="${updateAlbumError != null}" class="alert alert-danger">
-    <p th:text="#{updateAlbum.hasErrors}">Error Message</p>
-</div>
-<table>
-    <tr>
-        <h3>Your owned photos</h3>
-    </tr>
-    <tr><br></tr>
-    <tr th:each="photo : ${user.ownedPhotosAlbum.photos}">
-        <td>
-            <a type="button"
-               th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-                <img th:src="${photo.photoLink}"
-                     th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-            </a>
-            <label></label>
-        </td>
-        <td>
-            <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
-            <div th:if="${photo.photoMetaData.tags.size() > 0}">
-                <h3 style="text-align:left">Tags</h3><br>
-                <div th:each="tag : ${photo.photoMetaData.tags}">
-                    <label th:text="${tag.tagName}"></label><br>
-                </div>
-            </div>
-        </td>
-    </tr>
-</table>
-<table>
-    <tr>
-        <h3>Photos shared with you</h3>
-    </tr>
-    <tr><br></tr>
-    <tr th:each="photo : ${user.sharedPhotosAlbum.photos}">
-        <td class="left">
-            <a type="button"
-               th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-                <img th:src="${photo.photoLink}"
-                     th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-
-            </a>
-        </td>
-        <td>
-            <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
-            <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
-            <div th:if="${photo.photoMetaData.tags.size() > 0}">
-                <h3 style="text-align:left">Tags</h3><br>
-                <div th:each="tag : ${photo.photoMetaData.tags}">
-                    <label th:text="${tag.tagName}"></label><br>
-                </div>
-            </div>
-        </td>
-    </tr>
-</table>
-<table th:each="album : ${user.albums}">
-    <tr><br></tr>
-    <tr>
-        <h3 th:text="${album.albumName}"></h3>
-    </tr>
-    <tr th:each="photo, it : ${album.photos}"> <!--iterate so that 3 images are next to each other, video 42-->
-        <td>
-            <a type="button"
-               th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-                <img th:src="${photo.photoLink}"
-                     th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
-            </a>
-        </td>
-
-        <td>
-            <div th:if="${user.userAccountId != photo.photoMetaData.owner.userAccountId}">
-                <label th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
-            </div>
-            <label th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
-            <div th:if="${photo.photoMetaData.tags.size() > 0}">
-                <h3 style="text-align:left">Tags</h3><br>
-                <div th:each="tag : ${photo.photoMetaData.tags}">
-                    <label th:text="${tag.tagName}"></label><br>
-                </div>
-            </div>
-        </td>
-
-    </tr>
-</table>
-<br>
-<div class="center">
-    <a class="button" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
-    <a class="button" type="button" th:href="@{/photo-upload/{id}(id=${user.userAccountId})}">Upload Photo</a>
-    <br>
-    <div th:if="${user.albums.size() > 0}">
-        <a class="button" type="button" th:href="@{/edit-albums/{id}(id=${user.userAccountId})}">Edit Albums</a>
+<div>
+    <div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+    <div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+    <div th:if="${photoUploadError != null}" class="alert alert-danger">
+        <p th:text="#{photoUpload.hasErrors}">Error Message</p>
+    </div>
+    <div th:if="${deleteAlbumError != null}" class="alert alert-danger">
+        <p th:text="#{deleteAlbum.hasErrors}">Error Message</p>
+    </div>
+    <div th:if="${updateAlbumError != null}" class="alert alert-danger">
+        <p th:text="#{updateAlbum.hasErrors}">Error Message</p>
+    </div>
+    <div th:if="${shareFileError != null}" class="alert alert-danger">
+        <p th:text="#{fileShare.hasErrors}">Error Message</p>
     </div>
 </div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div class="container" th:replace="fragments/footer :: footer">
-    <p>footer</p>
+<div class="mainContainer">
+    <div class="mainContainerItemBody mainContainerItem">
+        <table>
+            <tr>
+                <h3>Your owned photos</h3>
+            </tr>
+            <tr><br></tr>
+            <tr th:each="photo : ${user.ownedPhotosAlbum.photos}">
+                <td>
+                    <a type="button"
+                       th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                        <img th:src="${photo.photoLink}"
+                             th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                    </a>
+                    <label></label>
+                </td>
+                <td>
+                    <label class ="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+                    <div th:if="${photo.photoMetaData.tags.size() > 0}">
+                        <h3 style="text-align:left">Tags</h3>
+                        <div th:each="tag : ${photo.photoMetaData.tags}">
+                            <label class ="lbl" th:text="${tag.tagName}"></label><br>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="text-align:left">Location</h3>
+                        <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                    </div>
+                    <div>
+                        <h3 style="text-align:left">Sharable Link</h3>
+                        <label class ="lbl"></label>
+                        <label class ="lbl" th:text="${photo.sharablePhotoLink}"></label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="mainContainerItemBody mainContainerItem">
+        <table>
+            <tr>
+                <h3>Photos shared with you</h3>
+            </tr>
+            <tr><br></tr>
+            <tr th:each="photo : ${user.sharedPhotosAlbum.photos}">
+                <td class="left">
+                    <a type="button"
+                       th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                        <img th:src="${photo.photoLink}"
+                             th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                    </a>
+                </td>
+                <td>
+                    <label class ="lbl" th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
+                    <label class ="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+                    <div th:if="${photo.photoMetaData.tags.size() > 0}">
+                        <h3 style="text-align:left">Tags</h3><br>
+                        <div th:each="tag : ${photo.photoMetaData.tags}">
+                            <label class ="lbl" th:text="${tag.tagName}"></label><br>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="text-align:left">Location</h3>
+                        <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                    </div>
+
+                </td>
+            </tr>
+                <form th:action="@{/add-shared-photo-with-link/{id}(id=${user.userAccountId})}" method="post">
+                    <h3>Enter a sharable link to add a photo</h3>
+                    <label class="lbl" for="sharableLink">Link:  </label><br>
+                    <input class="txt" type="text" id="sharableLink" name="sharableLink"><br><br>
+                    <button class="button" type="submit">Add photo</button>
+                </form>
+        </table>
+    </div>
+
+    <div>
+        <table class="mainContainerItemBody mainContainerItem" th:each="album : ${user.albums}">
+            <tr>
+                <h3>Your Albums</h3>
+            </tr>
+            <tr>
+                <h3 th:text="${album.albumName}"></h3>
+            </tr>
+            <tr th:each="photo, it : ${album.photos}"> <!--iterate so that 3 images are next to each other, video 42-->
+                <td>
+                    <a type="button"
+                       th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                        <img th:src="${photo.photoLink}"
+                             th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                    </a>
+                </td>
+
+                <td>
+                    <div th:if="${user.userAccountId != photo.photoMetaData.owner.userAccountId}">
+                        <label class ="lbl" th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
+                    </div>
+                    <label class ="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+                    <div th:if="${photo.photoMetaData.tags.size() > 0}">
+                        <h3 style="text-align:left">Tags</h3><br>
+                        <div th:each="tag : ${photo.photoMetaData.tags}">
+                            <label class ="lbl" th:text="${tag.tagName}"></label><br>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="text-align:left">Location</h3>
+                        <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                    </div>
+
+                    <div th:if="${user.userAccountId == photo.photoMetaData.owner.userAccountId}">
+                        <h3 style="text-align:left">Sharable Link</h3>
+                        <label class ="lbl"></label>
+                        <label class ="lbl" th:text="${photo.sharablePhotoLink}"></label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="buttonContainerRow">
+    <a class="btnBottom" type="button" th:href="@{/create-album/{id}(id=${user.userAccountId})}">Create Album</a>
+    <br>
+    <a class="btnBottom" type="button" th:href="@{/photo-upload/{id}(id=${user.userAccountId})}">Upload Photo</a>
+    <br>
+</div>
+<div class="buttonContainerCol">
+    <div class="btnBottom" th:if="${user.albums.size() > 0}">
+        <a type="button" th:href="@{/edit-albums/{id}(id=${user.userAccountId})}">Edit Albums</a>
+    </div>
+</div>
+<br><br><br>
+<div class="footer" th:replace="fragments/footer :: footer">
+    <label>footer</label>
 </div>
 </body>
 </html>

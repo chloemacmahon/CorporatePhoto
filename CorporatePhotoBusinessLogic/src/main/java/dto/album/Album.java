@@ -56,4 +56,10 @@ public class Album {
             throw new PhotoNotInAlbumException();
         }
     }
+
+    public void generateAllPhotoSharableLinks(){
+        for (Photo photo: getPhotos()) {
+            photo.setSharablePhotoLink(photo.generateSharablePhotoLink());
+        }
+    }
 }

@@ -2,44 +2,100 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.og">
 <head>
     <meta charset="UTF-8">
-    <title>Vitality activities</title>
+    <title>Photo Upload</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet"
-          th:href="@{/css/general_style.css}">
+          th:href="@{/css/upload-photo.css}">
 </head>
 <body>
 <div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
 <div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
-<form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/photo-upload/{id}(id=${user.userAccountId})}"
-      method="post">
-    <br>
-    <label for="file-upload">Photo upload: </label>
-    <input type="file" id="file-upload" name="file"><br><br>
-    <div th:if="${tags.size() > 0}">
-        <table>
-            <tr><h3>Please select tags you would like to use</h3></tr>
-            <tr th:each="tag, it : ${tags}">
-                <input type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
-                <label for="${{tag}}" th:text="${tag.tagName}"></label><br><br>
+
+<div class="mainContainer">
+    <div class="mainContainerItemBody mainContainerItem">
+        <table class="table">
+            <tr>
+                <td>
+                    <h3>Upload Photo</h3>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center">
+                        <form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/photo-upload/{id}(id=${user.userAccountId})}"
+                              method="post">
+                            <br>
+                            <label class="lbl" for="file-upload">Photo upload: </label>
+                            <input type="file" id="file-upload" name="file"><br><br>
+                            <div th:if="${tags.size() > 0}">
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <h2>Please enter photo Location</h2>
+                                            <label class="lbl" for="geolocation">Geolocation: </label>
+                                            <input class="txt" type="text" id="geolocation" name="geolocation"><br><br>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div th:if="${tags.size() > 0}">
+                                <table class="table">
+                                    <tr><td></td></tr>
+                                    <tr>
+                                        <h2>Please select tags you would like to use</h2>
+                                    </tr>
+                                    <tr th:each="tag, it : ${tags}">
+                                        <input class="lbl" type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
+                                        <label class="lbl" for="${{tag}}" th:text="${tag.tagName}"></label><br>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="center">
+                                <button type="submit" class="button">Upload Photo</button>
+                            </div>
+                        </form>
+                    </div>
+                </td>
             </tr>
         </table>
     </div>
-    <button type="submit" class="button">Upload Photo</button>
-</form>
-<div>
-    <form th:action="@{/create-tag/{id}(id=${user.userAccountId})}" method="post">
-        <h3>Enter details for a new tag</h3>
-        <label for="tagName">Tag name: </label>
-        <input type="text" id="tagName" name="tagName"><br><br>
-        <label for="tagDescription">Tag Description (optional): </label>
-        <input type="text" id="tagDescription" name="tagDescription"><br><br>
-        <button type="submit" class="button">Create Tag</button>
-    </form>
+
+    <div class="mainContainerItemBody mainContainerItem">
+        <table class="table">
+            <tr>
+                <td>
+                    <h3>Enter details for a new tag</h3>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="center">
+                        <form th:action="@{/create-tag/{id}(id=${user.userAccountId})}" method="post">
+                            <label class="lbl" for="tagName">Tag name:  </label><br>
+                            <input class="txt" type="text" id="tagName" name="tagName"><br>
+                            <label class="lbl" for="tagDescription">Tag Description (optional):  </label><br>
+                            <input class="txt" type="text" id="tagDescription" name="tagDescription"><br><br>
+                            <button class="button" type="submit">Create Tag</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="buttonContainerCol">
+    <div class="btnBottom">
+        <a type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
+    </div>
 </div>
 
+<br><br><br>
 
-<div class="container" th:replace="fragments/footer :: footer">
+<div class="footer" th:replace="fragments/footer :: footer">
     <p>footer</p>
 </div>
 </body>

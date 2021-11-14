@@ -10,17 +10,13 @@
     <title th:text="#{index.page.title}">Page Title</title>
 </head>
 <body>
-<div class="container" th:fragment="footer">
-    <div class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
-            <p>© 2021 - Corporate Photo</p>
-        </div>
-    </div>
+<div class="footer" th:fragment="footer">
+    <label>© 2021 - Corporate Photo</label>
 </div>
 
 
-<div class="container" th:replace="fragments/footer :: footer">
-    <p>footer</p>
+<div class="footer" th:replace="fragments/footer :: footer">
+    <label>footer</label>
 </div>
 </body>
 </html>

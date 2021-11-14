@@ -3,6 +3,7 @@ package za.ac.nwu.ac.logic.service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.PhotoDto;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
+import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 
 import java.io.IOException;
 
@@ -23,5 +24,9 @@ public interface PhotoService {
     void deletePhotoFromDatabase(Long photoId);
 
     Photo findPhotoById(Long id);
+
+    Photo findPhotoBySharableLink(String sharableLink);
+
+    PhotoMetaData findPhotoMetaDataId(Long id);
 
 }
