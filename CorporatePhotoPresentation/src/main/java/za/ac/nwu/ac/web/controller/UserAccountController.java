@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
@@ -48,8 +49,7 @@ public class UserAccountController {
         try {
             model.addAttribute("user", userAccountService.logInUser(userAccountDto));
             LoggingController.logInfo(userAccountService.logInUser(userAccountDto).getEmail());
-            session.setAttribute("user",  userAccountService.logInUser(userAccountDto));
-            return "view-albums";
+            return viewAlbums(userAccountService.logInUser(userAccountDto).getUserAccountId(),model);
         } catch (RuntimeException e){
             LoggingController.logError(e.getMessage());
             model.addAttribute("logInError", true);
@@ -72,9 +72,7 @@ public class UserAccountController {
             return "create-account";
         }
         try {
-            model.addAttribute("user", userAccountService.createUserAccount(userAccountDto));
-            session.setAttribute("user",  userAccountService.logInUser(userAccountDto));
-            return "view-albums";
+            return viewAlbums(userAccountService.logInUser(userAccountDto).getUserAccountId(),model);
         } catch (RuntimeException e){
             if(e instanceof InvalidPasswordException) {
                 model.addAttribute("passwordError", true);
@@ -93,15 +91,14 @@ public class UserAccountController {
         }
     }
 
-    @GetMapping(value = "view-albums")
-    public String viewAlbums(Model model){
-        if (session.getAttribute("user")!= null){
-            model.addAttribute("user", session.getAttribute("user"));
-            LoggingController.logInfo("used session");
+
+    @GetMapping(value = "view-albums/{id}")
+    public String viewAlbums(@PathVariable Long id, Model model){
+        try{
+            model.addAttribute("user",userAccountService.findUserById(id));
             return "view-albums";
-        } else {
-            model.addAttribute("user", new UserAccountDto());
-            return "log-in";
+        } catch(Exception e){
+            return showLogInPage(model);
         }
     }
 }

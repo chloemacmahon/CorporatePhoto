@@ -122,6 +122,15 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
         }
     }
 
+    public void updatePhotoMetaData(Photo photo){
+        try{
+            photoMetaDataRepository.save(photo.getPhotoMetaData());
+        }catch (Exception e)
+        {
+            throw new CouldNotUpdatePhotoTagException();
+        }
+    }
+
     public void updatePhotoTag (Long photoMetaDataId, Long tagId, String newTagName){
         try{
             if(photoMetaDataRepository.findById(photoMetaDataId).isPresent()){

@@ -42,21 +42,27 @@
 
                 <tr>
                     <td>
-                        <form class="center" th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+                        <form class="center" th:object="${tagsUsed}"  th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
                               method="post">
                             <br>
                             <h3>Please select tags you would like edit</h3>
                             <div th:if="${tags.size() > 0}">
                                 <table>
                                     <tr th:each="tag, it : ${tags}">
-                                        <input class="lbl" type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
+                                        <input class="lbl" type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}" th:checked="${#lists.contains(photo.photoMetaData.tags, tag)}">
                                         <label class="lbl" for="${{tag}}" th:text="${tag.tagName}"></label><br><br>
+                                        <div th:text="${#lists.contains(photo.photoMetaData.tags, tag)}"/>
                                     </tr>
                                 </table>
-                                <label class="lbl" for="newTagName">New Tag Name: </label>
-                                <input class="txt" type="text" id="newTagName" name="newTagName"><br><br>
                             </div>
                             <button class="button" type="submit">Edit Tag</button>
+                        </form>
+                        <form th:action="@{/create-tag-edit-page/{id}(id=${user.userAccountId})}" method="post">
+                            <label class="lbl" for="tagName">Tag name:  </label><br>
+                            <input class="txt" type="text" id="tagName" name="tagName"><br>
+                            <label class="lbl" for="tagDescription">Tag Description (optional):  </label><br>
+                            <input class="txt" type="text" id="tagDescription" name="tagDescription"><br><br>
+                            <button class="button" type="submit">Create Tag</button>
                         </form>
                     </td>
                 </tr>

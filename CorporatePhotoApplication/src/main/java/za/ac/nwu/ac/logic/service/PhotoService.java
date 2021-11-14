@@ -25,6 +25,8 @@ public interface PhotoService {
 
     Photo findPhotoById(Long id);
 
+    Photo findPhotoBySharableLink(String sharableLink);
+
     PhotoMetaData findPhotoMetaDataId(Long id);
 
 }

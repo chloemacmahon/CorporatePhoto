@@ -13,6 +13,7 @@ import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.logic.service.UserAccountService;
+import za.ac.nwu.ac.repository.AlbumRepository;
 import za.ac.nwu.ac.repository.PhotoRepository;
 import za.ac.nwu.ac.repository.UserAccountRepository;
 
@@ -25,29 +26,36 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     private PhotoRepository photoRepository;
 
+    private AlbumRepository albumRepository;
+
     private PhotoService photoService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoRepository photoRepository, PhotoService photoService) {
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoRepository photoRepository, AlbumRepository albumRepository, PhotoService photoService) {
         this.userAccountRepository = userAccountRepository;
         this.photoRepository = photoRepository;
+        this.albumRepository = albumRepository;
         this.photoService = photoService;
     }
 
     public UserAccount findUserById(Long id){
-        if (userAccountRepository.findById(id).isPresent())
-            return userAccountRepository.findById(id).get();
-        else
+        if (userAccountRepository.findById(id).isPresent()) {
+            UserAccount user = userAccountRepository.findById(id).get();
+            user.generateAllPhotoSharableLinks();
+            return userAccountRepository.save(user);
+        }else
             throw new UserDoesNotExistException();
     }
 
     public UserAccount findUserByEmail(String email){
-        if (userAccountRepository.findByEmail(email) != null)
-            return userAccountRepository.findByEmail(email);
-        else
+        if (userAccountRepository.findByEmail(email) != null) {
+            UserAccount user = userAccountRepository.findByEmail(email);
+            user.generateAllPhotoSharableLinks();
+            return userAccountRepository.save(user);
+        }else
             throw new UserDoesNotExistException();
     }
 
@@ -119,6 +127,17 @@ public class UserAccountServiceImpl implements UserAccountService {
             }
         } catch(Exception e){
             throw new FailedToSharePhotoException(e.getMessage());
+        }
+    }
+
+    public void sharePhotoWithLink(Long id, String sharableLink){
+        try{
+            Photo photo = photoService.findPhotoBySharableLink(sharableLink);
+            UserAccount user = findUserById(id);
+            user.addSharedPhoto(photo);
+            userAccountRepository.save(user);
+        } catch(Exception e){
+            throw new FailedToSharePhotoException("could not share photo nested exception is: "+e.getLocalizedMessage());
         }
     }
 

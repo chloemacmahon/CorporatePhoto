@@ -26,6 +26,8 @@ public interface PhotoMetaDataService {
 
     void removePhotoMetaDataGeolocation(Long photoMetaDataId);
 
+    void updatePhotoMetaData(Photo photo);
+
     void updatePhotoTag (Long photoMetaDataId, Long tagId, String newTagName);
 
     void updatePhotoTag (Long tagId, String newTagName);
