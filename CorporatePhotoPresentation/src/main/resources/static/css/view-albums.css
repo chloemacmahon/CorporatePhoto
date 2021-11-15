@@ -103,16 +103,15 @@ h1 {
     text-shadow: #444 0 1px 1px;
 }
 h2 {
-  background: olive;
-  color: white;
-  text-align: center;
-  font-size: 25px;
-  line-height: 1.5;
-  font-weight: 400;
-  #text-transform: uppercase;
-  letter-spacing: 3px;
-  margin: 1px 1px 1px 1px;
-  padding: 10px 10px 10px 10px;
+   color: white;
+   text-align: center;
+   font-size: 18px;
+   line-height: 1.5;
+   font-weight: 400;
+   text-transform: uppercase;
+   letter-spacing: 3px;
+   margin: 10px 5px 5px 5px;
+   padding: 0px 0px 0px 0px;
 }
 h3 {
   color: white;
@@ -190,23 +189,6 @@ img {
     width: 100%;
     color: rgb(255, 255, 255);
 }
-.button{
-   width: 20%;
-   height: 50px;
-   border: none;
-   border-radius: 10px;
-   outline: none;
-   font-size: 16px;
-   text-align:center;
-   color: #fff;
-   background-color: #475A71;
-   cursor: pointer;
-   transition: .3s ease-in-out;
-}
-.button:hover {
-    background-color: #0D1B2A;
-}
-
 .lbl {
     font-size: 14px;
     font-weight: bold;
@@ -230,16 +212,16 @@ img {
     padding: 0;
     margin: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     /*justify-content: space-between;*/;
-    align-items: stretch; /*flex-start, flex-end, stretch, base-line*/
+    align-items: center; /*flex-start, flex-end, stretch, base-line*/
 }
 .mainContainerItem{
     margin: 0;
     padding: 0;
     flex-grow: 1;
-    width: 33%;
+    width: 60%;
     /*flex-basis: 100%*/
 }
 .mainContainerItemBody{
@@ -250,7 +232,32 @@ img {
     background: #2A2E2F;
     border-radius:10px;
 }
-
+.button{
+   width: 20%;
+   height: 50px;
+   border: none;
+   border-radius: 10px;
+   outline: none;
+   font-size: 16px;
+   text-align:center;
+   color: #fff;
+   background-color: #475A71;
+   cursor: pointer;
+   transition: .3s ease-in-out;
+}
+.button:hover {
+    background-color: #0D1B2A;
+}
+.buttonFlexFix{
+   text-align:center;
+   color: #fff;
+   background-color: #475A71;
+   cursor: pointer;
+   transition: .3s ease-in-out;
+}
+.buttonFlexFix:hover {
+    background-color: #0D1B2A;
+}
 .buttonContainerRow{
     padding: 0;
     margin: 0;
@@ -262,15 +269,15 @@ img {
     font: #fff;
 }
 .buttonContainerCol{
-     padding: 5px;
-     margin: 0;
-     display: flex;
-     flex-direction: column;
-     justify-content: center;
-     /*justify-content: space-between;*/;
-     align-items: stretch;
-     font: #fff;
- }
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*justify-content: space-between;*/;
+  align-items: center;
+  font: #fff;
+}
 
 .btnBottom{
    width: 15%;
@@ -288,7 +295,7 @@ img {
    align-self: center;
 
    font-size: 16px;
-   font-color: white;
+   font-color: #fff;
    text-align: center;
    color: #fff;
    background-color: #475A71;
