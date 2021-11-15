@@ -18,7 +18,7 @@ public class Photo {
     @Column(unique = true)
     private String photoLink;
 
-    //@Column(unique = true)
+    @Column(unique = true)
     private String sharablePhotoLink;
 
     @OneToOne(cascade = {CascadeType.ALL})
@@ -30,13 +30,11 @@ public class Photo {
 
     public Photo(PhotoMetaData photoMetaData) {
         this.photoMetaData = photoMetaData;
-        setSharablePhotoLink(generateSharablePhotoLink());
     }
 
     public Photo(String photoLink, PhotoMetaData photoMetaData) {
         this.photoLink = photoLink;
         this.photoMetaData = photoMetaData;
-        setSharablePhotoLink(generateSharablePhotoLink());
     }
 
     public Photo(String photoLink, String sharablePhotoLink, PhotoMetaData photoMetaData) {
@@ -45,16 +43,16 @@ public class Photo {
         this.photoMetaData = photoMetaData;
     }
 
-    public void setSharablePhotoLink(String sharablePhotoLink) {
+  /*  public void setSharablePhotoLink(String sharablePhotoLink) {
         this.sharablePhotoLink = generateSharablePhotoLink();
     }
 
     public void setSharablePhotoLink() {
         this.sharablePhotoLink = generateSharablePhotoLink();
     }
-
+*/
     public String generateSharablePhotoLink(){
-        if (sharablePhotoLink == null) {
+        if (photoId == null) {
             return "sharable/" + getPhotoMetaData().getOwner().getSurname() + getPhotoMetaData().getOwner().getName() + Math.random();
         }else
             return "sharable/" + getPhotoMetaData().getOwner().getSurname() + getPhotoMetaData().getOwner().getName() +photoId;
@@ -74,13 +72,4 @@ public class Photo {
     public int hashCode() {
         return Objects.hash(photoId, photoLink, photoMetaData);
     }
-
-    /*@Override
-    public String toString() {
-        return "Photo{" +
-                "photoId=" + photoId +
-                ", photoLink='" + photoLink + '\'' +
-                ", photoMetaData=" + photoMetaData +
-                '}';
-    }*/
 }

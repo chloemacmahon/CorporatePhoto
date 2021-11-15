@@ -70,6 +70,13 @@
         </div>
     </div>
 </div>
+<div class="buttonContainerCol">
+    <div class="btnBottom">
+        <a type="button" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Back</a>
+    </div>
+</div>
+<br>
+<br>
 
 <div class="container" th:replace="fragments/footer :: footer">
     <label>footer</label>

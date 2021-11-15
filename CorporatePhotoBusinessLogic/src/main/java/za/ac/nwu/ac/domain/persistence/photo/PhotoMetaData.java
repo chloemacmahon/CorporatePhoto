@@ -9,6 +9,7 @@ import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,12 +39,21 @@ public class PhotoMetaData {
     public PhotoMetaData(LocalDate dateCaptured, UserAccount owner) {
         this.dateCaptured = dateCaptured;
         this.owner = owner;
+        this.tags = new ArrayList<>();
+    }
+
+    public PhotoMetaData(LocalDate dateCaptured, UserAccount owner, String geolocation) {
+        this.dateCaptured = dateCaptured;
+        this.owner = owner;
+        this.tags = new ArrayList<>();
+        this.geolocation = geolocation;
     }
 
     public PhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags) {
         this.dateCaptured = dateCaptured;
         this.owner = owner;
         this.tags = tags;
+        this.geolocation = "";
     }
 
     public PhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation) {

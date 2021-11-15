@@ -1,6 +1,7 @@
 package za.ac.nwu.ac.logic.service;
 
 import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.album.SharedAlbum;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface AlbumService {
     void deletePhotoFromAlbum(Long photoId, Long albumId);
 
     List<Album> findAlbumsThatContainsPhoto(Long photoId);
+
+    SharedAlbum findAlbumBySharableLink(String sharableLink);
 
 }

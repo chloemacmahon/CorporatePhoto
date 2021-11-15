@@ -72,7 +72,7 @@ public class UserAccountController {
             return "create-account";
         }
         try {
-            return viewAlbums(userAccountService.logInUser(userAccountDto).getUserAccountId(),model);
+            return viewAlbums(userAccountService.createUserAccount(userAccountDto).getUserAccountId(),model);
         } catch (RuntimeException e){
             if(e instanceof InvalidPasswordException) {
                 model.addAttribute("passwordError", true);
@@ -86,6 +86,7 @@ public class UserAccountController {
             if(e instanceof InvalidSurnameException) {
                 model.addAttribute("surnameError", true);
             }
+            LoggingController.logInfo(e.getClass().toString());
             model.addAttribute("user", userAccountDto);
             return "create-account";
         }
