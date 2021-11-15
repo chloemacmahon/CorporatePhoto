@@ -269,10 +269,11 @@ public class PhotoController {
         return "edit-photo-data";
     }
 
-    @RequestMapping(value = "/search-photo", method = RequestMethod.GET)
-    public String showSearchPhotoByTagName(Model model){
-        if (session.getAttribute("user")!= null){
+    @RequestMapping(value = "/search-photo/{id}", method = RequestMethod.GET)
+    public String showSearchPhotoByTagName(@PathVariable Long id, Model model){
+        /*if (session.getAttribute("user")!= null){
             model.addAttribute("user", session.getAttribute("user"));
+            *//*model.addAttribute("user", userAccountService.findUserById(id));*//*
             model.addAttribute("photo");
             model.addAttribute("geolocation");
             model.addAttribute("tags", photoMetaDataService.viewAllTags());
@@ -280,7 +281,14 @@ public class PhotoController {
             return "search-photo";
         } else {
             return "log-in";
-        }
+        }*/
+        model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo");
+        model.addAttribute("geolocation");
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "search-photo";
     }
 
     @RequestMapping(value="/search-photo-geolocation/{id}", method = RequestMethod.POST)
