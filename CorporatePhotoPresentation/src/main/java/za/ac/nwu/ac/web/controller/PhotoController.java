@@ -68,7 +68,14 @@ public class PhotoController {
     @RequestMapping(value = "/photo-upload/{id}", method = RequestMethod.POST)
     public String uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file, TagsUsedDto tagsUsedDto, @RequestParam("geolocation") String geolocation, Model model) {
         try {
-            PhotoMetaData photoMetaData = photoMetaDataService.createPhotoMetaData(LocalDate.now(), userAccountService.findUserById(id), tagsUsedDto.getTags(), geolocation);
+            LoggingController.logInfo(tagsUsedDto.toString());
+            PhotoMetaData photoMetaData;
+            LoggingController.logInfo(tagsUsedDto.equals(new TagsUsedDto()) +"" );
+            LoggingController.logInfo(geolocation);
+            if (!tagsUsedDto.equals(new TagsUsedDto()))
+                photoMetaData = photoMetaDataService.createPhotoMetaData(LocalDate.now(), userAccountService.findUserById(id), tagsUsedDto.getTags(), geolocation);
+            else
+                photoMetaData = photoMetaDataService.createPhotoMetaData(LocalDate.now(), userAccountService.findUserById(id), new ArrayList<Tag>(),geolocation);
             LoggingController.logInfo(tagsUsedDto.getTags().toString());
             userAccountService.addPhotoToOwnedAlbum(userAccountService.findUserById(id), photoMetaData, file);
             model.addAttribute("user", userAccountService.findUserById(id));
@@ -123,6 +130,20 @@ public class PhotoController {
         } catch (Exception e){
             LoggingController.logError(e.getMessage());
             model.addAttribute("shareFileError",true);
+            model.addAttribute("user", userAccountService.findUserById(id));
+            return "view-albums";
+        }
+    }
+
+    @RequestMapping(value = "/add-shared-album-with-link/{id}", method = RequestMethod.POST)
+    public String shareAlbum(@PathVariable Long id, @RequestParam("sharableAlbumLink") String sharableLink, Model model) {
+        try {
+            userAccountService.shareAlbumWithUser(userAccountService.findUserById(id), albumService.findAlbumBySharableLink(sharableLink));
+            model.addAttribute("user", userAccountService.findUserById(id));
+            return "view-albums";
+        } catch (Exception e){
+            LoggingController.logError(e.getMessage());
+            model.addAttribute("shareAlbumError",true);
             model.addAttribute("user", userAccountService.findUserById(id));
             return "view-albums";
         }
@@ -248,10 +269,11 @@ public class PhotoController {
         return "edit-photo-data";
     }
 
-    @RequestMapping(value = "/search-photo", method = RequestMethod.GET)
-    public String showSearchPhotoByTagName(Model model){
-        if (session.getAttribute("user")!= null){
+    @RequestMapping(value = "/search-photo/{id}", method = RequestMethod.GET)
+    public String showSearchPhotoByTagName(@PathVariable Long id, Model model){
+        /*if (session.getAttribute("user")!= null){
             model.addAttribute("user", session.getAttribute("user"));
+            *//*model.addAttribute("user", userAccountService.findUserById(id));*//*
             model.addAttribute("photo");
             model.addAttribute("geolocation");
             model.addAttribute("tags", photoMetaDataService.viewAllTags());
@@ -259,7 +281,14 @@ public class PhotoController {
             return "search-photo";
         } else {
             return "log-in";
-        }
+        }*/
+        model.addAttribute("user", session.getAttribute("user"));
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("photo");
+        model.addAttribute("geolocation");
+        model.addAttribute("tags", photoMetaDataService.viewAllTags());
+        model.addAttribute("tagsUsed", new TagsUsedDto());
+        return "search-photo";
     }
 
     @RequestMapping(value="/search-photo-geolocation/{id}", method = RequestMethod.POST)

@@ -20,17 +20,21 @@ import java.util.List;
 @Data
 @Entity
 @Component
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Album {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long albumId;
+    protected Long albumId;
 
-    private String albumName;
+    protected String albumName;
 
-    @ManyToMany
-    private List<Photo> photos;
+
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    protected List<Photo> photos;
+
 
     public Album() {
     }

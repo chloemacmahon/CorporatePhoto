@@ -68,7 +68,7 @@
                     <td>
                         <div class="buttonContainerRow">
                             <a class="btnBottom" type="button"
-                               th:href="${photo.photoLink}" download="${photo.photoLink} + '.jpg'">Download Image</a>
+                               th:href="${photo.photoLink}" download="${photo.photoLink}+'.jpg'">Download Image</a>
 
                             <a class="btnBottom" type="button"
                                th:href="@{/edit-photo-data/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Edit Image Data</a>
@@ -80,13 +80,14 @@
                 </tr>
             </table>
         </div>
+        <div class="buttonContainerCol">
+            <div class="btnBottom">
+                <a class="buttonFlexFix" type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
+            </div>
+        </div>
     </div>
 </div>
-<div class="buttonContainerCol">
-    <div class="btnBottom">
-        <a type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
-    </div>
-</div>
+
 <br>
 <br>
 
