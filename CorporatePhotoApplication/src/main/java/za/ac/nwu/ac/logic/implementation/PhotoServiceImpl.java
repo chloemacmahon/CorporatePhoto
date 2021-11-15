@@ -141,11 +141,15 @@ public class PhotoServiceImpl implements PhotoService {
 
     //Create, adding image to database
     public Photo createPhoto(PhotoDto photoDto, MultipartFile multiPartFile, String blobName) throws IOException {
-        String photoLink = uploadBlob(multiPartFile, blobName);
-        Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
-        Photo newPhoto = photoRepository.save(photo);
-        newPhoto.setSharablePhotoLink(newPhoto.generateSharablePhotoLink());
-        return photoRepository.save(newPhoto);
+        try {
+            String photoLink = uploadBlob(multiPartFile, blobName);
+            Photo photo = new Photo(photoLink, photoDto.getPhotoMetaData());
+            /*Photo newPhoto = photoRepository.save(photo);
+            newPhoto.setSharablePhotoLink(newPhoto.generateSharablePhotoLink());*/
+            return photoRepository.save(photo);
+        } catch (Exception e){
+            throw new IOException(e.getLocalizedMessage());
+        }
     }
 
     //TODO: The update still needs work, the approach forces you to copy the photo/file and could take long.

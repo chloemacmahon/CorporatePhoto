@@ -15,6 +15,7 @@ import za.ac.nwu.ac.repository.PhotoRepository;
 import za.ac.nwu.ac.repository.TagRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,8 +52,16 @@ public class PhotoMetaDataServiceImpl implements PhotoMetaDataService {
     }
 
     public PhotoMetaData createPhotoMetaData(LocalDate dateCaptured, UserAccount owner, List<Tag> tags, String geolocation) {
-        PhotoMetaData photoMetaData = new PhotoMetaData(dateCaptured, owner, tags, geolocation);
-        return photoMetaDataRepository.save(photoMetaData);
+        try {
+            PhotoMetaData photoMetaData;
+            if(tags.equals(new ArrayList<>()))
+                photoMetaData = new PhotoMetaData(dateCaptured,owner,geolocation);
+            else
+                photoMetaData = new PhotoMetaData(dateCaptured, owner, tags, geolocation);
+            return photoMetaDataRepository.save(photoMetaData);
+        } catch (Exception e){
+            throw new FailedToCreatePhotoException("Could not create tag nested expression "+ e.getLocalizedMessage());
+        }
     }
 
     public Photo addTagToPhoto(Photo photo, Tag tag) {

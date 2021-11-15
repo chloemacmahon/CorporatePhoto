@@ -24,6 +24,9 @@
     <div th:if="${shareFileError != null}" class="alert alert-danger">
         <p th:text="#{fileShare.hasErrors}">Error Message</p>
     </div>
+    <div th:if="${shareAlbumError != null}" class="alert alert-danger">
+        <p th:text="#{albumShare.hasErrors}">Error Message</p>
+    </div>
 </div>
 <div class="mainContainer">
     <div class="mainContainerItemBody mainContainerItem">
@@ -42,21 +45,21 @@
                     <label></label>
                 </td>
                 <td>
-                    <label class ="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+                    <label class="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
                     <div th:if="${photo.photoMetaData.tags.size() > 0}">
                         <h3 style="text-align:left">Tags</h3>
                         <div th:each="tag : ${photo.photoMetaData.tags}">
-                            <label class ="lbl" th:text="${tag.tagName}"></label><br>
+                            <label class="lbl" th:text="${tag.tagName}"></label><br>
                         </div>
                     </div>
                     <div>
                         <h3 style="text-align:left">Location</h3>
-                        <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                        <label class="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
                     </div>
                     <div>
                         <h3 style="text-align:left">Sharable Link</h3>
-                        <label class ="lbl"></label>
-                        <label class ="lbl" th:text="${photo.sharablePhotoLink}"></label>
+                        <label class="lbl"></label>
+                        <label class="lbl" th:text="${photo.sharablePhotoLink}"></label>
                     </div>
                 </td>
             </tr>
@@ -78,27 +81,28 @@
                     </a>
                 </td>
                 <td>
-                    <label class ="lbl" th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
-                    <label class ="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+                    <label class="lbl"
+                           th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
+                    <label class="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
                     <div th:if="${photo.photoMetaData.tags.size() > 0}">
                         <h3 style="text-align:left">Tags</h3><br>
                         <div th:each="tag : ${photo.photoMetaData.tags}">
-                            <label class ="lbl" th:text="${tag.tagName}"></label><br>
+                            <label class="lbl" th:text="${tag.tagName}"></label><br>
                         </div>
                     </div>
                     <div>
                         <h3 style="text-align:left">Location</h3>
-                        <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                        <label class="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
                     </div>
 
                 </td>
             </tr>
-                <form th:action="@{/add-shared-photo-with-link/{id}(id=${user.userAccountId})}" method="post">
-                    <h3>Enter a sharable link to add a photo</h3>
-                    <label class="lbl" for="sharableLink">Link:  </label><br>
-                    <input class="txt" type="text" id="sharableLink" name="sharableLink"><br><br>
-                    <button class="button" type="submit">Add photo</button>
-                </form>
+            <form th:action="@{/add-shared-photo-with-link/{id}(id=${user.userAccountId})}" method="post">
+                <h3>Enter a sharable link to add a photo</h3>
+                <label class="lbl" for="sharableLink">Link: </label><br>
+                <input class="txt" type="text" id="sharableLink" name="sharableLink"><br><br>
+                <button class="button" type="submit">Add photo</button>
+            </form>
         </table>
     </div>
 
@@ -109,6 +113,17 @@
             </tr>
             <tr>
                 <h3 th:text="${album.albumName}"></h3>
+                <label class="lbl" th:text="${album.sharableAlbumLink}"></label><br>
+            </tr>
+            <tr>
+                <h3>Owner</h3>
+                <label class="lbl" th:text="${album.owner.name} + ' '+ ${album.owner.surname}"></label>
+            </tr>
+            <tr th:if="${album.accessAccounts.size() > 0}">
+                <h3>Users with access to this album</h3>
+                <td th:each="user : ${album.accessAccounts}">
+                    <label class="lbl" th:text="${user.name} + ' '+ ${user.surname}"></label>
+                </td>
             </tr>
             <tr th:each="photo, it : ${album.photos}"> <!--iterate so that 3 images are next to each other, video 42-->
                 <td>
@@ -121,28 +136,35 @@
 
                 <td>
                     <div th:if="${user.userAccountId != photo.photoMetaData.owner.userAccountId}">
-                        <label class ="lbl" th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
+                        <label class="lbl"
+                               th:text="'Shared by ' + ${photo.photoMetaData.owner.name} + ' ' + ${photo.photoMetaData.owner.surname}"></label><br>
                     </div>
-                    <label class ="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
+                    <label class="lbl" th:text="'Uploaded on ' + ${photo.photoMetaData.dateCaptured}"></label><br>
                     <div th:if="${photo.photoMetaData.tags.size() > 0}">
                         <h3 style="text-align:left">Tags</h3><br>
                         <div th:each="tag : ${photo.photoMetaData.tags}">
-                            <label class ="lbl" th:text="${tag.tagName}"></label><br>
+                            <label class="lbl" th:text="${tag.tagName}"></label><br>
                         </div>
                     </div>
                     <div>
                         <h3 style="text-align:left">Location</h3>
-                        <label class ="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
+                        <label class="lbl" th:text="${photo.photoMetaData.geolocation}"></label>
                     </div>
 
                     <div th:if="${user.userAccountId == photo.photoMetaData.owner.userAccountId}">
                         <h3 style="text-align:left">Sharable Link</h3>
-                        <label class ="lbl"></label>
-                        <label class ="lbl" th:text="${photo.sharablePhotoLink}"></label>
+                        <label class="lbl"></label>
+                        <label class="lbl" th:text="${photo.sharablePhotoLink}"></label>
                     </div>
                 </td>
             </tr>
         </table>
+        <form th:action="@{/add-shared-album-with-link/{id}(id=${user.userAccountId})}" method="post">
+            <h3>Enter a sharable link to add a photo</h3>
+            <label class="lbl" for="sharableAlbumLink">Link: </label><br>
+            <input class="txt" type="text" id="sharableAlbumLink" name="sharableAlbumLink"><br><br>
+            <button class="button" type="submit">Add Album</button>
+        </form>
     </div>
 </div>
 

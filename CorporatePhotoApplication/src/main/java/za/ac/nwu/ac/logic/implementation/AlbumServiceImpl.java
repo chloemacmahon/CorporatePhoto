@@ -7,6 +7,7 @@ import za.ac.nwu.ac.domain.exception.CouldNotDeletePhotoException;
 import za.ac.nwu.ac.domain.exception.CouldNotUpdateAlbum;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.album.SharedAlbum;
 import za.ac.nwu.ac.logic.service.AlbumService;
 import za.ac.nwu.ac.repository.AlbumRepository;
 import za.ac.nwu.ac.repository.PhotoRepository;
@@ -76,5 +77,13 @@ public class AlbumServiceImpl implements AlbumService {
 
     public List<Album> findAlbumsThatContainsPhoto(Long photoId){
         return albumRepository.findByPhotosPhotoId(photoId);
+    }
+
+    public SharedAlbum findAlbumBySharableLink(String sharableLink){
+        try {
+            return albumRepository.findSharedAlbumBySharableAlbumLink(sharableLink);
+        }catch (Exception e){
+            throw new AlbumNotFoundException("Could not find album nested exception" + e.getLocalizedMessage());
+        }
     }
 }

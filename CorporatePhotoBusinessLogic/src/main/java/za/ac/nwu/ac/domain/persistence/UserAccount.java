@@ -3,6 +3,7 @@ package za.ac.nwu.ac.domain.persistence;
 import lombok.Data;
 import za.ac.nwu.ac.domain.exception.AlbumNotFoundException;
 import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.album.SharedAlbum;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 //import lombok;
 import org.springframework.stereotype.Component;
@@ -30,8 +31,8 @@ public class UserAccount {
 
     private String encodedPassword;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Album> albums;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    private List<SharedAlbum> albums;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private Album ownedPhotosAlbum;
@@ -52,7 +53,6 @@ public class UserAccount {
     }
 
     public UserAccount(String email, String name, String surname, String encodedPassword) {
-        generateAllPhotoSharableLinks();
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -62,8 +62,8 @@ public class UserAccount {
         this.sharedPhotosAlbum = new Album(getName()+" "+getSurname() + " Shared Album" );
     }
 
-    public UserAccount(String email, String encodedPassword, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
-        generateAllPhotoSharableLinks();
+    public UserAccount(String email, String encodedPassword, List<SharedAlbum> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
+        //generateAllPhotoSharableLinks();
         this.email = email;
         this.encodedPassword = encodedPassword;
         this.albums = albums;
@@ -72,7 +72,7 @@ public class UserAccount {
     }
 
     public void createAlbum(String albumName) {
-        this.albums.add(new Album(albumName));
+        this.albums.add(new SharedAlbum(albumName,this));
     }
 
     public void addPhotoToAlbum(String albumName, Photo photo){
@@ -84,7 +84,7 @@ public class UserAccount {
             if (album.getAlbumName().equals(name))
                 return album;
         }
-        throw new AlbumNotFoundException();
+        throw new AlbumNotFoundException("Album was not found");
     }
 
     public void addSharedPhoto(Photo photo) {
@@ -103,6 +103,15 @@ public class UserAccount {
         }
     }
 
+    public void addAlbumToAlbums(SharedAlbum album){
+        for (Photo photo: album.getPhotos()) {
+            if(!sharedPhotosAlbum.getPhotos().contains(photo)){
+                sharedPhotosAlbum.addPhotoToAlbum(photo);
+            }
+        }
+        albums.add(album);
+    }
+
     public String generatePhotoName(){
         try {
             return getUserAccountId() + getSurname() + getName() + findMostRecentlyAddedOwnedPhoto().getPhotoId();
@@ -116,5 +125,11 @@ public class UserAccount {
             photo.setSharablePhotoLink(photo.generateSharablePhotoLink());
         }
         return getOwnedPhotosAlbum();
+    }
+
+    public void generateAllAlbumSharableLinks(){
+        for (SharedAlbum album: albums) {
+            album.setSharableAlbumLink(album.generateSharableAlbumLink());
+        }
     }
 }

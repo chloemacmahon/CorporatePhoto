@@ -9,6 +9,7 @@ import za.ac.nwu.ac.domain.dto.UserAccountDto;
 import za.ac.nwu.ac.domain.exception.*;
 import za.ac.nwu.ac.domain.persistence.UserAccount;
 import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.album.SharedAlbum;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
 import za.ac.nwu.ac.logic.service.PhotoService;
@@ -44,19 +45,29 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccount findUserById(Long id){
         if (userAccountRepository.findById(id).isPresent()) {
             UserAccount user = userAccountRepository.findById(id).get();
-            user.generateAllPhotoSharableLinks();
-            return userAccountRepository.save(user);
+            if(user.getOwnedPhotosAlbum().getPhotos().size() != 0 && user.getAlbums().size() != 0){
+                return user;
+            } else {
+                if (user.getOwnedPhotosAlbum().getPhotos().size() == 0)
+                    user.generateAllPhotoSharableLinks();
+                if (user.getAlbums().size() == 0)
+                    user.generateAllAlbumSharableLinks();
+                return userAccountRepository.save(user);
+            }
         }else
-            throw new UserDoesNotExistException();
+            throw new UserDoesNotExistException("User does not exist");
     }
 
     public UserAccount findUserByEmail(String email){
         if (userAccountRepository.findByEmail(email) != null) {
             UserAccount user = userAccountRepository.findByEmail(email);
-            user.generateAllPhotoSharableLinks();
+            if(user.getOwnedPhotosAlbum().getPhotos().size() == 0)
+                user.generateAllPhotoSharableLinks();
+            if(user.getAlbums().size() == 0)
+                user.generateAllAlbumSharableLinks();
             return userAccountRepository.save(user);
         }else
-            throw new UserDoesNotExistException();
+            throw new UserDoesNotExistException("User does not exist");
     }
 
     public UserAccount createUserAccount(UserAccountDto userAccountDto){
@@ -93,8 +104,9 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     public UserAccount createAlbum(UserAccount userAccount, String albumName) {
         userAccount.createAlbum(albumName);
-        userAccountRepository.save(userAccount);
-        return userAccount;
+        UserAccount userAccount1 = userAccountRepository.save(userAccount);
+        userAccount1.generateAllAlbumSharableLinks();
+        return userAccountRepository.save(userAccount1);
     }
 
     public void addPhotoToOwnedAlbum(UserAccount userAccount, MultipartFile photo){
@@ -106,9 +118,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         PhotoDto photoDto = new PhotoDto(photoMetaData);
         try {
             userAccount.addOwnedPhoto(photoService.createPhoto(photoDto, photo, userAccount.generatePhotoName()));
-            userAccountRepository.save(userAccount);
+            UserAccount userAccount1 = userAccountRepository.save(userAccount);
+            userAccount1.getOwnedPhotosAlbum().generateAllPhotoSharableLinks();
+            userAccountRepository.save(userAccount1);
         } catch (Exception e){
-            throw new FailedToCreatePhotoException(e.getMessage());
+            throw new FailedToCreatePhotoException("Could not create photo nested exception"+e.getMessage());
         }
     }
 
@@ -158,6 +172,17 @@ public class UserAccountServiceImpl implements UserAccountService {
             addPhotoToAlbum(owner, owner.findMostRecentlyAddedOwnedPhoto(), albumName);
         } catch (Exception e){
             throw new FailedToCreatePhotoException();
+        }
+    }
+
+    public void shareAlbumWithUser(UserAccount sharedAccount, SharedAlbum album){
+        try{
+            album.addAccessAccount(sharedAccount);
+            sharedAccount.addAlbumToAlbums(album);
+            albumRepository.save(album);
+            userAccountRepository.save(sharedAccount);
+        } catch (Exception e){
+            throw new FailedToShareAlbum("Failed to share album nested exception is: "+ e.getLocalizedMessage());
         }
     }
 }
