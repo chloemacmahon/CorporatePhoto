@@ -68,10 +68,7 @@ public class PhotoController {
     @RequestMapping(value = "/photo-upload/{id}", method = RequestMethod.POST)
     public String uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file, TagsUsedDto tagsUsedDto, @RequestParam("geolocation") String geolocation, Model model) {
         try {
-            LoggingController.logInfo(tagsUsedDto.toString());
             PhotoMetaData photoMetaData;
-            LoggingController.logInfo(tagsUsedDto.equals(new TagsUsedDto()) +"" );
-            LoggingController.logInfo(geolocation);
             if (!tagsUsedDto.equals(new TagsUsedDto()))
                 photoMetaData = photoMetaDataService.createPhotoMetaData(LocalDate.now(), userAccountService.findUserById(id), tagsUsedDto.getTags(), geolocation);
             else
@@ -307,21 +304,24 @@ public class PhotoController {
         return "search-photo";
     }
 
+    @RequestMapping(value = "/manage-access/{id}/{photoId}", method = RequestMethod.GET)
+    public String showManageAccess(@PathVariable Long id, @PathVariable Long photoId, Model model){
+        model.addAttribute("photo", photoService.findPhotoById(photoId));
+        model.addAttribute("users", userAccountService.findUsersWithPhotoAccess(photoId));
+        model.addAttribute("user", userAccountService.findUserById(id));
+        model.addAttribute("userId");
+        return "manage-photo-access";
+    }
 
-
-//    @RequestMapping(value="/download-photo/{id}/{photoId}", method = RequestMethod.GET)
-//    public String showDownloadPhoto(@PathVariable Long id, @PathVariable Long photoId, Model model){
-//        model.addAttribute("user", userAccountService.findUserById(id));
-//        model.addAttribute("photo", photoService.findPhotoById(photoId));
-//        return "view-photo";
-//    }
-//
-//    @RequestMapping(value="/download-photo/{id}/{photoId}", method = RequestMethod.POST)
-//    public String downloadPhoto(@PathVariable Long id, @PathVariable Long photoId, Model model){
-//
-//        model.addAttribute("user", userAccountService.findUserById(id));
-//        model.addAttribute("photo", photoService.findPhotoById(photoId));
-//        return "view-photo";
-//    }
+    @RequestMapping(value="/remove-access/{id}/{photoId}", method = RequestMethod.POST)
+    public String removeAccess(@PathVariable Long id, @PathVariable Long photoId, @RequestParam("userId") Long userId,Model model){
+        try{
+            userAccountService.removeAccessToPhoto(userAccountService.findUserById(userId), photoService.findPhotoById(photoId));
+            return showViewPhoto(id, photoId, model);
+        } catch (Exception e){
+            model.addAttribute("accessRemovalError", true);
+            return showViewPhoto(id, photoId, model);
+        }
+    }
 
 }

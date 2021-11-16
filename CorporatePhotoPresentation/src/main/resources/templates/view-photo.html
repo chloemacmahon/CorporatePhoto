@@ -29,7 +29,7 @@
                         <br>
                     </td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td>
                         <div th:if="${ownedPhoto != null}" class="center">
                             <h2>Enter recipient email to share image</h2>
@@ -40,7 +40,7 @@
                             </form>
                         </div>
                     </td>
-                </tr>
+                </tr>-->
 
                 <tr>
                     <td>
@@ -75,6 +75,11 @@
 
                             <a class="btnBottom" type="button"
                                th:href="@{/delete-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Delete Image</a>
+                            <div th:if="${ownedPhoto != null}">
+                                <a class="btnBottom" type="button"
+                                   th:href="@{/manage-access/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Manage Access</a>
+                            </div>
+
                         </div>
                     </td>
                 </tr>
@@ -87,6 +92,7 @@
         <a type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
     </div>
 </div>
+
 <br>
 <br>
 

@@ -19,6 +19,7 @@ import za.ac.nwu.ac.repository.PhotoRepository;
 import za.ac.nwu.ac.repository.UserAccountRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -183,6 +184,23 @@ public class UserAccountServiceImpl implements UserAccountService {
             userAccountRepository.save(sharedAccount);
         } catch (Exception e){
             throw new FailedToShareAlbum("Failed to share album nested exception is: "+ e.getLocalizedMessage());
+        }
+    }
+
+    public List<UserAccount> findUsersWithPhotoAccess(Long photoId){
+        try{
+            return userAccountRepository.findBySharedPhotosAlbumPhotosPhotoId(photoId);
+        } catch (Exception e){
+            throw new UserDoesNotExistException("Users could not be found nested exception "+ e.getLocalizedMessage());
+        }
+    }
+
+    public void removeAccessToPhoto(UserAccount user, Photo photo){
+        try{
+            user.removeSharedPhoto(photo);
+            userAccountRepository.save(user);
+        } catch (Exception e){
+            throw new FailedToRemoveAccess("Failed to remove access nested exception is "+ e.getLocalizedMessage());
         }
     }
 }
