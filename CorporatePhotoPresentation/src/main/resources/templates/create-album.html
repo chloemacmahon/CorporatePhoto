@@ -11,7 +11,7 @@
 <body>
 
 <div th:replace="fragments/banner.html :: formField(mainHeading='Welcome User!')"></div>
-<div class="navigation" th:replace="fragments/navigation :: navigation-bar"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
 
 <div class="box">
     <div class="center">
@@ -38,13 +38,15 @@
                 </tr>
             </table>
         </form>
+        <div class="buttonContainerCol">
+            <div class="btnBottom">
+                <a class="buttonFlexFix" type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
+            </div>
+        </div>
     </div>
+
 </div>
-<div class="buttonContainerCol">
-    <div class="btnBottom">
-        <a type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
-    </div>
-</div>
+
 
 <br><br><br>
 

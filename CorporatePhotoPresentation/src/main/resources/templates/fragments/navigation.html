@@ -13,8 +13,8 @@
     <a th:href="@{/}">Log Out</a>
 </div>
 <div class="top-navigation" th:fragment="member-navigation-bar">
-    <a th:href="@{/view-albums}">Home</a>
-    <a th:href="@{/search-photo}">Search Image</a>
+    <a th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Home</a>
+    <a th:href="@{/search-photo/{id}(id=${user.userAccountId})}">Search Image</a>
     <a th:href="@{/}">Log Out</a>
 </div>
 <div class="top-navigation" th:fragment="home-navigation-bar">
