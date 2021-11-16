@@ -1,14 +1,10 @@
-package dto.album;
+package za.ac.nwu.ac.domain.persistence.album;
 
-
-
-import dto.image.Photo;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import za.ac.nwu.ac.domain.exception.PhotoNotInAlbumException;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
-
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import za.ac.nwu.ac.domain.persistence.photo.Tag;
@@ -29,12 +25,9 @@ public class Album {
 
     protected String albumName;
 
-
-
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     protected List<Photo> photos;
-
 
     public Album() {
     }

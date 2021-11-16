@@ -1,23 +1,19 @@
-package dto;
+package za.ac.nwu.ac.domain.dto;
 
-import dto.album.Album;
-import dto.image.Photo;
-import exception.AlbumNotFoundException;
+
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import za.ac.nwu.ac.domain.persistence.album.Album;
+import za.ac.nwu.ac.domain.persistence.photo.Photo;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Entity
 @Component
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long userId;
+public class UserAccountDto {
 
     @NotEmpty
     private String email;
@@ -25,26 +21,38 @@ public class User {
     @NotEmpty
     private String password;
 
-    @OneToMany
+    private String name;
+
+    private String surname;
+
     private List<Album> albums;
 
-    @OneToOne
     private Album ownedPhotosAlbum;
 
-    @OneToOne
     private Album sharedPhotosAlbum;
 
-    public User() {
+    public UserAccountDto() {
     }
 
-    public User(@NotEmpty String email, @NotEmpty String password) {
+    public UserAccountDto(@NotEmpty String email, @NotEmpty String password) {
         this.email = email;
         this.password = password;
+        this.albums = new ArrayList<>();
         this.ownedPhotosAlbum = new Album();
         this.sharedPhotosAlbum = new Album();
     }
 
-    public User(@NotEmpty String email, @NotEmpty String password, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
+    public UserAccountDto(@NotEmpty String email, @NotEmpty String password, String name, String surname) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.albums = new ArrayList<>();
+        this.ownedPhotosAlbum = new Album();
+        this.sharedPhotosAlbum = new Album();
+    }
+
+    public UserAccountDto(@NotEmpty String email, @NotEmpty String password, List<Album> albums, Album ownedPhotosAlbum, Album sharedPhotosAlbum) {
         this.email = email;
         this.password = password;
         this.albums = albums;
@@ -52,7 +60,7 @@ public class User {
         this.sharedPhotosAlbum = sharedPhotosAlbum;
     }
 
-    public void addPhotoToAlbum(String albumName, Photo photo){
+    /*public void addPhotoToAlbum(String albumName, Photo photo){
         findAlbumByName(albumName).addPhotoToAlbum(photo);
     }
 
@@ -70,5 +78,5 @@ public class User {
 
     public void AddOwnedImage(Photo photo) {
         this.ownedPhotosAlbum.addPhotoToAlbum(photo);
-    }
+    }*/
 }

@@ -1,7 +1,8 @@
-package exception;
+package za.ac.nwu.ac.domain.exception;
 
 public class AlbumNotFoundException extends RuntimeException{
     public AlbumNotFoundException() {
+        super("Album not found");
     }
 
     public AlbumNotFoundException(String message) {
