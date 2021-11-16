@@ -14,10 +14,10 @@ import java.util.List;
 @Component
 public class SharedAlbum extends Album {
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.PERSIST})
     private UserAccount owner;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<UserAccount> accessAccounts;
 
     @Column(unique = true)
