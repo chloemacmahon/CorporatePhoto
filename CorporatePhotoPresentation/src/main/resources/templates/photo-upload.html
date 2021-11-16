@@ -28,10 +28,10 @@
                               method="post">
                             <br>
                             <label class="lbl" for="file-upload">Photo upload: </label>
-
-                            <input class="lbl" type="file" id="file-upload" name="file"><br><br>
-							
-                            <div th:if="${tags.size() > 0}">
+                            <input type="file" id="file-upload" name="file"><br><br>
+                            <div ><!--th:if="${file != null}">-->
+                     
+                            <div>
                                 <table class="table">
                                     <tr>
                                         <td>
@@ -58,8 +58,10 @@
                             <div class="center">
                                 <button type="submit" class="button">Upload Photo</button>
                             </div>
+                            </div>
                         </form>
-                    </div>
+
+    </div>
                 </td>
             </tr>
         </table>
