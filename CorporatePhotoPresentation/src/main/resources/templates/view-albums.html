@@ -201,7 +201,13 @@
         <a class="buttonFlexFix" type="button" th:href="@{/edit-albums/{id}(id=${user.userAccountId})}">Edit Albums</a>
     </div>
 </div>
-<br><br><br>
+<br>
+<div class="buttonContainerCol">
+    <div class="btnBottom">
+        <a type="button" th:href="@{/delete-user/{id}(id=${user.userAccountId})}">Delete Account</a>
+    </div>
+</div>
+<br><br>
 <div class="footer" th:replace="fragments/footer :: footer">
     <label>footer</label>
 </div>

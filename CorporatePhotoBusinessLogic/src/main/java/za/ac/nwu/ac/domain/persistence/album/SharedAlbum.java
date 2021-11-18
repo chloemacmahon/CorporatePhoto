@@ -94,5 +94,9 @@ public class SharedAlbum extends Album {
     public void addAccessAccount(UserAccount userAccount) {
         accessAccounts.add(userAccount);
     }
+
+    public void removeAccess(UserAccount userAccount){
+        getAccessAccounts().remove(userAccount);
+    }
 }
 
