@@ -30,7 +30,8 @@
                             <label class="lbl" for="file-upload">Photo upload: </label>
                             <input type="file" id="file-upload" name="file"><br><br>
                             <div ><!--th:if="${file != null}">-->
-                            <div >
+                     
+                            <div>
                                 <table class="table">
                                     <tr>
                                         <td>
@@ -88,13 +89,15 @@
                 </td>
             </tr>
         </table>
+        <div class="buttonContainerCol">
+            <div class="btnBottom">
+                <a class="buttonFlexFix" type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
+            </div>
+        </div>
     </div>
+
 </div>
-<div class="buttonContainerCol">
-    <div class="btnBottom">
-        <a type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
-    </div>
-</div>
+
 
 <br><br><br>
 
