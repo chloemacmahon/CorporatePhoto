@@ -43,4 +43,8 @@ public interface UserAccountService {
 
     void removeAccessToPhoto(UserAccount user, Photo photo);
 
+    void deleteUserAccount(UserAccount userAccount);
+
+
+
 }

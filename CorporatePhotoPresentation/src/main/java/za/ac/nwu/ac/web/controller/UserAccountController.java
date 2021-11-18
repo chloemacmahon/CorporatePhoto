@@ -102,4 +102,16 @@ public class UserAccountController {
             return showLogInPage(model);
         }
     }
+
+    @RequestMapping(value = "delete-user/{id}", method = RequestMethod.GET)
+    public String deleteUser(@PathVariable Long id, Model model){
+        try{
+            userAccountService.deleteUserAccount(userAccountService.findUserById(id));
+            return showLogInPage(model);
+        } catch (Exception e){
+            LoggingController.logError(e.getLocalizedMessage());
+            model.addAttribute("failedToDelete", true);
+            return viewAlbums(id, model);
+        }
+    }
 }
