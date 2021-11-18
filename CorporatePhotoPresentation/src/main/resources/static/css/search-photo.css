@@ -162,7 +162,7 @@ img {
     color: #fff;
 }
 .button{
-   width: 100%;
+   width: 35%;
    height: 50px;
    border: none;
    border-radius: 10px;
@@ -175,6 +175,61 @@ img {
    transition: .3s ease-in-out;
 }
 .button:hover {
+    background-color: #0D1B2A;
+}
+.buttonContainerRow{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /*justify-content: space-between;*/
+    align-items: stretch;
+}
+.buttonContainerCol{
+     padding: 0;
+     margin: 0;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     /*justify-content: space-between;*/;
+     align-items: stretch;
+     font: #fff;
+ }
+.btnBottom{
+   width: 25%;
+   height: 50px;
+   border: none;
+   border-radius: 10px;
+   outline: none;
+
+   margin: 5px;
+   padding: 10px;
+
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-self: center;
+
+   font-size: 16px;
+   font-color: white;
+   text-align: center;
+   color: #fff;
+   background-color: #475A71;
+   cursor: pointer;
+   transition: .3s ease-in-out;
+}
+.btnBottom:hover {
+     background-color: #0D1B2A;
+}
+.buttonFlexFix{
+   text-align:center;
+   color: #fff;
+   background-color: #475A71;
+   cursor: pointer;
+   transition: .3s ease-in-out;
+}
+.buttonFlexFix:hover {
     background-color: #0D1B2A;
 }
 .lbl {
