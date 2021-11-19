@@ -1,0 +1,10 @@
+za\ac\nwu\ac\web\CorporatePhotoApplication.class
+za\ac\nwu\ac\web\controller\UserAccountController.class
+za\ac\nwu\ac\web\controller\IndexController.class
+za\ac\nwu\ac\web\controller\PhotoMetaDataController.class
+za\ac\nwu\ac\web\controller\AlbumController.class
+za\ac\nwu\ac\web\configuration\WebConfig.class
+za\ac\nwu\ac\web\LoadDatabase.class
+za\ac\nwu\ac\web\controller\LoggingController.class
+za\ac\nwu\ac\web\configuration\SecurityConfig.class
+za\ac\nwu\ac\web\controller\PhotoController.class

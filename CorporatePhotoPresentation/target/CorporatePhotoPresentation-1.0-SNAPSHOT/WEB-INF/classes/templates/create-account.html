@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Vitality activities</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/create-account.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Welcome User!')"></div>
+<div class="navigation" th:replace="fragments/navigation :: navigation-bar"></div>
+
+<form th:object="${user}" th:action="@{/create-account}" method="post">
+    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+        <p th:text="#{user.hasErrors}">Error Message</p>
+    </div>
+    <div th:if="${emptyFieldError != null}" class="alert alert-danger">
+        <p th:text="#{emptyField.hasErrors}">Error Message</p>
+    </div>
+    <br>
+    <div class="box">
+        <label class="boxHeading">Create Account</label><br>
+        <label class="lbl" for="name">Name: </label>
+        <input class="txt" type="text" id="name" th:field="*{name}"><br><br>
+        <div th:if="${nameError != null}" class="alert alert-danger">
+            <p th:text="#{name.hasErrors}">Error Message</p>
+        </div>
+        <label class="lbl" for="surname">Surname: </label>
+        <input class="txt" type="text" id="surname" th:field="*{surname}"><br><br>
+        <div th:if="${surnameError != null}" class="alert alert-danger">
+            <p th:text="#{surname.hasErrors}">Error Message</p>
+        </div>
+        <label class="lbl" for="email">Email: </label>
+        <input class="txt" type="email" id="email" th:field="*{email}"><br><br>
+        <div th:if="${emailError != null}" class="alert alert-danger">
+            <p th:text="#{email.hasErrors}">Error Message</p>
+        </div>
+        <label class="lbl" for="password">Password: </label>
+        <input class="txt" type="password" id="password" th:field="*{password}"><br><br>
+        <div th:if="${passwordError != null}" class="alert alert-danger">
+            <p th:text="#{password.hasErrors}">Error Message</p>
+        </div>
+        <button class="btn" type="submit">Create Account</button>
+    </div>
+</form>
+
+
+<div class="footer" th:replace="fragments/footer :: footer">
+    <p>footer</p>
+</div>
+</body>
+</html>
