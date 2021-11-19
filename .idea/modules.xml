@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CorporatePhoto.iml" filepath="$PROJECT_DIR$/CorporatePhoto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CorporatePhotoApplication/CorporatePhotoApplication.iml" filepath="$PROJECT_DIR$/CorporatePhotoApplication/CorporatePhotoApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CorporatePhotoBusinessLogic/CorporatePhotoBusinessLogic.iml" filepath="$PROJECT_DIR$/CorporatePhotoBusinessLogic/CorporatePhotoBusinessLogic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CorporatePhotoDataAccess/CorporatePhotoDataAccess.iml" filepath="$PROJECT_DIR$/CorporatePhotoDataAccess/CorporatePhotoDataAccess.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CorporatePhotoPresentation/CorporatePhotoPresentation.iml" filepath="$PROJECT_DIR$/CorporatePhotoPresentation/CorporatePhotoPresentation.iml" />
+    </modules>
+  </component>
+</project>

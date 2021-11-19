@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Vitality activities</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/view-photo.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+<div th:if="${couldNotCreateTag != null}" class="alert alert-danger">
+    <p th:text="#{couldNotCreateTag.hasErrors}">Error Message</p>
+</div>
+
+<div class="mainContainer">
+    <div class="mainContainerItemBody mainContainerItem">
+        <h3>Photo Options</h3>
+    </div>
+
+    <div class="mainContainerItemBody mainContainerItem">
+        <div class="center">
+            <table class="table">
+                <tr>
+                    <td>
+                        <img th:src="${photo.photoLink}">
+                        <br>
+                    </td>
+                </tr>
+                <!--<tr>
+                    <td>
+                        <div th:if="${ownedPhoto != null}" class="center">
+                            <h2>Enter recipient email to share image</h2>
+                            <form th:action="@{/share-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+                                <label class="lbl" for="email">Email: </label>
+                                <input class="txt" type="email" id="email" name="email"><br>
+                                <button class="button" type="submit" >Share Image</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>-->
+
+                <tr>
+                    <td>
+                        <div th:if="${user.albums.size() > 0}" class="center">
+                            <form th:action="@{/move-to-album/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+                                  method="post">
+                                <h2>Choose album that you want to move the image to</h2>
+                                <select id="albumName" name="albumName">
+                                    <option th:each="album : ${user.albums}"
+                                            th:text="${album.albumName}"
+                                            th:value="${album.albumName}"
+                                            th:selected="${albumName == album.albumName}">
+                                    </option>
+                                </select>
+                                <br>
+                                <br>
+                                <button type="submit" class="button">Add Image To Album</button>
+                                <br>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="buttonContainerRow">
+                            <a class="btnBottom" type="button"
+                               th:href="${photo.photoLink}" download="${photo.photoLink} + '.jpg'">Download Image</a>
+
+                            <a class="btnBottom" type="button"
+                               th:href="@{/edit-photo-data/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Edit Image Data</a>
+
+                            <a class="btnBottom" type="button"
+                               th:href="@{/delete-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Delete Image</a>
+                            <div th:if="${ownedPhoto != null}">
+                                <a class="btnBottom" type="button"
+                                   th:href="@{/manage-access/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Manage Access</a>
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="buttonContainerCol">
+    <div class="btnBottom">
+        <a type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class="footer" th:replace="fragments/footer :: footer">
+    <label>footer</label>
+</div>
+</body>
+</html>

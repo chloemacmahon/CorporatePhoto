@@ -1,0 +1,6 @@
+za\ac\nwu\ac\repository\AlbumRepository.class
+za\ac\nwu\ac\repository\configuration\RepositoryConfig.class
+za\ac\nwu\ac\repository\PhotoMetaDataRepository.class
+za\ac\nwu\ac\repository\PhotoRepository.class
+za\ac\nwu\ac\repository\TagRepository.class
+za\ac\nwu\ac\repository\UserAccountRepository.class
