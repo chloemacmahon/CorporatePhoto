@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Photo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/search-photo.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+
+
+
+<div class="box">
+    <table class="table">
+        <tr>
+            <td>
+                <div class="boxHeading">
+                    <label>Search Photo:</label><br>
+                </div>
+                <form th:action="@{/search-photo-geolocation/{id}(id=${user.userAccountId})}" method="post">
+                    <h3>Search for Photo by Location</h3>
+                    <label class="lbl" for="geolocation"> Geolocation: </label>
+                    <input class="txt" type="text" id="geolocation" name="geolocation"><br><br>
+                    <button class="button" type="submit" >Find Photo</button>
+                </form>
+
+                <form th:object="${tagsUsed}" enctype="multipart/form-data" th:action="@{/search-photo-tag/{id}(id=${user.userAccountId})}"
+                      method="post">
+                    <br>
+                    <div th:if="${tags.size() > 0}">
+                        <table>
+                            <tr><h3>Search for photo by Tag</h3></tr>
+                            <tr th:each="tag, it : ${tags}">
+                                <input type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}">
+                                <label class="lbl" for="${{tag}}" th:text="' ' + ${tag.tagName}"></label><br><br>
+                            </tr>
+                        </table>
+                    </div>
+                    <button type="submit" class="button">Find Photo</button>
+                </form>
+            </td>
+            <td>
+                <br>
+            </td>
+
+            <td>
+                <div th:if= ${photo}!=null class="center">
+                    <a type="button"
+                       th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                        <img th:src="${photo.photoLink}"
+                             th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="buttonContainerCol">
+        <div class="btnBottom">
+            <a class="buttonFlexFix" type="button" th:href="@{/view-albums/{id}(id=${user.userAccountId})}">Back</a>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+
+<div class="container" th:replace="fragments/footer :: footer">
+    <p>footer</p>
+</div>
+
+</body>
+</html>

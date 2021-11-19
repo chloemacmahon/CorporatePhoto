@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.og">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Photo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          th:href="@{/css/edit-photo-data.css}">
+</head>
+<body>
+<div th:replace="fragments/banner.html :: formField(mainHeading='Hello '+ ${user.name})"></div>
+<div class="navigation" th:replace="fragments/navigation :: member-navigation-bar"></div>
+
+<div class="mainContainer">
+    <div class="mainContainerItemBody mainContainerItem">
+        <h3>Edit Photo Metadata</h3>
+    </div>
+
+    <div class="mainContainerItemBody mainContainerItem">
+        <div class="center">
+            <table class="table">
+                <tr>
+                    <td>
+                        <img th:src="${photo.photoLink}">
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="center">
+                            <form th:action="@{/edit-photo-geolocation/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}" method="post">
+                                <h3>Location</h3>
+                                <label class="lbl" th:text="'Current Location: ' + ${photo.photoMetaData.geolocation}"></label><br>
+                                <label class="lbl" for="geolocation"> Geolocation: </label>
+                                <input class="txt" type="text" id="geolocation" name="geolocation"><br><br>
+                                <button type="submit" class="button">Edit Geolocation</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <form class="center" th:object="${tagsUsed}"  th:action="@{/edit-photo-tag/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}"
+                              method="post">
+                            <br>
+                            <h3>Please select tags you would like edit</h3>
+                            <div th:if="${tags.size() > 0}">
+                                <table>
+                                    <tr th:each="tag, it : ${tags}">
+                                        <input class="lbl" type="checkbox" name="${{tag}}" id="${{tag}}" th:value="${{tag}}" th:field="*{tags}" th:checked="${#lists.contains(photo.photoMetaData.tags, tag)}">
+                                        <label class="lbl" for="${{tag}}" th:text="${tag.tagName}"></label><br><br>
+                                        <div th:text="${#lists.contains(photo.photoMetaData.tags, tag)}"/>
+                                    </tr>
+                                </table>
+                            </div>
+                            <button class="button" type="submit">Edit Tag</button>
+                        </form>
+                        <form th:action="@{/create-tag-edit-page/{id}(id=${user.userAccountId})}" method="post">
+                            <label class="lbl" for="tagName">Tag name:  </label><br>
+                            <input class="txt" type="text" id="tagName" name="tagName"><br>
+                            <label class="lbl" for="tagDescription">Tag Description (optional):  </label><br>
+                            <input class="txt" type="text" id="tagDescription" name="tagDescription"><br><br>
+                            <button class="button" type="submit">Create Tag</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="buttonContainerCol">
+    <div class="btnBottom">
+        <a type="button" th:href="@{/view-photo/{id}/{photoId}(id=${user.userAccountId}, photoId=${photo.photoId})}">Back</a>
+    </div>
+</div>
+<br>
+<br>
+
+<div class="container" th:replace="fragments/footer :: footer">
+    <label>footer</label>
+</div>
+</body>
+</html>
