@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${D:\a\CorporatePhoto\CorporatePhoto\CorporatePhotoPresentation}/target/*.war'
+          path: '${{ github.workspace }}/target/*.war'
 
   deploy:
     runs-on: windows-latest
