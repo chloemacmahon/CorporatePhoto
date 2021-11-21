@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.6.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from za.ac.nwu.ac.repository -->
 	</parent>
 	<groupId>za.ac.nwu.ac</groupId>
 	<artifactId>CorporatePhoto</artifactId>
@@ -16,12 +16,9 @@
 	<description>Full stack project that allows users to share photos</description>
 	<properties>
 		<java.version>11</java.version>
-
-
 		<azure.version>1.0.3</azure.version>
 		<!--<jackson.version>2.5.2</jackson.version>-->
 <!--		3.5.0-->
-
 	</properties>
 
 	<modules>
@@ -45,22 +42,21 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<!--<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-core</artifactId>
-
-		</dependency>
-		<dependency>
-
 		</dependency>-->
 		<!--<dependency>
-
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,16 +79,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-
-		</dependency>
-	</dependencies>
-
-	<build>
-
 		</dependency>-->
 
 <!--		<dependency>-->
@@ -164,21 +154,20 @@
 		</dependencies>
 	</dependencyManagement>
 	<!--<build>
-
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
+				<za.ac.nwu.ac.web.configuration>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
+				</za.ac.nwu.ac.web.configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build>-->
 
 </project>

@@ -1,0 +1,12 @@
+za\ac\nwu\ac\logic\configuration\PhotoStorageConfig.class
+za\ac\nwu\ac\logic\implementation\PhotoServiceImpl.class
+za\ac\nwu\ac\logic\service\PhotoMetaDataService.class
+za\ac\nwu\ac\logic\configuration\LogicConfig.class
+za\ac\nwu\ac\logic\implementation\AlbumServiceImpl.class
+za\ac\nwu\ac\logic\service\PhotoService.class
+za\ac\nwu\ac\logic\implementation\ValidationServiceImpl.class
+za\ac\nwu\ac\logic\implementation\PhotoMetaDataServiceImpl.class
+za\ac\nwu\ac\logic\implementation\UserAccountServiceImpl.class
+za\ac\nwu\ac\logic\service\UserAccountService.class
+za\ac\nwu\ac\logic\service\AlbumService.class
+za\ac\nwu\ac\logic\service\ValidationService.class

@@ -1,5 +1,6 @@
 package za.ac.nwu.ac.logic.service;
 
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.nwu.ac.domain.dto.UserAccountDto;
@@ -8,6 +9,8 @@ import za.ac.nwu.ac.domain.persistence.album.Album;
 import za.ac.nwu.ac.domain.persistence.album.SharedAlbum;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
+
+import java.util.List;
 
 
 public interface UserAccountService {
@@ -35,5 +38,13 @@ public interface UserAccountService {
     void addPhotoToAlbum(UserAccount owner, MultipartFile photo, String albumName);
 
     void shareAlbumWithUser(UserAccount sharedAccount, SharedAlbum album);
+
+    List<UserAccount> findUsersWithPhotoAccess(Long photoId);
+
+    void removeAccessToPhoto(UserAccount user, Photo photo);
+
+    void deleteUserAccount(UserAccount userAccount);
+
+
 
 }

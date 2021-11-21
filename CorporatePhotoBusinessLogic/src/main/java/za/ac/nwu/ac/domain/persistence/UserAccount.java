@@ -91,6 +91,10 @@ public class UserAccount {
         this.sharedPhotosAlbum.addPhotoToAlbum(photo);
     }
 
+    public void removeSharedPhoto(Photo photo){
+        this.sharedPhotosAlbum.removePhotoFromAlbum(photo);
+    }
+
     public void addOwnedPhoto(Photo photo) {
         this.ownedPhotosAlbum.addPhotoToAlbum(photo);
     }

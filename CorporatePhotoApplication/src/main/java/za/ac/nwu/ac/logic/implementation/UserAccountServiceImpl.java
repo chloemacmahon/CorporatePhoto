@@ -12,6 +12,7 @@ import za.ac.nwu.ac.domain.persistence.album.Album;
 import za.ac.nwu.ac.domain.persistence.album.SharedAlbum;
 import za.ac.nwu.ac.domain.persistence.photo.Photo;
 import za.ac.nwu.ac.domain.persistence.photo.PhotoMetaData;
+import za.ac.nwu.ac.logic.service.AlbumService;
 import za.ac.nwu.ac.logic.service.PhotoService;
 import za.ac.nwu.ac.logic.service.UserAccountService;
 import za.ac.nwu.ac.repository.AlbumRepository;
@@ -19,6 +20,7 @@ import za.ac.nwu.ac.repository.PhotoRepository;
 import za.ac.nwu.ac.repository.UserAccountRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -29,16 +31,19 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     private AlbumRepository albumRepository;
 
+    private AlbumService albumService;
+
     private PhotoService photoService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoRepository photoRepository, AlbumRepository albumRepository, PhotoService photoService) {
+    public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PhotoRepository photoRepository, AlbumRepository albumRepository, AlbumService albumService, PhotoService photoService) {
         this.userAccountRepository = userAccountRepository;
         this.photoRepository = photoRepository;
         this.albumRepository = albumRepository;
+        this.albumService = albumService;
         this.photoService = photoService;
     }
 
@@ -183,6 +188,47 @@ public class UserAccountServiceImpl implements UserAccountService {
             userAccountRepository.save(sharedAccount);
         } catch (Exception e){
             throw new FailedToShareAlbum("Failed to share album nested exception is: "+ e.getLocalizedMessage());
+        }
+    }
+
+    public List<UserAccount> findUsersWithPhotoAccess(Long photoId){
+        try{
+            return userAccountRepository.findBySharedPhotosAlbumPhotosPhotoId(photoId);
+        } catch (Exception e){
+            throw new UserDoesNotExistException("Users could not be found nested exception "+ e.getLocalizedMessage());
+        }
+    }
+
+    public void removeAccessToPhoto(UserAccount user, Photo photo){
+        try{
+            user.removeSharedPhoto(photo);
+            userAccountRepository.save(user);
+        } catch (Exception e){
+            throw new FailedToRemoveAccess("Failed to remove access nested exception is "+ e.getLocalizedMessage());
+        }
+    }
+
+    public void deleteUserAccount(UserAccount userAccount){
+        try {
+            for (SharedAlbum album : userAccount.getAlbums()) {
+                if (!album.getOwner().equals(userAccount)) {
+                    album.removeAccess(userAccount);
+                    albumRepository.save(album);
+                    userAccount.getAlbums().remove(album);
+                } else {
+                    userAccount.getAlbums().remove(album);
+                    albumService.deleteAlbum(album.getAlbumId(),userAccount.getUserAccountId());
+                }
+                userAccountRepository.save(userAccount);
+            }
+            for (Photo photo: userAccount.getOwnedPhotosAlbum().getPhotos()) {
+                userAccount.getOwnedPhotosAlbum().getPhotos().remove(photo);
+                photoService.deletePhotoFromDatabase(photo.getPhotoId());
+            }
+            userAccountRepository.save(userAccount);
+            userAccountRepository.delete(userAccount);
+        } catch (Exception e){
+            throw new FailedToDeleteUser("Failed to delete user nested exception is "+ e.getLocalizedMessage());
         }
     }
 }
